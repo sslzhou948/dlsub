@@ -7,15 +7,15 @@
 ## ★ 上次中断点
 
 ```
-Phase:    Phase 10（E2E 测试）
-子任务:   10.1 编写 tests/e2e/subtitle-display.spec.js 和 options-page.spec.js
-分支:     main（phase/9-options 已合并），待创建 phase/10-e2e
-状态:     Phase 0-9 全部完成；main 含 fix commit（setDisplayConfig partial merge + SW 防御）
-注意:     E2E 测试需要真实的 deeplearning.ai 账号 + API Key，且需要 Playwright 浏览器
-Git:      最新 commit：fix: 修复 code review 发现的两处问题
+Phase:    Code Review 进行中（Phase 5 已审，Phase 6-9 待审）
+子任务:   继续 review Phase 6（translation-overlay.js）
+分支:     main
+状态:     Phase 0-9 全部完成；code review 进行中，问题记录在 REVIEW.md
+注意:     REVIEW.md 中 Phase 5 有一条待处理测试补充；Phase 1/4 问题已修复
+Git:      最新 commit：chore: 新建 REVIEW.md
 ```
 
-> 下次会话：git checkout main && git checkout -b phase/10-e2e，编写 Playwright E2E 测试。需确认测试环境（账号、浏览器）。
+> 下次会话：阅读 REVIEW.md 了解已记录问题，继续 review Phase 6 或按用户指令处理待办问题。
 
 ---
 

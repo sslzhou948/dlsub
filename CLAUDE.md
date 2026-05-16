@@ -240,6 +240,7 @@ npm run lint
 | 文件 | 用途 | 何时读 |
 |------|------|--------|
 | `HANDOFF.md` | 当前 Phase 状态、关键决策记录、DOM 选择器速查 | **每次新会话必读** |
+| `REVIEW.md` | Code review 问题清单，记录待处理与已修复问题 | 每次 review 或处理问题时 |
 | `docs/dev-plan.md` | Phase 0-11 任务清单、预定义测试用例、验收标准 | 开始每个 Phase 前 |
 | `docs/architecture.md` | 完整架构图、消息协议、存储结构、各模块 API 设计 | 实现新模块前 |
 | `docs/research-report.md` | deeplearning.ai DOM 结构、Vidstack 行为分析、风险对策 | 遇到 DOM 相关问题时 |
