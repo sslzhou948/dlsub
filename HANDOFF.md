@@ -1,20 +1,20 @@
 # HANDOFF — DL Subtitles 项目交接文档
 
-> 最后更新：2026-05-16 | 当前阶段：Phase 0（开发尚未开始）
+> 最后更新：2026-05-16 | 当前阶段：Phase 0 ✅ 完成，Phase 1 待开始
 
 ---
 
 ## ★ 上次中断点
 
 ```
-Phase:    Phase 0（尚未开始）
-子任务:   0.1 初始化 npm 项目（第一个子任务）
-分支:     main（phase/0-init 尚未创建）
-状态:     待开始
-Git:      无 WIP commit
+Phase:    Phase 1（下一阶段）
+子任务:   1.1 写测试 tests/unit/storage.test.js（第一个子任务）
+分支:     phase/0-init（当前），合并到 main 后创建 phase/1-storage
+状态:     Phase 0 全部完成，等待合并到 main
+Git:      最新 commit 含 esbuild + prettier 配置
 ```
 
-> 下次会话：创建 phase/0-init 分支，执行 docs/dev-plan.md Phase 0 任务清单，从 0.1 开始。
+> 下次会话：git merge phase/0-init（或直接在 main 上），git checkout -b phase/1-storage，从 storage.test.js 开始 TDD。
 
 ---
 
@@ -31,7 +31,7 @@ Git:      无 WIP commit
 | 阶段一：用户访谈 + PRD | ✅ 完成 | PRD 已与用户确认 |
 | 阶段二：技术调研 | ✅ 完成 | Playwright 调研 deeplearning.ai DOM，报告已输出 |
 | 阶段三：开发规划 | ✅ 完成 | 架构设计 + 开发计划已确认 |
-| 阶段四：TDD 开发 | ⏳ 未开始 | 从 Phase 0 开始 |
+| 阶段四：TDD 开发 | ⏳ 进行中 | Phase 0 完成，Phase 1 待开始 |
 
 **下一个会话的第一件事：执行 `docs/dev-plan.md` 中的 Phase 0（项目初始化）。**
 
@@ -96,7 +96,7 @@ Content Script 匹配规则：
 
 | Phase | 模块 | 状态 |
 |-------|------|------|
-| 0 | 项目初始化（npm, Jest, Playwright, manifest） | ⏳ 未开始 |
+| 0 | 项目初始化（npm, Jest, Playwright, manifest） | ✅ 完成 |
 | 1 | `storage.js` | ⏳ 未开始 |
 | 2 | `messages.js` | ⏳ 未开始 |
 | 3 | `translation-cache.js` | ⏳ 未开始 |

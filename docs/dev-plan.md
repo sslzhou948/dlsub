@@ -8,6 +8,13 @@
 - **最小 PR 粒度**：每个功能模块对应一个 PR，禁止一次性提交所有代码
 - **MV3 合规**：无 eval、无远程代码、权限最小化
 
+## 模块规范（已确认决策）
+
+- **模块格式**：源文件使用 CommonJS（`'use strict'` + `module.exports` / `require()`）；Chrome 加载的是 esbuild 打包后的 `dist/` 文件，Jest 测试直接 `require()` 源文件，无需构建
+- **构建命令**：`npm run build`（每次修改源文件后执行，然后在 Chrome 扩展页面点刷新）
+- **Chrome API Mock**：所有需要 `chrome.*` 的单元测试，统一 `require('../helpers/chrome-mock')`，不允许在各测试文件内自行重复 mock
+- **版本控制**：本地 git 管理，无远程仓库，不执行 `git push`
+
 ---
 
 ## 阶段划分
@@ -16,17 +23,20 @@
 
 **任务清单：**
 
-- [ ] 0.1 初始化 npm 项目，配置 `package.json`
-- [ ] 0.2 配置 Jest（unit test，含 jsdom 环境）
-- [ ] 0.3 配置 Playwright（e2e test）
-- [ ] 0.4 创建 `manifest.json`（MV3，最小权限）
-- [ ] 0.5 创建占位图标（16/48/128px）
-- [ ] 0.6 创建 `src/shared/constants.js`（DOM 选择器、消息类型等常量）
-- [ ] 0.7 配置 ESLint + Prettier
+- [x] 0.1 初始化 npm 项目，配置 `package.json`
+- [x] 0.2 配置 Jest（unit test，含 jsdom 环境）
+- [x] 0.3 配置 Playwright（e2e test）
+- [x] 0.4 创建 `manifest.json`（MV3，最小权限）
+- [x] 0.5 创建占位图标（16/48/128px）
+- [x] 0.6 创建 `src/shared/constants.js`（DOM 选择器、消息类型等常量）
+- [x] 0.7 配置 ESLint（`.eslintrc.js`）+ Prettier（`.prettierrc`）
+- [x] 0.8 创建 `tests/unit/helpers/chrome-mock.js`（统一 chrome API mock，供 Phase 1+ 复用）
+- [x] 0.9 配置 esbuild 构建流程（`npm run build` → `dist/content.js` + `dist/service-worker.js`）
 
 **验收标准：**
-- `npm test` 可运行（即使无测试用例也不报错）
-- 插件可在 Chrome 中以开发者模式加载，不报错
+- `npm test` 可运行（即使无测试用例也不报错）✅
+- `npm run build` 成功生成 `dist/content.js` 和 `dist/service-worker.js` ✅
+- 插件可在 Chrome 中以开发者模式加载，不报错（需先 `npm run build`）
 
 ---
 
@@ -64,8 +74,33 @@ setDisplayConfig(partial) → void
 
 **TDD 顺序：**
 
-1. 写测试：验证消息结构的序列化/反序列化
-2. 写实现：定义消息类型常量 + 消息构造器函数
+1. 写测试：`tests/unit/messages.test.js`
+   - `createTranslateRequest({ text, targetLang, cueId })` 返回 `{ type: 'TRANSLATE', payload: { text, targetLang, cueId } }`
+   - `createTranslateResult({ translation, cueId })` 返回 `{ type: 'TRANSLATE_RESULT', payload: { translation, cueId } }`
+   - `createTranslateError({ error, code })` 返回 `{ type: 'TRANSLATE_ERROR', payload: { error, code } }`
+   - `isValidMessage(msg)` 对含合法 `type` 字段的对象返回 `true`
+   - `isValidMessage(msg)` 对 `null`、无 `type` 字段、`type` 不在已知列表中的对象返回 `false`
+
+2. 写实现：`src/shared/messages.js`
+
+**API 设计：**
+```javascript
+// 构造翻译请求（Content Script → Service Worker）
+createTranslateRequest({ text, targetLang, cueId })
+  → { type: 'TRANSLATE', payload: { text, targetLang, cueId } }
+
+// 构造翻译成功响应（Service Worker → Content Script）
+createTranslateResult({ translation, cueId })
+  → { type: 'TRANSLATE_RESULT', payload: { translation, cueId } }
+
+// 构造翻译失败响应（Service Worker → Content Script）
+createTranslateError({ error, code })
+  → { type: 'TRANSLATE_ERROR', payload: { error, code } }
+  // code 必须是 ERROR_CODES 中的值：'NO_API_KEY' | 'API_ERROR' | 'TIMEOUT'
+
+// 校验消息是否合法（用于 onMessage 入口防御）
+isValidMessage(msg) → boolean
+```
 
 **验收标准：** `npm test messages` 全部通过
 
@@ -170,7 +205,16 @@ class SubtitleObserver {
 3. 监听 SPA 路由变化（`popstate` / URL 轮询），切换课程时重置模块
 4. 未配置 API Key 时，点击面板图标提示用户前往 Options 页面
 
-**验收标准：** 在浏览器中手动加载插件，视频播放时能看到译文（即使 API 未配置，也能看到占位提示）
+**测试策略：**
+
+Phase 8 是胶水层，逻辑分散在各模块中，单元测试收益低。采用以下策略：
+
+- **单元测试（`tests/unit/content-index.test.js`）**：只测 SPA 路由检测逻辑（URL 变化时是否调用 reset），用 jest mock 替代所有子模块
+- **集成验证**：其余场景（翻译全流程、API Key 缺失提示）留给 Phase 10 E2E 测试覆盖
+
+**验收标准：**
+- `npm test content-index` 中路由切换相关测试通过
+- 浏览器手动加载插件，视频播放时可见译文叠加层（即使 API 未配置，也可见占位提示）
 
 ---
 

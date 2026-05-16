@@ -1,0 +1,24 @@
+{
+  "name": "dl-subtitles",
+  "version": "1.0.0",
+  "description": "Chrome extension for bilingual subtitles on learn.deeplearning.ai",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:content && npm run build:sw",
+    "build:content": "esbuild src/content/index.js --bundle --format=iife --outfile=dist/content.js",
+    "build:sw": "esbuild src/background/service-worker.js --bundle --format=iife --outfile=dist/service-worker.js",
+    "build:watch": "npm run build:content -- --watch & npm run build:sw -- --watch",
+    "test": "jest --passWithNoTests",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src tests --ext .js",
+    "format": "prettier --write \"src/**/*.js\" \"tests/**/*.js\""
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "esbuild": "^0.21.0",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^3.2.0"
+  }
+}
