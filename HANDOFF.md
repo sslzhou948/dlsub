@@ -7,17 +7,19 @@
 ## ★ 上次中断点
 
 ```
-Phase:    Phase 10 E2E 测试完成
-子任务:   开始 Phase 11（发布准备）
+Phase:    所有已知 bug 已修复（REVIEW.md 全部 ✅），可开始 Phase 11
+子任务:   Phase 11（发布准备）— README、隐私政策、打包、Web Store
 分支:     main
-状态:     Phase 0-10 全部完成；E2E 测试 12/12 通过；单元测试 66/66 通过
-注意:     REVIEW.md 中有 2 个 Phase 10 发现的待处理问题：
-            1. Options 页面 URL 校验 UX 不一致（type="url" 与 isValidUrl 冲突）
-            2. 未配置 API Key 时无用户引导（content/index.js 静默跳过）
-Git:      待 commit（Phase 10 完成）
+状态:     单元测试 72/72，E2E 15/15，API 翻译管道端到端验证通过
+注意:     用户 API 端点经过实测：
+            Base URL:  https://api.ads8260.win:8260/v1
+            API Key:   sk-QKQZjPa... (用户自备，勿提交到代码)
+            可用模型:  deepseek-chat（测试通过，翻译质量良好）
+            不可用:    gpt-4o-mini（token 无权限）
+Git:      最新 commit: fix: 补充 CSS 注入、host_permissions 和 Base URL 文档
 ```
 
-> 下次会话：开始 Phase 11（发布准备）。建议优先处理 REVIEW.md 的 2 个待处理问题。
+> 下次会话：开始 Phase 11（发布准备）。
 
 ---
 
