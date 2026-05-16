@@ -61,6 +61,18 @@ describe('getDisplayConfig', () => {
       });
     });
   });
+
+  test('partial 更新只修改指定字段，其余保持默认值', (done) => {
+    storage.setDisplayConfig({ enabled: false }, () => {
+      storage.getDisplayConfig((config) => {
+        expect(config.enabled).toBe(false);
+        expect(config.fontSize).toBe('medium');
+        expect(config.position).toBe('below');
+        expect(config.targetLang).toBe('zh-CN');
+        done();
+      });
+    });
+  });
 });
 
 // --- 独立性：apiConfig 和 displayConfig 互不干扰 ---

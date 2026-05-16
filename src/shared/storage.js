@@ -32,12 +32,14 @@ function getDisplayConfig(callback) {
 }
 
 /**
- * 写入显示配置。
- * @param {{ enabled, fontSize, position, targetLang }} config
+ * 写入显示配置（支持 partial 更新，未传入的字段保持当前值）。
+ * @param {Partial<{ enabled, fontSize, position, targetLang }>} partial
  * @param {function} [callback]
  */
-function setDisplayConfig(config, callback) {
-  chrome.storage.sync.set({ displayConfig: config }, callback);
+function setDisplayConfig(partial, callback) {
+  getDisplayConfig((current) => {
+    chrome.storage.sync.set({ displayConfig: { ...current, ...partial } }, callback);
+  });
 }
 
 module.exports = { getApiConfig, setApiConfig, getDisplayConfig, setDisplayConfig };

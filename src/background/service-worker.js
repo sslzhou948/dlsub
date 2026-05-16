@@ -58,7 +58,12 @@ async function translate({ text, targetLang, cueId }, apiConfig) {
   }
 
   const data = await res.json();
-  const translation = data.choices[0].message.content.trim();
+  const translation = data.choices?.[0]?.message?.content?.trim();
+  if (!translation) {
+    const err = new Error('Empty response from API');
+    err.code = ERROR_CODES.API_ERROR;
+    throw err;
+  }
   return { type: MSG_TYPES.TRANSLATE_RESULT, payload: { translation, cueId } };
 }
 
