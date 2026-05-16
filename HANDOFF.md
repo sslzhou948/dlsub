@@ -1,20 +1,20 @@
 # HANDOFF — DL Subtitles 项目交接文档
 
-> 最后更新：2026-05-16 | 当前阶段：Phase 5 ✅ 完成，Phase 6 待开始
+> 最后更新：2026-05-16 | 当前阶段：Phase 6 ✅ 完成，Phase 7 待开始
 
 ---
 
 ## ★ 上次中断点
 
 ```
-Phase:    Phase 6（下一阶段）
-子任务:   6.1 写测试 tests/unit/translation-overlay.test.js（第一个子任务）
-分支:     phase/5-subtitle-observer（当前），合并到 main 后创建 phase/6-translation-overlay
-状态:     Phase 5 全部完成，等待合并到 main
-Git:      最新 commit：feat: Phase 5 完成 — subtitle-observer.js（附测试）
+Phase:    Phase 7（下一阶段）
+子任务:   7.1 写测试 tests/unit/control-panel.test.js（第一个子任务）
+分支:     phase/6-translation-overlay（当前），合并到 main 后创建 phase/7-control-panel
+状态:     Phase 6 全部完成，等待合并到 main
+Git:      最新 commit：feat: Phase 6 完成 — translation-overlay.js（附测试）
 ```
 
-> 下次会话：合并 phase/5-subtitle-observer，git checkout -b phase/6-translation-overlay，从 translation-overlay.test.js 开始 TDD。
+> 下次会话：合并 phase/6-translation-overlay，git checkout -b phase/7-control-panel，从 control-panel.test.js 开始 TDD。
 
 ---
 
@@ -31,7 +31,7 @@ Git:      最新 commit：feat: Phase 5 完成 — subtitle-observer.js（附测
 | 阶段一：用户访谈 + PRD | ✅ 完成 | PRD 已与用户确认 |
 | 阶段二：技术调研 | ✅ 完成 | Playwright 调研 deeplearning.ai DOM，报告已输出 |
 | 阶段三：开发规划 | ✅ 完成 | 架构设计 + 开发计划已确认 |
-| 阶段四：TDD 开发 | ⏳ 进行中 | Phase 0-5 完成，Phase 6 待开始 |
+| 阶段四：TDD 开发 | ⏳ 进行中 | Phase 0-6 完成，Phase 7 待开始 |
 
 ---
 
@@ -100,7 +100,7 @@ Content Script 匹配规则：
 | 3 | `translation-cache.js` | ✅ 完成 |
 | 4 | `service-worker.js` | ✅ 完成 |
 | 5 | `subtitle-observer.js` | ✅ 完成 |
-| 6 | `translation-overlay.js` | ⏳ 未开始 |
+| 6 | `translation-overlay.js` | ✅ 完成 |
 | 7 | `control-panel.js` | ⏳ 未开始 |
 | 8 | `content/index.js`（模块串联） | ⏳ 未开始 |
 | 9 | `options/` 页面 | ⏳ 未开始 |
