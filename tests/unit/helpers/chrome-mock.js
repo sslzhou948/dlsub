@@ -85,6 +85,7 @@ const chromeMock = {
 
   runtime: {
     sendMessage: jest.fn(),
+    openOptionsPage: jest.fn(),
 
     onMessage: {
       addListener: jest.fn((fn) => {
@@ -111,6 +112,7 @@ function resetChromeMock() {
   chromeMock.storage.onChanged.addListener.mockClear();
   chromeMock.storage.onChanged.removeListener.mockClear();
   chromeMock.runtime.sendMessage.mockClear();
+  chromeMock.runtime.openOptionsPage.mockClear();
   chromeMock.runtime.onMessage.addListener.mockClear();
   chromeMock.runtime.onMessage.removeListener.mockClear();
 }

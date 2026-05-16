@@ -114,3 +114,76 @@ describe('设置变更回调', () => {
     expect(onSettingsChange).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('initialConfig', () => {
+  test('传入 initialConfig 后面板控件反映配置值', () => {
+    document.body.innerHTML = `<div class="vds-controls-group"></div>`;
+    const panel = new ControlPanel({
+      onSettingsChange: jest.fn(),
+      initialConfig: { enabled: false, fontSize: 'large', position: 'above' },
+    });
+    panel.init();
+    document.querySelector('.dlai-ext-toggle-btn').click();
+
+    expect(document.querySelector('[data-setting="enabled"]').checked).toBe(false);
+    expect(document.querySelector('[data-setting="fontSize"]').value).toBe('large');
+    expect(document.querySelector('[data-setting="position"]').value).toBe('above');
+  });
+});
+
+describe('destroy', () => {
+  test('destroy() 移除按钮和面板 DOM 元素', () => {
+    document.body.innerHTML = `<div class="vds-controls-group"></div>`;
+    const panel = new ControlPanel({ onSettingsChange: jest.fn() });
+    panel.init();
+    panel.destroy();
+    expect(document.querySelector('.dlai-ext-toggle-btn')).toBeNull();
+    expect(document.querySelector('.dlai-ext-control-panel')).toBeNull();
+  });
+});
+
+describe('showNoKeyWarning', () => {
+  test('在面板中插入包含 "API Key" 文字的警告段落', () => {
+    document.body.innerHTML = `<div class="vds-controls-group"></div>`;
+    const panel = new ControlPanel({ onSettingsChange: jest.fn() });
+    panel.init();
+    panel.showNoKeyWarning(jest.fn());
+
+    const warning = document.querySelector('.dlai-ext-no-key-warning');
+    expect(warning).not.toBeNull();
+    expect(warning.textContent).toContain('API Key');
+  });
+
+  test('在切换按钮上附加 ! 徽标', () => {
+    document.body.innerHTML = `<div class="vds-controls-group"></div>`;
+    const panel = new ControlPanel({ onSettingsChange: jest.fn() });
+    panel.init();
+    panel.showNoKeyWarning(jest.fn());
+
+    const btn = document.querySelector('.dlai-ext-toggle-btn');
+    expect(btn.querySelector('.dlai-ext-no-key-badge')).not.toBeNull();
+  });
+
+  test('点击"前往设置"按钮调用 onAction', () => {
+    document.body.innerHTML = `<div class="vds-controls-group"></div>`;
+    const onAction = jest.fn();
+    const panel = new ControlPanel({ onSettingsChange: jest.fn() });
+    panel.init();
+    panel.showNoKeyWarning(onAction);
+
+    const settingsBtn = document.querySelector('.dlai-ext-no-key-warning button');
+    settingsBtn.click();
+    expect(onAction).toHaveBeenCalledTimes(1);
+  });
+
+  test('重复调用不重复注入警告', () => {
+    document.body.innerHTML = `<div class="vds-controls-group"></div>`;
+    const panel = new ControlPanel({ onSettingsChange: jest.fn() });
+    panel.init();
+    panel.showNoKeyWarning(jest.fn());
+    panel.showNoKeyWarning(jest.fn());
+
+    expect(document.querySelectorAll('.dlai-ext-no-key-warning').length).toBe(1);
+    expect(document.querySelectorAll('.dlai-ext-no-key-badge').length).toBe(1);
+  });
+});

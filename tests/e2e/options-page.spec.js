@@ -76,19 +76,27 @@ test.describe('Options 页面', () => {
   // ─────────────────────────────────────────────
   // 场景 2：字段校验
   // ─────────────────────────────────────────────
+  test('Base URL 填写无协议的字符串时显示错误提示', async ({ page }) => {
+    // Now that the input is type="text", all URL validation goes through JS isValidUrl().
+    // Browser-native validation no longer intercepts anything.
+    await page.addInitScript({ content: buildChromeMock() });
+    await page.goto(OPTIONS_URL);
+    await page.waitForLoadState('domcontentloaded');
+
+    await page.fill('#baseUrl', 'not-a-url');
+    await page.fill('#apiKey', 'sk-test');
+    await page.fill('#model', 'gpt-4o-mini');
+    await page.click('button[type="submit"]');
+
+    await expect(page.locator('#status')).toContainText('Base URL 格式不正确', { timeout: 2000 });
+  });
+
   test('Base URL 填写非 http/https 协议时显示错误提示', async ({ page }) => {
-    // NOTE: <input type="url"> browser-native validation blocks syntactically-invalid URLs
-    // (e.g. "not-a-url") before the submit handler runs — the JS custom error is never shown.
-    // Using ftp:// which passes browser URL validation but fails our http/https-only check,
-    // so the JS validation path is exercised.
-    // See REVIEW.md for the UX inconsistency this creates.
     await page.addInitScript({ content: buildChromeMock() });
     await page.goto(OPTIONS_URL);
     await page.waitForLoadState('domcontentloaded');
 
     await page.fill('#baseUrl', 'ftp://not-allowed.example.com/v1');
-    await page.fill('#apiKey', 'sk-test');
-    await page.fill('#model', 'gpt-4o-mini');
     await page.click('button[type="submit"]');
 
     await expect(page.locator('#status')).toContainText('Base URL 格式不正确', { timeout: 2000 });

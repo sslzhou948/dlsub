@@ -96,3 +96,12 @@ describe('setFontSize', () => {
     expect(el.style.getPropertyValue('--dlai-font-size')).toBe('small');
   });
 });
+
+describe('destroy', () => {
+  test('destroy() 从 DOM 中移除译文节点', () => {
+    const captionsEl = document.querySelector('.vds-captions');
+    const overlay = new TranslationOverlay(captionsEl);
+    overlay.destroy();
+    expect(captionsEl.querySelector('.dlai-ext-translation')).toBeNull();
+  });
+});

@@ -21,6 +21,7 @@ class App {
     this._startModules();
     this._watchRoute();
     chrome.storage.onChanged.addListener(() => this._applyDisplayConfig());
+    window.addEventListener('beforeunload', () => this._cleanup());
   }
 
   _startModules() {
@@ -29,17 +30,29 @@ class App {
       this._overlay = new TranslationOverlay(captionsEl);
     }
 
-    this._panel = new ControlPanel({
-      onSettingsChange: (settings) => {
-        if (this._overlay) {
-          if (!settings.enabled) this._overlay.hide();
-          else this._overlay.show();
-          this._overlay.setPosition(settings.position);
-          this._overlay.setFontSize(settings.fontSize);
+    getDisplayConfig((displayConfig) => {
+      this._panel = new ControlPanel({
+        initialConfig: displayConfig,
+        onSettingsChange: (settings) => {
+          if (this._overlay) {
+            if (!settings.enabled) this._overlay.hide();
+            else this._overlay.show();
+            this._overlay.setPosition(settings.position);
+            this._overlay.setFontSize(settings.fontSize);
+          }
+        },
+      });
+      this._panel.init();
+
+      // 启动后立即检查 API Key，未配置则在面板中显示引导提示
+      getApiConfig((apiConfig) => {
+        if (!apiConfig.apiKey && this._panel) {
+          this._panel.showNoKeyWarning(() => {
+            if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
+          });
         }
-      },
+      });
     });
-    this._panel.init();
 
     this._observer = new SubtitleObserver({
       onSubtitle: (text, cueId) => {
@@ -84,6 +97,14 @@ class App {
     if (this._observer) {
       this._observer.stop();
       this._observer = null;
+    }
+    if (this._panel) {
+      this._panel.destroy();
+      this._panel = null;
+    }
+    if (this._overlay) {
+      this._overlay.destroy();
+      this._overlay = null;
     }
     this._cache.clear();
     this._startModules();

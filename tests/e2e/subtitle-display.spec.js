@@ -121,8 +121,7 @@ test.describe('字幕翻译叠加层', () => {
 
 // Separate describe block for "no API key" scenario (needs different chrome mock)
 test.describe('未配置 API Key 场景', () => {
-  test('叠加层保持空白（当前行为：静默不翻译）', async ({ page }) => {
-    // Inject chrome mock with empty apiKey
+  test('控制面板显示"未配置 API Key"警告并有"前往设置"按钮', async ({ page }) => {
     await page.addInitScript({
       content: buildChromeMock({
         apiConfig: { baseUrl: 'https://api.openai.com/v1', apiKey: '', model: 'gpt-4o-mini' },
@@ -132,12 +131,45 @@ test.describe('未配置 API Key 场景', () => {
     await page.addScriptTag({ path: CONTENT_JS });
     await page.waitForSelector(OVERLAY_SEL, { timeout: 5000, state: 'attached' });
 
-    // Trigger subtitle
-    await page.evaluate(() => window.showSubtitle('No key test', '99'));
+    // Open the control panel
+    await page.waitForSelector(TOGGLE_BTN_SEL);
+    await page.click(TOGGLE_BTN_SEL);
 
-    // Wait debounce + a bit more; overlay should remain empty
+    // Warning should appear in the panel
+    const warning = page.locator('.dlai-ext-no-key-warning');
+    await expect(warning).toContainText('API Key', { timeout: 3000 });
+
+    // "前往设置" button should be present
+    await expect(warning.locator('button')).toContainText('前往设置');
+  });
+
+  test('切换按钮上显示 ! 徽标', async ({ page }) => {
+    await page.addInitScript({
+      content: buildChromeMock({
+        apiConfig: { baseUrl: 'https://api.openai.com/v1', apiKey: '', model: 'gpt-4o-mini' },
+      }),
+    });
+    await page.goto(FIXTURE_URL);
+    await page.addScriptTag({ path: CONTENT_JS });
+    await page.waitForSelector(TOGGLE_BTN_SEL, { timeout: 5000 });
+
+    const badge = page.locator('.dlai-ext-no-key-badge');
+    await expect(badge).toBeAttached({ timeout: 3000 });
+    await expect(badge).toHaveText('!');
+  });
+
+  test('有字幕但叠加层保持空白（无 API Key 不发起翻译）', async ({ page }) => {
+    await page.addInitScript({
+      content: buildChromeMock({
+        apiConfig: { baseUrl: 'https://api.openai.com/v1', apiKey: '', model: 'gpt-4o-mini' },
+      }),
+    });
+    await page.goto(FIXTURE_URL);
+    await page.addScriptTag({ path: CONTENT_JS });
+    await page.waitForSelector(OVERLAY_SEL, { timeout: 5000, state: 'attached' });
+
+    await page.evaluate(() => window.showSubtitle('No key test', '99'));
     await page.waitForTimeout(DEBOUNCE_MS + 200);
-    const overlay = page.locator(OVERLAY_SEL);
-    await expect(overlay).toHaveText('');
+    await expect(page.locator(OVERLAY_SEL)).toHaveText('');
   });
 });

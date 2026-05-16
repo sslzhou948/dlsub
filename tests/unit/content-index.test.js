@@ -59,12 +59,14 @@ beforeEach(() => {
       this.show = jest.fn();
       this.setPosition = jest.fn();
       this.setFontSize = jest.fn();
+      this.destroy = jest.fn();
     }),
   );
   jest.mock('../../src/content/control-panel', () =>
     jest.fn().mockImplementation(function () {
       this.init = jest.fn();
       this.destroy = jest.fn();
+      this.showNoKeyWarning = jest.fn();
     }),
   );
   jest.mock('../../src/content/translation-cache', () =>
@@ -99,6 +101,38 @@ describe('初始化', () => {
   });
 });
 
+describe('API Key 未配置', () => {
+  test('apiKey 为空时调用 ControlPanel.showNoKeyWarning', () => {
+    const { seedStore } = require('./helpers/chrome-mock');
+    seedStore({
+      apiConfig: { baseUrl: '', apiKey: '', model: 'gpt-4o-mini' },
+      displayConfig: { enabled: true, fontSize: 'medium', position: 'below', targetLang: 'zh-CN' },
+    });
+
+    const app = new App();
+    app.init();
+
+    const ControlPanel = require('../../src/content/control-panel');
+    const panel = ControlPanel.mock.instances[0];
+    expect(panel.showNoKeyWarning).toHaveBeenCalledTimes(1);
+  });
+
+  test('apiKey 已配置时不调用 showNoKeyWarning', () => {
+    const { seedStore } = require('./helpers/chrome-mock');
+    seedStore({
+      apiConfig: { baseUrl: 'https://api.openai.com/v1', apiKey: 'sk-test', model: 'gpt-4o-mini' },
+      displayConfig: { enabled: true, fontSize: 'medium', position: 'below', targetLang: 'zh-CN' },
+    });
+
+    const app = new App();
+    app.init();
+
+    const ControlPanel = require('../../src/content/control-panel');
+    const panel = ControlPanel.mock.instances[0];
+    expect(panel.showNoKeyWarning).not.toHaveBeenCalled();
+  });
+});
+
 describe('SPA 路由切换', () => {
   test('URL 变化时调用 reset（stop 旧 observer + 清空 cache）', () => {
     const app = new App();
@@ -125,5 +159,23 @@ describe('SPA 路由切换', () => {
     expect(instances.length).toBeGreaterThanOrEqual(2);
     const newInstance = instances[instances.length - 1];
     expect(newInstance.start).toHaveBeenCalled();
+  });
+
+  test('路由切换时调用旧 ControlPanel 的 destroy()', () => {
+    const app = new App();
+    app.init();
+    const ControlPanel = require('../../src/content/control-panel');
+    const oldPanel = ControlPanel.mock.instances[0];
+    app._onRouteChange();
+    expect(oldPanel.destroy).toHaveBeenCalled();
+  });
+
+  test('路由切换时调用旧 TranslationOverlay 的 destroy()', () => {
+    const app = new App();
+    app.init();
+    const TranslationOverlay = require('../../src/content/translation-overlay');
+    const oldOverlay = TranslationOverlay.mock.instances[0];
+    app._onRouteChange();
+    expect(oldOverlay.destroy).toHaveBeenCalled();
   });
 });

@@ -29,6 +29,10 @@ class TranslationOverlay {
   setFontSize(size) {
     this._el.style.setProperty('--dlai-font-size', size);
   }
+
+  destroy() {
+    this._el.remove();
+  }
 }
 
 module.exports = TranslationOverlay;

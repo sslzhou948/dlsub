@@ -25,6 +25,23 @@ function flushMutations() {
 
 // ---
 
+describe('.vds-captions 已存在且已有字幕内容', () => {
+  test('start() 时立即触发 onSubtitle 回调', () => {
+    document.body.innerHTML = `
+      <div class="vds-captions" data-part="captions">
+        <div data-part="cue-display">
+          <div data-part="cue" data-id="5">Already here</div>
+        </div>
+      </div>
+    `;
+    const onSubtitle = jest.fn();
+    const observer = new SubtitleObserver({ onSubtitle, onSubtitleClear: jest.fn() });
+    observer.start();
+    jest.advanceTimersByTime(300);
+    expect(onSubtitle).toHaveBeenCalledWith('Already here', '5');
+  });
+});
+
 describe('.vds-captions 不存在时', () => {
   test('start() 不抛出异常', () => {
     const observer = new SubtitleObserver({ onSubtitle: jest.fn(), onSubtitleClear: jest.fn() });

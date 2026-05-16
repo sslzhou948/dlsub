@@ -77,10 +77,16 @@
 
 ### 待处理（建议 Phase 11 前修复）
 
-- [ ] **Options 页面 URL 校验 UX 不一致**（`options/index.html`）
-  - 问题：`<input type="url">` 对语法完全错误的值（如 `not-a-url`）触发浏览器原生校验 UI，阻止表单提交，JS 自定义错误提示永远不显示；但对"协议错误"的 URL（如 `ftp://…`）则走 JS 自定义校验。两条路径错误体验不一致。
-  - 建议修复：将 `id="baseUrl"` 的 input 改为 `type="text"`，完全依赖 JS 侧的 `isValidUrl()` 校验，删除浏览器原生校验的影响。
+- [x] **[已修复]** Options 页面 URL 校验 UX 不一致
+  - 根因：`<input type="url">` 浏览器原生校验拦截语法非法的 URL（`not-a-url`），阻止表单提交，JS 自定义错误从未执行；`ftp://` 这类"协议错误但语法合法"的 URL 才走 JS 路径，两条路径体验不一致。
+  - 修复：`src/options/index.html` 将 `type="url"` 改为 `type="text"`，所有校验统一由 `isValidUrl()` 负责。
+  - 补充 E2E 测试：新增 `not-a-url` 场景（现在通过 JS 校验路径）。
 
-- [ ] **未配置 API Key 时无用户引导**（`content/index.js:56`）
-  - 问题：`getApiConfig` 回调中，`if (!apiConfig.apiKey) return;` 静默跳过翻译，用户看不到任何提示，不知道为何译文不出现。开发计划 Phase 10 场景 4 要求出现「前往设置」引导提示，但当前未实现。
-  - 建议修复：在 ControlPanel 中增加一个「未配置 API Key，请前往设置」提示区，或在 `onSubtitle` 回调中检测到无 Key 时触发面板提示。
+- [x] **[已修复]** 未配置 API Key 时无用户引导
+  - 根因：`content/index.js` 在 `onSubtitle` 回调中检测到无 Key 后静默 `return`，用户看不到任何提示，不知道为何译文不出现。
+  - 修复：
+    1. `src/shared/constants.js` 新增 `NO_KEY_WARNING`、`NO_KEY_BADGE` 两个 CSS 类。
+    2. `src/content/control-panel.js` 新增 `showNoKeyWarning(onAction)` 方法：面板顶部插入「⚠ 未配置 API Key — 前往设置」段落，切换按钮附加 `!` 徽标。
+    3. `src/content/index.js` 在 `_startModules()` 创建面板后立即调用 `getApiConfig`，若 `apiKey` 为空则调用 `panel.showNoKeyWarning(() => chrome.runtime.openOptionsPage())`。
+  - 补充单元测试：`control-panel.test.js` 新增 4 个 `showNoKeyWarning` 场景；`content-index.test.js` 新增 2 个 API Key 未配置场景。
+  - 补充 E2E 测试：新增 3 个场景（警告文字、`!` 徽标、叠加层保持空白）。

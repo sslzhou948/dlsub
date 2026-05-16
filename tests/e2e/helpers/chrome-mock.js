@@ -69,6 +69,9 @@ function buildChromeMock({ apiConfig, displayConfig, mockTranslate = true } = {}
           }, 0);
         }
       },
+      openOptionsPage: function() {
+        window.__optionsPageOpened = true;
+      },
       lastError: null
     }
   };
