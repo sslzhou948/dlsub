@@ -1,0 +1,140 @@
+/* DL Subtitles — injected content stylesheet
+ * All class names use the dlai-ext- prefix to avoid collisions with Vidstack.
+ */
+
+/* ── Translation overlay ──────────────────────────────────────────────────── */
+
+/* Appended inside .vds-captions as a sibling to [data-part="cue-display"].
+ * The parent element is a transparent overlay on top of the video, so we add
+ * a semi-transparent background to keep the translation readable.            */
+.dlai-ext-translation {
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  background: rgba(8, 8, 8, 0.72);
+  padding: 3px 20px 5px;
+  border-radius: 4px;
+  font-size: var(--dlai-font-size, medium);
+  line-height: 1.5;
+  pointer-events: none; /* let clicks pass through to the video */
+  box-sizing: border-box;
+  margin-top: 2px;
+}
+
+/* Position variants */
+.dlai-ext-translation--above {
+  order: -1; /* only works if parent becomes a flex column */
+}
+
+/* ── Control panel wrapper ────────────────────────────────────────────────── */
+
+/* Wraps the toggle button + popup panel; provides the positioning context
+ * without touching .vds-controls-group's own CSS.                            */
+.dlai-ext-control-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ── Toggle button ────────────────────────────────────────────────────────── */
+
+.dlai-ext-toggle-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  padding: 4px 9px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  position: relative; /* anchor for the ! badge */
+  transition: background 0.15s;
+}
+
+.dlai-ext-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* ── ! badge on toggle button ─────────────────────────────────────────────── */
+
+.dlai-ext-no-key-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #f44;
+  color: #fff;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* ── Control panel popup ──────────────────────────────────────────────────── */
+
+.dlai-ext-control-panel {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  background: rgba(18, 18, 18, 0.96);
+  color: #f0f0f0;
+  padding: 12px 16px;
+  border-radius: 8px;
+  min-width: 230px;
+  z-index: 10000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  font-size: 13px;
+  line-height: 1.6;
+  pointer-events: all; /* panel itself must receive clicks */
+}
+
+.dlai-ext-control-panel label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.dlai-ext-control-panel select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+/* ── No-API-key warning inside control panel ──────────────────────────────── */
+
+.dlai-ext-no-key-warning {
+  margin: 0 0 10px;
+  padding: 7px 10px;
+  background: rgba(255, 160, 0, 0.15);
+  border: 1px solid rgba(255, 160, 0, 0.45);
+  border-radius: 5px;
+  color: #ffb833;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.dlai-ext-no-key-warning button {
+  background: rgba(255, 160, 0, 0.85);
+  border: none;
+  color: #111;
+  padding: 2px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: all;
+}
+
+.dlai-ext-no-key-warning button:hover {
+  background: #ffa500;
+}

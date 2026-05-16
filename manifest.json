@@ -13,7 +13,9 @@
     "scripting"
   ],
   "host_permissions": [
-    "https://learn.deeplearning.ai/*"
+    "https://learn.deeplearning.ai/*",
+    "https://*/*",
+    "http://*/*"
   ],
   "background": {
     "service_worker": "dist/service-worker.js"
@@ -22,6 +24,7 @@
     {
       "matches": ["https://learn.deeplearning.ai/courses/*/lesson/*"],
       "js": ["dist/content.js"],
+      "css": ["src/content/content.css"],
       "run_at": "document_idle"
     }
   ],

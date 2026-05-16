@@ -15,6 +15,7 @@ const CSS_PREFIX = 'dlai-ext-';
 const CSS_CLASSES = {
   TRANSLATION: 'dlai-ext-translation',
   CONTROL_PANEL: 'dlai-ext-control-panel',
+  CONTROL_WRAPPER: 'dlai-ext-control-wrapper',
   TOGGLE_BTN: 'dlai-ext-toggle-btn',
   NO_KEY_WARNING: 'dlai-ext-no-key-warning',
   NO_KEY_BADGE: 'dlai-ext-no-key-badge',

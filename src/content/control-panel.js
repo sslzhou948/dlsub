@@ -26,8 +26,17 @@ class ControlPanel {
       this._bodyObserver.disconnect();
       this._bodyObserver = null;
     }
-    if (this._btnEl) this._btnEl.remove();
-    if (this._panelEl) this._panelEl.remove();
+    // Remove the wrapper (which contains both the button and the panel)
+    if (this._wrapperEl) {
+      this._wrapperEl.remove();
+      this._wrapperEl = null;
+    } else {
+      // Fallback for cases where wrapper was not created
+      if (this._btnEl) this._btnEl.remove();
+      if (this._panelEl) this._panelEl.remove();
+    }
+    this._btnEl = null;
+    this._panelEl = null;
   }
 
   _waitForControls() {
@@ -43,12 +52,16 @@ class ControlPanel {
   }
 
   _inject(controlsEl) {
+    // Wrapper provides the CSS positioning context for the floating panel
+    this._wrapperEl = document.createElement('div');
+    this._wrapperEl.className = CSS_CLASSES.CONTROL_WRAPPER;
+
     // 图标按钮
     this._btnEl = document.createElement('button');
     this._btnEl.className = CSS_CLASSES.TOGGLE_BTN;
     this._btnEl.textContent = 'CC';
     this._btnEl.addEventListener('click', () => this._toggle());
-    controlsEl.appendChild(this._btnEl);
+    this._wrapperEl.appendChild(this._btnEl);
 
     // 控制面板（初始隐藏）
     this._panelEl = document.createElement('div');
@@ -81,7 +94,11 @@ class ControlPanel {
     this._panelEl.addEventListener('change', () => {
       this._onSettingsChange(this._readSettings());
     });
-    controlsEl.appendChild(this._panelEl);
+    this._wrapperEl.appendChild(this._panelEl);
+    controlsEl.appendChild(this._wrapperEl);
+
+    // Render any pending no-key warning that was requested before inject completed
+    if (this._noKeyWarningShown) this._renderNoKeyWarning();
   }
 
   _toggle() {

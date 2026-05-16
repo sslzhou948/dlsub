@@ -33,13 +33,13 @@
 
 | 字段 | 说明 | 示例 |
 |------|------|------|
-| Base URL | OpenAI 兼容接口的根地址 | `https://api.openai.com` |
+| Base URL | API 根地址，**结尾到 `/v1`**，不含 `/chat/completions` | `https://api.openai.com/v1` |
 | API Key | 你的 API 密钥 | `sk-...` |
 | 模型 | 使用的模型名称 | `gpt-4o-mini` |
 
 > API Key 仅存储在本地（`chrome.storage.sync`），不经过任何第三方服务器。
 
-支持所有兼容 OpenAI `/v1/chat/completions` 接口的服务，如 DeepSeek、Moonshot 等。
+支持所有兼容 OpenAI `/v1/chat/completions` 接口的服务，如 DeepSeek、Moonshot、自定义中转站等。
 
 ## 开发
 
