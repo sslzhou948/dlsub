@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mock Vidstack Player — DL Subtitles E2E Fixture</title>
+  <style>
+    body { margin: 0; background: #000; }
+    .vds-controls-group { display: flex; align-items: center; padding: 8px; background: rgba(0,0,0,.5); }
+    .vds-captions { position: absolute; bottom: 60px; left: 0; right: 0; text-align: center; color: #fff; }
+    [data-part="cue-display"] { display: inline-block; background: rgba(0,0,0,.7); padding: 4px 8px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <!--
+    This file mimics the Vidstack player DOM structure used on learn.deeplearning.ai.
+    The selectors match those in src/shared/constants.js:
+      CAPTIONS_ROOT: '.vds-captions[data-part="captions"]'
+      CUE_DISPLAY:   '[data-part="cue-display"]'
+      CUE:           '[data-part="cue"]'
+      CONTROLS_GROUP: '.vds-controls-group'
+  -->
+  <div aria-label="Video Player" style="position:relative;width:640px;height:360px;background:#222;">
+    <!-- Vidstack controls bar -->
+    <div class="vds-controls-group">
+      <button class="vds-caption-button">CC</button>
+    </div>
+
+    <!-- Vidstack captions root — SubtitleObserver watches this node -->
+    <div class="vds-captions" data-part="captions">
+      <!-- Subtitle cues are injected here dynamically by tests or Vidstack -->
+    </div>
+  </div>
+
+  <!--
+    Helper functions exposed on window for test scripts to call via page.evaluate():
+      window.showSubtitle(text, id)  — inject a subtitle cue
+      window.clearSubtitle()         — remove all subtitle cues
+  -->
+  <script>
+    window.showSubtitle = function(text, id) {
+      var captions = document.querySelector('.vds-captions[data-part="captions"]');
+      // Remove existing cue-display
+      var existing = captions.querySelector('[data-part="cue-display"]');
+      if (existing) existing.remove();
+
+      var cueDisplay = document.createElement('div');
+      cueDisplay.setAttribute('data-part', 'cue-display');
+
+      var cue = document.createElement('div');
+      cue.setAttribute('data-part', 'cue');
+      cue.setAttribute('data-id', String(id || '1'));
+      cue.textContent = text;
+
+      cueDisplay.appendChild(cue);
+      captions.appendChild(cueDisplay);
+    };
+
+    window.clearSubtitle = function() {
+      var captions = document.querySelector('.vds-captions[data-part="captions"]');
+      var existing = captions.querySelector('[data-part="cue-display"]');
+      if (existing) existing.remove();
+    };
+  </script>
+</body>
+</html>

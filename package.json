@@ -4,9 +4,10 @@
   "description": "Chrome extension for bilingual subtitles on learn.deeplearning.ai",
   "private": true,
   "scripts": {
-    "build": "npm run build:content && npm run build:sw",
-    "build:content": "esbuild src/content/index.js --bundle --format=iife --outfile=dist/content.js",
+    "build": "npm run build:content && npm run build:sw && npm run build:options",
+    "build:content": "esbuild src/content/main.js --bundle --format=iife --outfile=dist/content.js",
     "build:sw": "esbuild src/background/service-worker.js --bundle --format=iife --outfile=dist/service-worker.js",
+    "build:options": "esbuild src/options/options.js --bundle --format=iife --outfile=dist/options.js",
     "build:watch": "npm run build:content -- --watch & npm run build:sw -- --watch",
     "test": "jest --passWithNoTests",
     "test:coverage": "jest --coverage",

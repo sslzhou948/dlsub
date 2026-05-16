@@ -1,21 +1,23 @@
 # HANDOFF — DL Subtitles 项目交接文档
 
-> 最后更新：2026-05-16 | 当前阶段：Phase 9 ✅ 完成，Phase 10（E2E）待开始
+> 最后更新：2026-05-16 | 当前阶段：Phase 10 ✅ 完成，Phase 11（发布准备）待开始
 
 ---
 
 ## ★ 上次中断点
 
 ```
-Phase:    Code Review 进行中（Phase 5 已审，Phase 6-9 待审）
-子任务:   继续 review Phase 6（translation-overlay.js）
+Phase:    Phase 10 E2E 测试完成
+子任务:   开始 Phase 11（发布准备）
 分支:     main
-状态:     Phase 0-9 全部完成；code review 进行中，问题记录在 REVIEW.md
-注意:     REVIEW.md 中 Phase 5 有一条待处理测试补充；Phase 1/4 问题已修复
-Git:      最新 commit：chore: 新建 REVIEW.md
+状态:     Phase 0-10 全部完成；E2E 测试 12/12 通过；单元测试 66/66 通过
+注意:     REVIEW.md 中有 2 个 Phase 10 发现的待处理问题：
+            1. Options 页面 URL 校验 UX 不一致（type="url" 与 isValidUrl 冲突）
+            2. 未配置 API Key 时无用户引导（content/index.js 静默跳过）
+Git:      待 commit（Phase 10 完成）
 ```
 
-> 下次会话：阅读 REVIEW.md 了解已记录问题，继续 review Phase 6 或按用户指令处理待办问题。
+> 下次会话：开始 Phase 11（发布准备）。建议优先处理 REVIEW.md 的 2 个待处理问题。
 
 ---
 
@@ -105,7 +107,7 @@ Content Script 匹配规则：
 | 7 | `control-panel.js` | ✅ 完成 |
 | 8 | `content/index.js`（模块串联） | ✅ 完成 |
 | 9 | `options/` 页面 | ✅ 完成 |
-| 10 | E2E 测试 | ⏳ 未开始 |
+| 10 | E2E 测试 | ✅ 完成 |
 | 11 | 发布准备 | ⏳ 未开始 |
 
 ---
