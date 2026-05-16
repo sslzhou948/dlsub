@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "DL Subtitles",
+  "version": "1.0.0",
+  "description": "为 learn.deeplearning.ai 视频添加中英双语字幕翻译",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://learn.deeplearning.ai/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://learn.deeplearning.ai/courses/*/lesson/*"],
+      "js": ["src/content/index.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_ui": {
+    "page": "src/options/index.html",
+    "open_in_tab": true
+  }
+}
