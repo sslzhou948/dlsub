@@ -1,0 +1,28 @@
+{
+  "hasReact": true,
+  "isNextJS": true,
+  "nextJSBuildId": "GpI9oxJvZrtWWgEzYGljo",
+  "vidstackInfo": {
+    "hasVdsElements": true,
+    "mediaPlayerElement": false,
+    "mediaProviderElement": true,
+    "vdsLayoutClass": "vds-video-layout light"
+  },
+  "urlParts": [
+    "",
+    "courses",
+    "chatgpt-prompt-eng",
+    "lesson",
+    "dfbds",
+    "introduction"
+  ],
+  "videoSectionInfo": {
+    "class": "h-course-content grid",
+    "childTags": [
+      {
+        "tag": "DIV",
+        "class": "relative has-panel-feature video-controls-v2 h-full max-w-full"
+      }
+    ]
+  }
+}

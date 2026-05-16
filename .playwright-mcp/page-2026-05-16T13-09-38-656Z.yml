@@ -1,0 +1,53 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - dialog [ref=e4]:
+      - generic:
+        - region "Notifications alt+T" [active]
+      - generic [ref=e5]:
+        - heading "Sign in to Continue" [level=2] [ref=e6]
+        - button "Close modal" [ref=e8] [cursor=pointer]:
+          - img [ref=e9]
+        - generic [ref=e12]:
+          - img "Sign in" [ref=e14]
+          - paragraph [ref=e15]: Access your courses, track your progress, and join our community of AI learners.
+          - button "Sign In" [ref=e16] [cursor=pointer]
+      - button "Close modal" [ref=e18] [cursor=pointer]: close
+    - generic [ref=e19]:
+      - text: Go to Next Go to Next
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic "Toggle navigation menu" [ref=e22] [cursor=pointer]:
+            - img [ref=e23]
+          - link "DeepLearning.AI" [ref=e25] [cursor=pointer]:
+            - /url: /
+            - img "DeepLearning.AI" [ref=e26]
+          - link "All Courses" [ref=e27] [cursor=pointer]:
+            - /url: /
+          - button "Sign In" [ref=e29] [cursor=pointer]
+        - generic [ref=e30]:
+          - link "ChatGPT Prompt Engineering for Developers" [ref=e31] [cursor=pointer]:
+            - /url: https://www.deeplearning.ai/courses/chatgpt-prompt-eng
+          - generic [ref=e32]:
+            - button "Syllabus" [ref=e33] [cursor=pointer]:
+              - generic [ref=e34]: Syllabus
+            - generic [ref=e35]:
+              - button "Previous lesson" [disabled]:
+                - img
+              - link "Next lesson" [ref=e36] [cursor=pointer]:
+                - /url: /courses/chatgpt-prompt-eng/lesson/zi9lz/guidelines
+                - text: Go to Next
+                - img [ref=e37]
+      - text: Go to Next
+    - generic [ref=e39]:
+      - checkbox "Toggle navigation menu Toggle navigation menu Toggle navigation menu close sidebar"
+      - main [ref=e41]:
+        - generic [ref=e44]:
+          - region "Video Player" [ref=e45]:
+            - generic [ref=e48]:
+              - generic:
+                - img
+          - button "Show transcript panel" [ref=e51] [cursor=pointer]:
+            - img [ref=e52]
+            - text: Show Transcript
+    - region "Notifications alt+T"
+  - alert [ref=e54]

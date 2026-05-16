@@ -1,0 +1,613 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - link "DeepLearning.AI" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img "DeepLearning.AI" [ref=e6]
+      - list [ref=e7]:
+        - button "Sign In" [ref=e9] [cursor=pointer]
+    - main [ref=e10]:
+      - generic [ref=e12]:
+        - heading "AI courses" [level=1] [ref=e13]
+        - generic [ref=e14]: Grow your AI career with foundational specializations and skill-specific short courses taught by leaders in the field.
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - heading "Most popular" [level=2] [ref=e17]
+          - link [ref=e24] [cursor=pointer]:
+            - /url: /courses/ai-prompting-for-everyone
+            - generic [ref=e25]:
+              - figure [ref=e26]:
+                - generic [ref=e28]: Course
+                - button "Add to favorites" [ref=e30]:
+                  - img [ref=e31]
+                - img "AI Prompting for Everyone" [ref=e34]
+              - article [ref=e35]:
+                - generic [ref=e37]:
+                  - list [ref=e38]:
+                    - listitem [ref=e39]:
+                      - img "DeepLearning.AI" [ref=e41]
+                  - generic [ref=e42]: DeepLearning.AI
+                - generic [ref=e43]:
+                  - heading "AI Prompting for Everyone" [level=3] [ref=e44]
+                  - generic [ref=e45]:
+                    - generic [ref=e46]:
+                      - img [ref=e47]
+                      - generic [ref=e49]: 3h4m
+                    - generic [ref=e50]:
+                      - img [ref=e51]
+                      - generic [ref=e53]: Beginner
+                - generic [ref=e55]:
+                  - button "Learn More" [ref=e56]
+                  - button "Enroll Now" [ref=e57]
+        - generic [ref=e63]:
+          - tablist [ref=e64]:
+            - tab "Discover" [ref=e65] [cursor=pointer]:
+              - generic [ref=e66]: Discover
+            - tab "All courses" [ref=e67] [cursor=pointer]:
+              - generic [ref=e68]: All courses
+            - tab "Favorites" [ref=e69] [cursor=pointer]:
+              - generic [ref=e70]: Favorites
+            - tab "In progress" [ref=e71] [cursor=pointer]:
+              - generic [ref=e72]: In progress
+          - tabpanel [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e77]:
+                - generic [ref=e78]:
+                  - generic [ref=e79]:
+                    - img [ref=e80]
+                    - textbox [ref=e82]:
+                      - /placeholder: Search
+                  - button "Open filters" [ref=e83] [cursor=pointer]:
+                    - img [ref=e84]
+                    - generic [ref=e86]: Add filters
+                - generic:
+                  - checkbox "close sidebar close sidebar"
+              - generic [ref=e88]:
+                - generic [ref=e89]:
+                  - heading "Top Rated" [level=2] [ref=e90]
+                  - generic [ref=e91]:
+                    - generic [ref=e92]:
+                      - generic [ref=e96]:
+                        - generic [ref=e97]:
+                          - generic [ref=e98]: Course
+                          - button "Add to favorites" [ref=e99] [cursor=pointer]:
+                            - img [ref=e100]
+                        - link [ref=e102] [cursor=pointer]:
+                          - /url: /courses/ai-for-everyone
+                          - figure [ref=e103]:
+                            - img "AI for Everyone" [ref=e105]
+                        - article [ref=e106]:
+                          - link "DeepLearning.AI DeepLearning.AI AI for Everyone Learn about AI technologies and how to use them. Examine AI's societal impact, and learn to navigate this technological shift. 6h54m Beginner Details" [ref=e107] [cursor=pointer]:
+                            - /url: /courses/ai-for-everyone
+                            - generic [ref=e109]:
+                              - list [ref=e110]:
+                                - listitem [ref=e111]:
+                                  - img "DeepLearning.AI" [ref=e113]
+                              - generic [ref=e114]: DeepLearning.AI
+                            - heading "AI for Everyone" [level=3] [ref=e115]
+                            - paragraph [ref=e116]: Learn about AI technologies and how to use them. Examine AI's societal impact, and learn to navigate this technological shift.
+                            - generic [ref=e117]:
+                              - generic [ref=e118]:
+                                - generic [ref=e119]:
+                                  - img [ref=e120]
+                                  - generic [ref=e122]: 6h54m
+                                - generic [ref=e123]:
+                                  - img [ref=e124]
+                                  - generic [ref=e126]: Beginner
+                              - button "Details" [ref=e127]
+                      - generic [ref=e131]:
+                        - generic [ref=e132]:
+                          - generic [ref=e133]: Short Course
+                          - button "Add to favorites" [ref=e134] [cursor=pointer]:
+                            - img [ref=e135]
+                        - link [ref=e137] [cursor=pointer]:
+                          - /url: /courses/chatgpt-prompt-eng
+                          - figure [ref=e138]:
+                            - img "ChatGPT Prompt Engineering for Developers" [ref=e140]
+                        - article [ref=e141]:
+                          - link "OpenAI OpenAI ChatGPT Prompt Engineering for Developers Learn the fundamentals of prompt engineering for ChatGPT. Learn effective prompting, and how to use LLMs for summarizing, inferring, transforming, and expanding. 1h30m Beginner Details" [ref=e142] [cursor=pointer]:
+                            - /url: /courses/chatgpt-prompt-eng
+                            - generic [ref=e144]:
+                              - list [ref=e145]:
+                                - listitem [ref=e146]:
+                                  - img "OpenAI" [ref=e148]
+                              - generic [ref=e149]: OpenAI
+                            - heading "ChatGPT Prompt Engineering for Developers" [level=3] [ref=e150]
+                            - paragraph [ref=e151]: Learn the fundamentals of prompt engineering for ChatGPT. Learn effective prompting, and how to use LLMs for summarizing, inferring, transforming, and expanding.
+                            - generic [ref=e152]:
+                              - generic [ref=e153]:
+                                - generic [ref=e154]:
+                                  - img [ref=e155]
+                                  - generic [ref=e157]: 1h30m
+                                - generic [ref=e158]:
+                                  - img [ref=e159]
+                                  - generic [ref=e161]: Beginner
+                              - button "Details" [ref=e162]
+                      - generic [ref=e166]:
+                        - generic [ref=e167]:
+                          - generic [ref=e168]: Short Course
+                          - button "Add to favorites" [ref=e169] [cursor=pointer]:
+                            - img [ref=e170]
+                        - link [ref=e172] [cursor=pointer]:
+                          - /url: /courses/advanced-retrieval-for-ai
+                          - figure [ref=e173]:
+                            - img "Advanced Retrieval for AI with Chroma" [ref=e175]
+                        - article [ref=e176]:
+                          - link "Chroma Chroma Advanced Retrieval for AI with Chroma Learn advanced retrieval techniques to improve the relevancy of retrieved results. Learn to recognize poor query results and use LLMs to improve queries. 52m Intermediate Details" [ref=e177] [cursor=pointer]:
+                            - /url: /courses/advanced-retrieval-for-ai
+                            - generic [ref=e179]:
+                              - list [ref=e180]:
+                                - listitem [ref=e181]:
+                                  - img "Chroma" [ref=e183]
+                              - generic [ref=e184]: Chroma
+                            - heading "Advanced Retrieval for AI with Chroma" [level=3] [ref=e185]
+                            - paragraph [ref=e186]: Learn advanced retrieval techniques to improve the relevancy of retrieved results. Learn to recognize poor query results and use LLMs to improve queries.
+                            - generic [ref=e187]:
+                              - generic [ref=e188]:
+                                - generic [ref=e189]:
+                                  - img [ref=e190]
+                                  - generic [ref=e192]: 52m
+                                - generic [ref=e193]:
+                                  - img [ref=e194]
+                                  - generic [ref=e196]: Intermediate
+                              - button "Details" [ref=e197]
+                      - generic [ref=e201]:
+                        - generic [ref=e202]:
+                          - generic [ref=e203]: Professional Certificate
+                          - button "Add to favorites" [ref=e204] [cursor=pointer]:
+                            - img [ref=e205]
+                        - link [ref=e207] [cursor=pointer]:
+                          - /url: /specializations/deep-learning
+                          - figure [ref=e208]:
+                            - img "Deep Learning Specialization" [ref=e210]
+                        - article [ref=e211]:
+                          - link "DeepLearning.AI DeepLearning.AI Deep Learning Specialization Build neural networks (CNNs, RNNs, LSTMs, Transformers) and apply them to speech recognition, NLP, and more using Python and TensorFlow. 10m Intermediate Details" [ref=e212] [cursor=pointer]:
+                            - /url: /specializations/deep-learning
+                            - generic [ref=e214]:
+                              - list [ref=e215]:
+                                - listitem [ref=e216]:
+                                  - img "DeepLearning.AI" [ref=e218]
+                              - generic [ref=e219]: DeepLearning.AI
+                            - heading "Deep Learning Specialization" [level=3] [ref=e220]
+                            - paragraph [ref=e221]: Build neural networks (CNNs, RNNs, LSTMs, Transformers) and apply them to speech recognition, NLP, and more using Python and TensorFlow.
+                            - generic [ref=e222]:
+                              - generic [ref=e223]:
+                                - generic [ref=e224]:
+                                  - img [ref=e225]
+                                  - generic [ref=e227]: 10m
+                                - generic [ref=e228]:
+                                  - img [ref=e229]
+                                  - generic [ref=e231]: Intermediate
+                              - button "Details" [ref=e232]
+                      - generic [ref=e236]:
+                        - generic [ref=e237]:
+                          - generic [ref=e238]: Short Course
+                          - button "Add to favorites" [ref=e239] [cursor=pointer]:
+                            - img [ref=e240]
+                        - link [ref=e242] [cursor=pointer]:
+                          - /url: /courses/mcp-build-rich-context-ai-apps-with-anthropic
+                          - figure [ref=e243]:
+                            - 'img "MCP: Build Rich-Context AI Apps with Anthropic" [ref=e245]'
+                        - article [ref=e246]:
+                          - 'link "Anthropic Anthropic MCP: Build Rich-Context AI Apps with Anthropic Build AI apps that access tools, data, and prompts using the Model Context Protocol. 1h38m Intermediate Details" [ref=e247] [cursor=pointer]':
+                            - /url: /courses/mcp-build-rich-context-ai-apps-with-anthropic
+                            - generic [ref=e249]:
+                              - list [ref=e250]:
+                                - listitem [ref=e251]:
+                                  - img "Anthropic" [ref=e253]
+                              - generic [ref=e254]: Anthropic
+                            - 'heading "MCP: Build Rich-Context AI Apps with Anthropic" [level=3] [ref=e255]'
+                            - paragraph [ref=e256]: Build AI apps that access tools, data, and prompts using the Model Context Protocol.
+                            - generic [ref=e257]:
+                              - generic [ref=e258]:
+                                - generic [ref=e259]:
+                                  - img [ref=e260]
+                                  - generic [ref=e262]: 1h38m
+                                - generic [ref=e263]:
+                                  - img [ref=e264]
+                                  - generic [ref=e266]: Intermediate
+                              - button "Details" [ref=e267]
+                      - generic [ref=e271]:
+                        - generic [ref=e272]:
+                          - generic [ref=e273]: Short Course
+                          - button "Add to favorites" [ref=e274] [cursor=pointer]:
+                            - img [ref=e275]
+                        - link [ref=e277] [cursor=pointer]:
+                          - /url: /courses/evaluating-ai-agents
+                          - figure [ref=e278]:
+                            - img "Evaluating AI Agents" [ref=e280]
+                        - article [ref=e281]:
+                          - link "Arize AI Arize AI Evaluating AI Agents Learn how to systematically evaluate, improve, and iterate on AI agents using structured assessments. 2h16m Beginner Details" [ref=e282] [cursor=pointer]:
+                            - /url: /courses/evaluating-ai-agents
+                            - generic [ref=e284]:
+                              - list [ref=e285]:
+                                - listitem [ref=e286]:
+                                  - img "Arize AI" [ref=e288]
+                              - generic [ref=e289]: Arize AI
+                            - heading "Evaluating AI Agents" [level=3] [ref=e290]
+                            - paragraph [ref=e291]: Learn how to systematically evaluate, improve, and iterate on AI agents using structured assessments.
+                            - generic [ref=e292]:
+                              - generic [ref=e293]:
+                                - generic [ref=e294]:
+                                  - img [ref=e295]
+                                  - generic [ref=e297]: 2h16m
+                                - generic [ref=e298]:
+                                  - img [ref=e299]
+                                  - generic [ref=e301]: Beginner
+                              - button "Details" [ref=e302]
+                      - generic [ref=e306]:
+                        - generic [ref=e307]:
+                          - generic [ref=e308]: Short Course
+                          - button "Add to favorites" [ref=e309] [cursor=pointer]:
+                            - img [ref=e310]
+                        - link [ref=e312] [cursor=pointer]:
+                          - /url: /courses/orchestrating-workflows-for-genai-applications
+                          - figure [ref=e313]:
+                            - img "Orchestrating Workflows for GenAI Applications" [ref=e315]
+                        - article [ref=e316]:
+                          - link "Astronomer Astronomer Orchestrating Workflows for GenAI Applications Turn your GenAI prototype into an automated pipeline using Apache Airflow 1h28m Intermediate Details" [ref=e317] [cursor=pointer]:
+                            - /url: /courses/orchestrating-workflows-for-genai-applications
+                            - generic [ref=e319]:
+                              - list [ref=e320]:
+                                - listitem [ref=e321]:
+                                  - img "Astronomer" [ref=e323]
+                              - generic [ref=e324]: Astronomer
+                            - heading "Orchestrating Workflows for GenAI Applications" [level=3] [ref=e325]
+                            - paragraph [ref=e326]: Turn your GenAI prototype into an automated pipeline using Apache Airflow
+                            - generic [ref=e327]:
+                              - generic [ref=e328]:
+                                - generic [ref=e329]:
+                                  - img [ref=e330]
+                                  - generic [ref=e332]: 1h28m
+                                - generic [ref=e333]:
+                                  - img [ref=e334]
+                                  - generic [ref=e336]: Intermediate
+                              - button "Details" [ref=e337]
+                      - generic [ref=e341]:
+                        - generic [ref=e342]:
+                          - generic [ref=e343]: Course
+                          - button "Add to favorites" [ref=e344] [cursor=pointer]:
+                            - img [ref=e345]
+                        - link [ref=e347] [cursor=pointer]:
+                          - /url: /courses/agentic-ai
+                          - figure [ref=e348]:
+                            - img "Agentic AI" [ref=e350]
+                        - article [ref=e351]:
+                          - link "DeepLearning.AI DeepLearning.AI Agentic AI In this course taught by Andrew Ng, you'll build agentic AI systems that take action through iterative, multi-step workflows. 7h45m Intermediate Details" [ref=e352] [cursor=pointer]:
+                            - /url: /courses/agentic-ai
+                            - generic [ref=e354]:
+                              - list [ref=e355]:
+                                - listitem [ref=e356]:
+                                  - img "DeepLearning.AI" [ref=e358]
+                              - generic [ref=e359]: DeepLearning.AI
+                            - heading "Agentic AI" [level=3] [ref=e360]
+                            - paragraph [ref=e361]: In this course taught by Andrew Ng, you'll build agentic AI systems that take action through iterative, multi-step workflows.
+                            - generic [ref=e362]:
+                              - generic [ref=e363]:
+                                - generic [ref=e364]:
+                                  - img [ref=e365]
+                                  - generic [ref=e367]: 7h45m
+                                - generic [ref=e368]:
+                                  - img [ref=e369]
+                                  - generic [ref=e371]: Intermediate
+                              - button "Details" [ref=e372]
+                      - generic [ref=e376]:
+                        - generic [ref=e377]:
+                          - generic [ref=e378]: Short Course
+                          - button "Add to favorites" [ref=e379] [cursor=pointer]:
+                            - img [ref=e380]
+                        - link [ref=e382] [cursor=pointer]:
+                          - /url: /courses/claude-code-a-highly-agentic-coding-assistant
+                          - figure [ref=e383]:
+                            - 'img "Claude Code: A Highly Agentic Coding Assistant" [ref=e385]'
+                        - article [ref=e386]:
+                          - 'link "Anthropic Anthropic Claude Code: A Highly Agentic Coding Assistant Explore, build, and refine codebases with Claude Code. 1h50m Intermediate Details" [ref=e387] [cursor=pointer]':
+                            - /url: /courses/claude-code-a-highly-agentic-coding-assistant
+                            - generic [ref=e389]:
+                              - list [ref=e390]:
+                                - listitem [ref=e391]:
+                                  - img "Anthropic" [ref=e393]
+                              - generic [ref=e394]: Anthropic
+                            - 'heading "Claude Code: A Highly Agentic Coding Assistant" [level=3] [ref=e395]'
+                            - paragraph [ref=e396]: Explore, build, and refine codebases with Claude Code.
+                            - generic [ref=e397]:
+                              - generic [ref=e398]:
+                                - generic [ref=e399]:
+                                  - img [ref=e400]
+                                  - generic [ref=e402]: 1h50m
+                                - generic [ref=e403]:
+                                  - img [ref=e404]
+                                  - generic [ref=e406]: Intermediate
+                              - button "Details" [ref=e407]
+                    - button "Next slide" [ref=e408] [cursor=pointer]:
+                      - img [ref=e409]
+                - generic [ref=e411]:
+                  - heading "Just Added" [level=2] [ref=e412]
+                  - generic [ref=e413]:
+                    - generic [ref=e414]:
+                      - generic [ref=e418]:
+                        - generic [ref=e419]:
+                          - generic [ref=e420]: Course
+                          - button "Add to favorites" [ref=e421] [cursor=pointer]:
+                            - img [ref=e422]
+                        - link [ref=e424] [cursor=pointer]:
+                          - /url: /courses/transformers-in-practice
+                          - figure [ref=e425]:
+                            - img "Transformers in Practice" [ref=e427]
+                        - article [ref=e428]:
+                          - link "AMD AMD Transformers in Practice Go beyond just using LLMs to actually understanding them. In this course taught by Sharon Zhou, you'll build the intuition to reason about model behavior, debug real problems, and make smarter decisions about deploying transformer-based models. Intermediate Details" [ref=e429] [cursor=pointer]:
+                            - /url: /courses/transformers-in-practice
+                            - generic [ref=e431]:
+                              - list [ref=e432]:
+                                - listitem [ref=e433]:
+                                  - img "AMD" [ref=e435]
+                              - generic [ref=e436]: AMD
+                            - heading "Transformers in Practice" [level=3] [ref=e437]
+                            - paragraph [ref=e438]: Go beyond just using LLMs to actually understanding them. In this course taught by Sharon Zhou, you'll build the intuition to reason about model behavior, debug real problems, and make smarter decisions about deploying transformer-based models.
+                            - generic [ref=e439]:
+                              - generic [ref=e441]:
+                                - img [ref=e442]
+                                - generic [ref=e444]: Intermediate
+                              - button "Details" [ref=e445]
+                      - generic [ref=e449]:
+                        - generic [ref=e450]:
+                          - generic [ref=e451]: Short Course
+                          - button "Add to favorites" [ref=e452] [cursor=pointer]:
+                            - img [ref=e453]
+                        - link [ref=e455] [cursor=pointer]:
+                          - /url: /courses/build-interactive-agents-with-generative-ui
+                          - figure [ref=e456]:
+                            - img "Build Interactive Agents with Generative UI" [ref=e458]
+                        - article [ref=e459]:
+                          - link "CopilotKit CopilotKit Build Interactive Agents with Generative UI Build fullstack agent apps that go beyond plain text, generating custom UIs like charts, forms, and whiteboards on demand. Beginner Details" [ref=e460] [cursor=pointer]:
+                            - /url: /courses/build-interactive-agents-with-generative-ui
+                            - generic [ref=e462]:
+                              - list [ref=e463]:
+                                - listitem [ref=e464]:
+                                  - img "CopilotKit" [ref=e466]
+                              - generic [ref=e467]: CopilotKit
+                            - heading "Build Interactive Agents with Generative UI" [level=3] [ref=e468]
+                            - paragraph [ref=e469]: Build fullstack agent apps that go beyond plain text, generating custom UIs like charts, forms, and whiteboards on demand.
+                            - generic [ref=e470]:
+                              - generic [ref=e472]:
+                                - img [ref=e473]
+                                - generic [ref=e475]: Beginner
+                              - button "Details" [ref=e476]
+                      - generic [ref=e480]:
+                        - generic [ref=e481]:
+                          - generic [ref=e482]: Course
+                          - button "Add to favorites" [ref=e483] [cursor=pointer]:
+                            - img [ref=e484]
+                        - link [ref=e486] [cursor=pointer]:
+                          - /url: /courses/ai-prompting-for-everyone
+                          - figure [ref=e487]:
+                            - img "AI Prompting for Everyone" [ref=e489]
+                        - article [ref=e490]:
+                          - link "DeepLearning.AI DeepLearning.AI AI Prompting for Everyone Become an AI power user in this new course taught by Andrew Ng. From finding information to building apps, you'll develop the prompting skills that get real, useful results from today's most powerful AI models. Beginner Details" [ref=e491] [cursor=pointer]:
+                            - /url: /courses/ai-prompting-for-everyone
+                            - generic [ref=e493]:
+                              - list [ref=e494]:
+                                - listitem [ref=e495]:
+                                  - img "DeepLearning.AI" [ref=e497]
+                              - generic [ref=e498]: DeepLearning.AI
+                            - heading "AI Prompting for Everyone" [level=3] [ref=e499]
+                            - paragraph [ref=e500]: Become an AI power user in this new course taught by Andrew Ng. From finding information to building apps, you'll develop the prompting skills that get real, useful results from today's most powerful AI models.
+                            - generic [ref=e501]:
+                              - generic [ref=e503]:
+                                - img [ref=e504]
+                                - generic [ref=e506]: Beginner
+                              - button "Details" [ref=e507]
+                      - generic [ref=e511]:
+                        - generic [ref=e512]:
+                          - generic [ref=e513]: Short Course
+                          - button "Add to favorites" [ref=e514] [cursor=pointer]:
+                            - img [ref=e515]
+                        - link [ref=e517] [cursor=pointer]:
+                          - /url: /courses/building-multimodal-data-pipelines
+                          - figure [ref=e518]:
+                            - img "Building Multimodal Data Pipelines" [ref=e520]
+                        - article [ref=e521]:
+                          - link "Snowflake Snowflake Building Multimodal Data Pipelines Learn to build AI-powered pipelines that turn images, audio, and video into LLM-ready text, and power multimodal applications on top. Intermediate Details" [ref=e522] [cursor=pointer]:
+                            - /url: /courses/building-multimodal-data-pipelines
+                            - generic [ref=e524]:
+                              - list [ref=e525]:
+                                - listitem [ref=e526]:
+                                  - img "Snowflake" [ref=e528]
+                              - generic [ref=e529]: Snowflake
+                            - heading "Building Multimodal Data Pipelines" [level=3] [ref=e530]
+                            - paragraph [ref=e531]: Learn to build AI-powered pipelines that turn images, audio, and video into LLM-ready text, and power multimodal applications on top.
+                            - generic [ref=e532]:
+                              - generic [ref=e534]:
+                                - img [ref=e535]
+                                - generic [ref=e537]: Intermediate
+                              - button "Details" [ref=e538]
+                      - generic [ref=e542]:
+                        - generic [ref=e543]:
+                          - generic [ref=e544]: Short Course
+                          - button "Add to favorites" [ref=e545] [cursor=pointer]:
+                            - img [ref=e546]
+                        - link [ref=e548] [cursor=pointer]:
+                          - /url: /courses/spec-driven-development-with-coding-agents
+                          - figure [ref=e549]:
+                            - img "Spec-Driven Development with Coding Agents" [ref=e551]
+                        - article [ref=e552]:
+                          - 'link "JetBrains JetBrains Spec-Driven Development with Coding Agents Move beyond vibe coding: write clear specs that give your coding agent the context it needs to build intentional, maintainable software. Beginner Details" [ref=e553] [cursor=pointer]':
+                            - /url: /courses/spec-driven-development-with-coding-agents
+                            - generic [ref=e555]:
+                              - list [ref=e556]:
+                                - listitem [ref=e557]:
+                                  - img "JetBrains" [ref=e559]
+                              - generic [ref=e560]: JetBrains
+                            - heading "Spec-Driven Development with Coding Agents" [level=3] [ref=e561]
+                            - paragraph [ref=e562]: "Move beyond vibe coding: write clear specs that give your coding agent the context it needs to build intentional, maintainable software."
+                            - generic [ref=e563]:
+                              - generic [ref=e565]:
+                                - img [ref=e566]
+                                - generic [ref=e568]: Beginner
+                              - button "Details" [ref=e569]
+                      - generic [ref=e573]:
+                        - generic [ref=e574]:
+                          - generic [ref=e575]: Short Course
+                          - button "Add to favorites" [ref=e576] [cursor=pointer]:
+                            - img [ref=e577]
+                        - link [ref=e579] [cursor=pointer]:
+                          - /url: /courses/efficient-inference-with-sglang-text-and-image-generation
+                          - figure [ref=e580]:
+                            - 'img "Efficient Inference with SGLang: Text and Image Generation" [ref=e582]'
+                        - article [ref=e583]:
+                          - 'link "RadixArk LMSys RadixArk, LMSys Efficient Inference with SGLang: Text and Image Generation Learn how LLM inference works under the hood and implement caching optimizations, including KV cache and RadixAttention, to make text and image generation faster and cheaper. Intermediate Details" [ref=e584] [cursor=pointer]':
+                            - /url: /courses/efficient-inference-with-sglang-text-and-image-generation
+                            - generic [ref=e586]:
+                              - list [ref=e587]:
+                                - listitem [ref=e588]:
+                                  - img "RadixArk" [ref=e590]
+                                - listitem [ref=e591]:
+                                  - img "LMSys" [ref=e593]
+                              - generic [ref=e594]: RadixArk, LMSys
+                            - 'heading "Efficient Inference with SGLang: Text and Image Generation" [level=3] [ref=e595]'
+                            - paragraph [ref=e596]: Learn how LLM inference works under the hood and implement caching optimizations, including KV cache and RadixAttention, to make text and image generation faster and cheaper.
+                            - generic [ref=e597]:
+                              - generic [ref=e599]:
+                                - img [ref=e600]
+                                - generic [ref=e602]: Intermediate
+                              - button "Details" [ref=e603]
+                      - generic [ref=e607]:
+                        - generic [ref=e608]:
+                          - generic [ref=e609]: Short Course
+                          - button "Add to favorites" [ref=e610] [cursor=pointer]:
+                            - img [ref=e611]
+                        - link [ref=e613] [cursor=pointer]:
+                          - /url: /courses/agent-memory-building-memory-aware-agents
+                          - figure [ref=e614]:
+                            - 'img "Agent Memory: Building Memory-Aware Agents" [ref=e616]'
+                        - article [ref=e617]:
+                          - 'link "Oracle Oracle Agent Memory: Building Memory-Aware Agents Build a complete agent memory system that lets an LLM store, retrieve, and refine knowledge across sessions—turning a stateless agent into one that learns and improves over time. Intermediate Details" [ref=e618] [cursor=pointer]':
+                            - /url: /courses/agent-memory-building-memory-aware-agents
+                            - generic [ref=e620]:
+                              - list [ref=e621]:
+                                - listitem [ref=e622]:
+                                  - img "Oracle" [ref=e624]
+                              - generic [ref=e625]: Oracle
+                            - 'heading "Agent Memory: Building Memory-Aware Agents" [level=3] [ref=e626]'
+                            - paragraph [ref=e627]: Build a complete agent memory system that lets an LLM store, retrieve, and refine knowledge across sessions—turning a stateless agent into one that learns and improves over time.
+                            - generic [ref=e628]:
+                              - generic [ref=e630]:
+                                - img [ref=e631]
+                                - generic [ref=e633]: Intermediate
+                              - button "Details" [ref=e634]
+                      - generic [ref=e638]:
+                        - generic [ref=e639]:
+                          - generic [ref=e640]: Short Course
+                          - button "Add to favorites" [ref=e641] [cursor=pointer]:
+                            - img [ref=e642]
+                        - link [ref=e644] [cursor=pointer]:
+                          - /url: /courses/build-and-train-an-llm-with-jax
+                          - figure [ref=e645]:
+                            - img "Build and Train an LLM with JAX" [ref=e647]
+                        - article [ref=e648]:
+                          - link "Google Google Build and Train an LLM with JAX Build and train a 20M-parameter LLM from scratch using JAX, the open-source library behind Google's Gemini, and learn the core techniques powering modern AI development. Intermediate Details" [ref=e649] [cursor=pointer]:
+                            - /url: /courses/build-and-train-an-llm-with-jax
+                            - generic [ref=e651]:
+                              - list [ref=e652]:
+                                - listitem [ref=e653]:
+                                  - img "Google" [ref=e655]
+                              - generic [ref=e656]: Google
+                            - heading "Build and Train an LLM with JAX" [level=3] [ref=e657]
+                            - paragraph [ref=e658]: Build and train a 20M-parameter LLM from scratch using JAX, the open-source library behind Google's Gemini, and learn the core techniques powering modern AI development.
+                            - generic [ref=e659]:
+                              - generic [ref=e661]:
+                                - img [ref=e662]
+                                - generic [ref=e664]: Intermediate
+                              - button "Details" [ref=e665]
+                      - generic [ref=e669]:
+                        - generic [ref=e670]:
+                          - generic [ref=e671]: Short Course
+                          - button "Add to favorites" [ref=e672] [cursor=pointer]:
+                            - img [ref=e673]
+                        - link [ref=e675] [cursor=pointer]:
+                          - /url: /courses/a2a-the-agent2agent-protocol
+                          - figure [ref=e676]:
+                            - 'img "A2A: The Agent2Agent Protocol" [ref=e678]'
+                        - article [ref=e679]:
+                          - 'link "Google Cloud IBM Research Google Cloud, IBM Research A2A: The Agent2Agent Protocol Connect agents across different frameworks and teams using A2A, the open protocol standardizing agent-to-agent communication. Intermediate Details" [ref=e680] [cursor=pointer]':
+                            - /url: /courses/a2a-the-agent2agent-protocol
+                            - generic [ref=e682]:
+                              - list [ref=e683]:
+                                - listitem [ref=e684]:
+                                  - img "Google Cloud" [ref=e686]
+                                - listitem [ref=e687]:
+                                  - img "IBM Research" [ref=e689]
+                              - generic [ref=e690]: Google Cloud, IBM Research
+                            - 'heading "A2A: The Agent2Agent Protocol" [level=3] [ref=e691]'
+                            - paragraph [ref=e692]: Connect agents across different frameworks and teams using A2A, the open protocol standardizing agent-to-agent communication.
+                            - generic [ref=e693]:
+                              - generic [ref=e695]:
+                                - img [ref=e696]
+                                - generic [ref=e698]: Intermediate
+                              - button "Details" [ref=e699]
+                    - button "Next slide" [ref=e700] [cursor=pointer]:
+                      - img [ref=e701]
+                - heading "AI Agents" [level=2] [ref=e704]
+                - heading "AI Coding View all" [level=2] [ref=e706]:
+                  - generic [ref=e707]:
+                    - text: AI Coding
+                    - generic [ref=e708] [cursor=pointer]: View all
+                - heading "Get Started" [level=2] [ref=e711]
+                - heading "Chatbots View all" [level=2] [ref=e713]:
+                  - generic [ref=e714]:
+                    - text: Chatbots
+                    - generic [ref=e715] [cursor=pointer]: View all
+                - heading "Machine Learning" [level=2] [ref=e718]
+                - heading "GenAI Applications View all" [level=2] [ref=e720]:
+                  - generic [ref=e721]:
+                    - text: GenAI Applications
+                    - generic [ref=e722] [cursor=pointer]: View all
+                - heading "Deep Learning" [level=2] [ref=e725]
+                - heading "Prompt Engineering View all" [level=2] [ref=e727]:
+                  - generic [ref=e728]:
+                    - text: Prompt Engineering
+                    - generic [ref=e729] [cursor=pointer]: View all
+                - heading "Mathematics for Machine Learning" [level=2] [ref=e732]
+                - heading "RAG View all" [level=2] [ref=e734]:
+                  - generic [ref=e735]:
+                    - text: RAG
+                    - generic [ref=e736] [cursor=pointer]: View all
+                - heading "Code with AI" [level=2] [ref=e739]
+                - heading "Transformers View all" [level=2] [ref=e741]:
+                  - generic [ref=e742]:
+                    - text: Transformers
+                    - generic [ref=e743] [cursor=pointer]: View all
+                - heading "Data Analysis" [level=2] [ref=e746]
+                - heading "Search and Retrieval View all" [level=2] [ref=e748]:
+                  - generic [ref=e749]:
+                    - text: Search and Retrieval
+                    - generic [ref=e750] [cursor=pointer]: View all
+                - heading "RAG" [level=2] [ref=e753]
+                - heading "Document Processing View all" [level=2] [ref=e755]:
+                  - generic [ref=e756]:
+                    - text: Document Processing
+                    - generic [ref=e757] [cursor=pointer]: View all
+                - heading "Python Fundamentals" [level=2] [ref=e760]
+                - heading "Vector Databases View all" [level=2] [ref=e762]:
+                  - generic [ref=e763]:
+                    - text: Vector Databases
+                    - generic [ref=e764] [cursor=pointer]: View all
+                - heading "Prototype with AI" [level=2] [ref=e767]
+                - heading "MultiModal View all" [level=2] [ref=e769]:
+                  - generic [ref=e770]:
+                    - text: MultiModal
+                    - generic [ref=e771] [cursor=pointer]: View all
+                - heading "Fine-Tuning View all" [level=2] [ref=e774]:
+                  - generic [ref=e775]:
+                    - text: Fine-Tuning
+                    - generic [ref=e776] [cursor=pointer]: View all
+                - heading "Embeddings View all" [level=2] [ref=e779]:
+                  - generic [ref=e780]:
+                    - text: Embeddings
+                    - generic [ref=e781] [cursor=pointer]: View all
+                - heading "Evaluation and Monitoring View all" [level=2] [ref=e784]:
+                  - generic [ref=e785]:
+                    - text: Evaluation and Monitoring
+                    - generic [ref=e786] [cursor=pointer]: View all
+    - region "Notifications alt+T"
+  - alert [ref=e788]

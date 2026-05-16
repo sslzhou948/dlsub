@@ -1,0 +1,23 @@
+{
+  "captionsHTML": "<div class=\"vds-captions\" aria-hidden=\"false\" style=\"pointer-events: none; --overlay-width: 747px; --overlay-height: 271px;\" data-dir=\"ltr\" translate=\"yes\" aria-live=\"off\" aria-atomic=\"true\" data-part=\"captions\"><div data-part=\"cue-display\" style=\"--cue-text-align: center; --cue-writing-mode: horizontal-tb; --cue-width: 100%; --cue-top: 83.52988929889298%; --cue-left: 0%; --cue-right: 0%; --cue-bottom: 0.23394833948340021%;\"><div data-part=\"cue\" data-id=\"11\">And I'm thrilled to be here\nand share some prompting</div></div></div>",
+  "activeCues": [],
+  "playerStructure": {
+    "outerTag": "DIV",
+    "className": "lesson-video-player h-full max-w-full",
+    "children": [
+      {
+        "tag": "DIV",
+        "class": "",
+        "id": ""
+      },
+      {
+        "tag": "DIV",
+        "class": "vds-video-layout light",
+        "id": ""
+      }
+    ]
+  },
+  "captionsDivClass": "vds-captions",
+  "captionsDivStyle": "pointer-events: none; --overlay-width: 747px; --overlay-height: 271px;",
+  "captionsDivDataPart": "captions"
+}

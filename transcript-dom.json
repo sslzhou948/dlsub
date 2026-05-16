@@ -1,0 +1,25 @@
+{
+  "transcriptHTML": "<div id=\"panel-portal\" class=\"mt-1.5 panel-open\"><div class=\"card w-full h-full mt-2\"><div class=\"flex justify-between p-1.5 border-b border-base-300\"><div class=\"flex items-center\"><h3 class=\"subtitle1 px-2\">Transcript</h3><select class=\"select select-sm select-bordered\" aria-label=\"Select transcript language\"><option value=\"en-US\">English</option><option value=\"ja-JP\">Japanese</option><option value=\"ko-KR\">Korean</option></select></div><button class=\"btn btn-ghost btn-sm btn-circle\" aria-label=\"Close transcript\"><svg stroke=\"currentColor\" fill=\"currentColor\" stroke-width=\"0\" viewBox=\"0 0 24 24\" class=\"w-5 h-5\" height=\"1em\" width=\"1em\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z\"></path></svg></button></div><div class=\"flex-1 overflow-y-auto p-4 max-w-4xl mx-auto\"><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:04\">0:04</button><span class=\"rounded border border-transparent hover:bg-base-200\">Welcome to this course on ChatGPT\nPrompt Engineering for Developers.</span></div><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:08\">0:08</button><span class=\"rounded border border-transparent hover:bg-base-200\">I'm thrilled to have with\nme Isa Fulford to</span></div><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:11\">0:11</button><span class=\"rounded border border-transparent hover:bg-base-200\">teach this along with me. She\nis a member of</span></div><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:14\">0:14</button><span class=\"rounded border border-transparent hover:bg-base-200\">the technical staff of\nOpenAI and had built</span></div><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:17\">0:17</button><span class=\"rounded border border-transparent hover:bg-base-200\">the popular ChatGPT Retrieval\nplugin and a large</span></div><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:20\">0:20</button><span class=\"rounded border border-transparent hover:bg-base-200\">part of her work\nhas been teaching people</span></div><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:22\">0:22</button><span class=\"rounded border border-transparent hover:bg-base-200\">how to use LLM\nor Large Language Model</span></div><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:25\">0:25</button><span class=\"rounded border border-transparent hover:bg-base-200\">technology in products. She's also\ncontributed to the OpenAI Cookbook that</span></div><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:29\">0:29</button><span class=\"rounded border border-transparent hover:bg-base-200\">teaches people prompting.\nSo thrilled</span></div><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:30\">0:30</button><span class=\"rounded border border-transparent hover:bg-base-200\">to have you with me.</span></div><div class=\"flex p-2 gap-3 items-start\"><button class=\"link link-secondary link-hover text-xs leading-6\" type=\"button\" aria-label=\"Jump to 0:32\">0:32</button><span class=\"rounded border bo",
+  "mainChildren": [
+    {
+      "tag": "DIV",
+      "class": "flex flex-col gap-y-5 text-sm items-start",
+      "id": "",
+      "childCount": 5
+    }
+  ],
+  "transcriptItems": [
+    {
+      "tag": "DIV",
+      "class": "",
+      "dataPart": "cue",
+      "text": "do specific and often one-off tasks.\nBut, I think"
+    }
+  ],
+  "videoWrapperInfo": {
+    "tag": "DIV",
+    "class": "relative has-panel-feature video-controls-v2 h-full max-w-full",
+    "id": "",
+    "parentClass": "h-course-content grid"
+  }
+}

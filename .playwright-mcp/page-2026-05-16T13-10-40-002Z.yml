@@ -1,0 +1,402 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e19]:
+      - text: Go to Next Go to Next
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic "Toggle navigation menu" [ref=e22] [cursor=pointer]:
+            - img [ref=e23]
+          - link "DeepLearning.AI" [ref=e25] [cursor=pointer]:
+            - /url: /
+            - img "DeepLearning.AI" [ref=e26]
+          - link "All Courses" [ref=e27] [cursor=pointer]:
+            - /url: /
+          - button "Sign In" [ref=e29] [cursor=pointer]
+        - generic [ref=e30]:
+          - link "ChatGPT Prompt Engineering for Developers" [ref=e31] [cursor=pointer]:
+            - /url: https://www.deeplearning.ai/courses/chatgpt-prompt-eng
+          - generic [ref=e32]:
+            - button "Syllabus" [ref=e33] [cursor=pointer]:
+              - generic [ref=e34]: Syllabus
+            - generic [ref=e35]:
+              - button "Previous lesson" [disabled]:
+                - img
+              - link "Next lesson" [ref=e36] [cursor=pointer]:
+                - /url: /courses/chatgpt-prompt-eng/lesson/zi9lz/guidelines
+                - text: Go to Next
+                - img [ref=e37]
+      - text: Go to Next
+    - generic [ref=e39]:
+      - checkbox "Toggle navigation menu Toggle navigation menu Toggle navigation menu close sidebar"
+      - main [ref=e41]:
+        - generic [ref=e44]:
+          - region "Video Player" [ref=e45]:
+            - generic [ref=e48]:
+              - generic:
+                - img
+              - group:
+                - button "Play" [ref=e55] [cursor=pointer]:
+                  - img [ref=e56]
+              - generic [ref=e58]: 6:27
+          - generic [ref=e60]:
+            - generic [ref=e61]:
+              - generic [ref=e62]:
+                - heading "Transcript" [level=3] [ref=e63]
+                - combobox "Select transcript language" [ref=e64]:
+                  - option "English" [selected]
+                  - option "Japanese"
+                  - option "Korean"
+              - button "Close transcript" [ref=e65] [cursor=pointer]:
+                - img [ref=e66]
+            - generic [ref=e68]:
+              - generic [ref=e69]:
+                - button "Jump to 0:04" [ref=e70] [cursor=pointer]: 0:04
+                - generic [ref=e71]: Welcome to this course on ChatGPT Prompt Engineering for Developers.
+              - generic [ref=e72]:
+                - button "Jump to 0:08" [ref=e73] [cursor=pointer]: 0:08
+                - generic [ref=e74]: I'm thrilled to have with me Isa Fulford to
+              - generic [ref=e75]:
+                - button "Jump to 0:11" [ref=e76] [cursor=pointer]: 0:11
+                - generic [ref=e77]: teach this along with me. She is a member of
+              - generic [ref=e78]:
+                - button "Jump to 0:14" [ref=e79] [cursor=pointer]: 0:14
+                - generic [ref=e80]: the technical staff of OpenAI and had built
+              - generic [ref=e81]:
+                - button "Jump to 0:17" [ref=e82] [cursor=pointer]: 0:17
+                - generic [ref=e83]: the popular ChatGPT Retrieval plugin and a large
+              - generic [ref=e84]:
+                - button "Jump to 0:20" [ref=e85] [cursor=pointer]: 0:20
+                - generic [ref=e86]: part of her work has been teaching people
+              - generic [ref=e87]:
+                - button "Jump to 0:22" [ref=e88] [cursor=pointer]: 0:22
+                - generic [ref=e89]: how to use LLM or Large Language Model
+              - generic [ref=e90]:
+                - button "Jump to 0:25" [ref=e91] [cursor=pointer]: 0:25
+                - generic [ref=e92]: technology in products. She's also contributed to the OpenAI Cookbook that
+              - generic [ref=e93]:
+                - button "Jump to 0:29" [ref=e94] [cursor=pointer]: 0:29
+                - generic [ref=e95]: teaches people prompting. So thrilled
+              - generic [ref=e96]:
+                - button "Jump to 0:30" [ref=e97] [cursor=pointer]: 0:30
+                - generic [ref=e98]: to have you with me.
+              - generic [ref=e99]:
+                - button "Jump to 0:32" [ref=e100] [cursor=pointer]: 0:32
+                - generic [ref=e101]: And I'm thrilled to be here and share some prompting
+              - generic [ref=e102]:
+                - button "Jump to 0:35" [ref=e103] [cursor=pointer]: 0:35
+                - generic [ref=e104]: best practices with you all.
+              - generic [ref=e105]:
+                - button "Jump to 0:37" [ref=e106] [cursor=pointer]: 0:37
+                - generic [ref=e107]: So, there's been a lot of material on the internet
+              - generic [ref=e108]:
+                - button "Jump to 0:41" [ref=e109] [cursor=pointer]: 0:41
+                - generic [ref=e110]: for prompting with articles like 30 prompts everyone
+              - generic [ref=e111]:
+                - button "Jump to 0:44" [ref=e112] [cursor=pointer]: 0:44
+                - generic [ref=e113]: has to know. A lot of that has been focused on the
+              - generic [ref=e114]:
+                - button "Jump to 0:48" [ref=e115] [cursor=pointer]: 0:48
+                - generic [ref=e116]: chatGPT web user interface, which many people are using to
+              - generic [ref=e117]:
+                - button "Jump to 0:52" [ref=e118] [cursor=pointer]: 0:52
+                - generic [ref=e119]: do specific and often one-off tasks. But, I think
+              - generic [ref=e120]:
+                - button "Jump to 0:55" [ref=e121] [cursor=pointer]: 0:55
+                - generic [ref=e122]: the power of LLMs, large language models, as a
+              - generic [ref=e123]:
+                - button "Jump to 0:59" [ref=e124] [cursor=pointer]: 0:59
+                - generic [ref=e125]: developer tool, that is using API calls to LLMs to quickly build
+              - generic [ref=e126]:
+                - button "Jump to 1:03" [ref=e127] [cursor=pointer]: 1:03
+                - generic [ref=e128]: software applications, I think that is still very underappreciated.
+              - button "Jump to 1:07" [ref=e130] [cursor=pointer]: 1:07
+              - generic [ref=e132]:
+                - button "Jump to 1:08" [ref=e133] [cursor=pointer]: 1:08
+                - generic [ref=e134]: In fact, my team at AI Fund, which is a sister company to
+              - generic [ref=e135]:
+                - button "Jump to 1:13" [ref=e136] [cursor=pointer]: 1:13
+                - generic [ref=e137]: DeepLearning.ai, has been working with many startups on
+              - generic [ref=e138]:
+                - button "Jump to 1:15" [ref=e139] [cursor=pointer]: 1:15
+                - generic [ref=e140]: applying these technologies to many different
+              - generic [ref=e141]:
+                - button "Jump to 1:18" [ref=e142] [cursor=pointer]: 1:18
+                - generic [ref=e143]: applications, and it's been exciting to see what LLM APIs
+              - generic [ref=e144]:
+                - button "Jump to 1:21" [ref=e145] [cursor=pointer]: 1:21
+                - generic [ref=e146]: can enable developers to very quickly build. So, in this
+              - generic [ref=e147]:
+                - button "Jump to 1:25" [ref=e148] [cursor=pointer]: 1:25
+                - generic [ref=e149]: course, we'll share with you some of the
+              - generic [ref=e150]:
+                - button "Jump to 1:28" [ref=e151] [cursor=pointer]: 1:28
+                - generic [ref=e152]: possibilities for what you can do, as well as
+              - generic [ref=e153]:
+                - button "Jump to 1:31" [ref=e154] [cursor=pointer]: 1:31
+                - generic [ref=e155]: best practices for how you can do them.
+              - generic [ref=e156]:
+                - button "Jump to 1:34" [ref=e157] [cursor=pointer]: 1:34
+                - generic [ref=e158]: There's a lot of material to cover. First, you'll learn some prompting best
+              - generic [ref=e159]:
+                - button "Jump to 1:39" [ref=e160] [cursor=pointer]: 1:39
+                - generic [ref=e161]: practices for software development, then we'll cover some
+              - generic [ref=e162]:
+                - button "Jump to 1:42" [ref=e163] [cursor=pointer]: 1:42
+                - generic [ref=e164]: common use cases, summarizing, inferring, transforming, expanding, and
+              - generic [ref=e165]:
+                - button "Jump to 1:45" [ref=e166] [cursor=pointer]: 1:45
+                - generic [ref=e167]: then you'll build a chatbot
+              - generic [ref=e168]:
+                - button "Jump to 1:47" [ref=e169] [cursor=pointer]: 1:47
+                - generic [ref=e170]: using an LLM. We hope that this will spark your imagination about new
+              - generic [ref=e171]:
+                - button "Jump to 1:52" [ref=e172] [cursor=pointer]: 1:52
+                - generic [ref=e173]: applications that you can build.
+              - generic [ref=e174]:
+                - button "Jump to 1:54" [ref=e175] [cursor=pointer]: 1:54
+                - generic [ref=e176]: So in the development of large language models or LLMs,
+              - generic [ref=e177]:
+                - button "Jump to 1:57" [ref=e178] [cursor=pointer]: 1:57
+                - generic [ref=e179]: there have been broadly two types of LLMs, which I'm
+              - generic [ref=e180]:
+                - button "Jump to 2:00" [ref=e181] [cursor=pointer]: 2:00
+                - generic [ref=e182]: going to refer to as base LLMs and instruction-tuned LLMs.
+              - generic [ref=e183]:
+                - button "Jump to 2:03" [ref=e184] [cursor=pointer]: 2:03
+                - generic [ref=e185]: So, base LLM has been trained to predict
+              - generic [ref=e186]:
+                - button "Jump to 2:06" [ref=e187] [cursor=pointer]: 2:06
+                - generic [ref=e188]: the next word based on text training data, often trained
+              - generic [ref=e189]:
+                - button "Jump to 2:09" [ref=e190] [cursor=pointer]: 2:09
+                - generic [ref=e191]: on a large amount of data from the
+              - generic [ref=e192]:
+                - button "Jump to 2:12" [ref=e193] [cursor=pointer]: 2:12
+                - generic [ref=e194]: internet and other sources to figure out what's the next
+              - generic [ref=e195]:
+                - button "Jump to 2:15" [ref=e196] [cursor=pointer]: 2:15
+                - generic [ref=e197]: most likely word to follow. So, for example, if you were to prompt us once
+              - generic [ref=e198]:
+                - button "Jump to 2:20" [ref=e199] [cursor=pointer]: 2:20
+                - generic [ref=e200]: upon a time there was a unicorn, it may complete
+              - generic [ref=e201]:
+                - button "Jump to 2:23" [ref=e202] [cursor=pointer]: 2:23
+                - generic [ref=e203]: this, that is it may predict the next several words are that
+              - generic [ref=e204]:
+                - button "Jump to 2:27" [ref=e205] [cursor=pointer]: 2:27
+                - generic [ref=e206]: live in a magical forest with all unicorn
+              - generic [ref=e207]:
+                - button "Jump to 2:30" [ref=e208] [cursor=pointer]: 2:30
+                - generic [ref=e209]: friends.
+              - generic [ref=e210]:
+                - button "Jump to 2:31" [ref=e211] [cursor=pointer]: 2:31
+                - generic [ref=e212]: But if you were to prompt us with what is the capital of France,
+              - generic [ref=e213]:
+                - button "Jump to 2:36" [ref=e214] [cursor=pointer]: 2:36
+                - generic [ref=e215]: then based on what articles on the internet might have, it's
+              - generic [ref=e216]:
+                - button "Jump to 2:40" [ref=e217] [cursor=pointer]: 2:40
+                - generic [ref=e218]: quite possible that the base LLM will complete
+              - generic [ref=e219]:
+                - button "Jump to 2:43" [ref=e220] [cursor=pointer]: 2:43
+                - generic [ref=e221]: this with what is France's largest city, what is France's population and
+              - generic [ref=e222]:
+                - button "Jump to 2:47" [ref=e223] [cursor=pointer]: 2:47
+                - generic [ref=e224]: so on, because articles on the internet could
+              - generic [ref=e225]:
+                - button "Jump to 2:50" [ref=e226] [cursor=pointer]: 2:50
+                - generic [ref=e227]: quite plausibly be lists of quiz questions about the
+              - generic [ref=e228]:
+                - button "Jump to 2:53" [ref=e229] [cursor=pointer]: 2:53
+                - generic [ref=e230]: country of France.
+              - generic [ref=e231]:
+                - button "Jump to 2:55" [ref=e232] [cursor=pointer]: 2:55
+                - generic [ref=e233]: In contrast, an instruction-tuned LLM, which is where a lot of
+              - generic [ref=e234]:
+                - button "Jump to 2:59" [ref=e235] [cursor=pointer]: 2:59
+                - generic [ref=e236]: momentum of LLM research and practice has been going, an
+              - generic [ref=e237]:
+                - button "Jump to 3:03" [ref=e238] [cursor=pointer]: 3:03
+                - generic [ref=e239]: instruction-tuned LLM has been trained to follow instructions. So, if you
+              - generic [ref=e240]:
+                - button "Jump to 3:07" [ref=e241] [cursor=pointer]: 3:07
+                - generic [ref=e242]: were to ask it what is the capital of France, it's much more
+              - generic [ref=e243]:
+                - button "Jump to 3:12" [ref=e244] [cursor=pointer]: 3:12
+                - generic [ref=e245]: likely to output something like, the capital of
+              - generic [ref=e246]:
+                - button "Jump to 3:15" [ref=e247] [cursor=pointer]: 3:15
+                - generic [ref=e248]: France is Paris. So the way that instruction-tuned LLMs are typically
+              - generic [ref=e249]:
+                - button "Jump to 3:19" [ref=e250] [cursor=pointer]: 3:19
+                - generic [ref=e251]: trained is you start off with a base
+              - generic [ref=e252]:
+                - button "Jump to 3:22" [ref=e253] [cursor=pointer]: 3:22
+                - generic [ref=e254]: LLM that's been trained on a huge amount of text data and further train
+              - generic [ref=e255]:
+                - button "Jump to 3:27" [ref=e256] [cursor=pointer]: 3:27
+                - generic [ref=e257]: it, further fine-tune it with inputs and outputs that are instructions
+              - generic [ref=e258]:
+                - button "Jump to 3:31" [ref=e259] [cursor=pointer]: 3:31
+                - generic [ref=e260]: and good attempts to follow those
+              - generic [ref=e261]:
+                - button "Jump to 3:34" [ref=e262] [cursor=pointer]: 3:34
+                - generic [ref=e263]: instructions, and then often further refine using a technique called
+              - generic [ref=e264]:
+                - button "Jump to 3:37" [ref=e265] [cursor=pointer]: 3:37
+                - generic [ref=e266]: RLHF, reinforcement learning from human feedback, to
+              - generic [ref=e267]:
+                - button "Jump to 3:40" [ref=e268] [cursor=pointer]: 3:40
+                - generic [ref=e269]: make the system better able to be helpful and
+              - generic [ref=e270]:
+                - button "Jump to 3:43" [ref=e271] [cursor=pointer]: 3:43
+                - generic [ref=e272]: follow instructions. Because instruction-tuned LLMs have been trained
+              - generic [ref=e273]:
+                - button "Jump to 3:46" [ref=e274] [cursor=pointer]: 3:46
+                - generic [ref=e275]: to be helpful, honest, and harmless,
+              - generic [ref=e276]:
+                - button "Jump to 3:48" [ref=e277] [cursor=pointer]: 3:48
+                - generic [ref=e278]: so for example, they are less likely to output problematic
+              - generic [ref=e279]:
+                - button "Jump to 3:52" [ref=e280] [cursor=pointer]: 3:52
+                - generic [ref=e281]: text such as toxic outputs compared to base
+              - generic [ref=e282]:
+                - button "Jump to 3:55" [ref=e283] [cursor=pointer]: 3:55
+                - generic [ref=e284]: LLM, a lot of the practical usage scenarios have been shifting toward
+              - generic [ref=e285]:
+                - button "Jump to 4:00" [ref=e286] [cursor=pointer]: 4:00
+                - generic [ref=e287]: instruction-tuned LLMs. Some of the best practices you
+              - generic [ref=e288]:
+                - button "Jump to 4:03" [ref=e289] [cursor=pointer]: 4:03
+                - generic [ref=e290]: find on the internet may be more suited for a
+              - generic [ref=e291]:
+                - button "Jump to 4:06" [ref=e292] [cursor=pointer]: 4:06
+                - generic [ref=e293]: base LLM, but for most practical applications today, we would
+              - generic [ref=e294]:
+                - button "Jump to 4:10" [ref=e295] [cursor=pointer]: 4:10
+                - generic [ref=e296]: recommend most people instead focus on
+              - generic [ref=e297]:
+                - button "Jump to 4:12" [ref=e298] [cursor=pointer]: 4:12
+                - generic [ref=e299]: instruction-tuned LLMs which are easier to
+              - generic [ref=e300]:
+                - button "Jump to 4:15" [ref=e301] [cursor=pointer]: 4:15
+                - generic [ref=e302]: use and also, because of the work
+              - generic [ref=e303]:
+                - button "Jump to 4:17" [ref=e304] [cursor=pointer]: 4:17
+                - generic [ref=e305]: of OpenAI and other LLM companies becoming safer and more aligned.
+              - button "Jump to 4:21" [ref=e307] [cursor=pointer]: 4:21
+              - button "Jump to 4:21" [ref=e310] [cursor=pointer]: 4:21
+              - generic [ref=e312]:
+                - button "Jump to 4:22" [ref=e313] [cursor=pointer]: 4:22
+                - generic [ref=e314]: So, this course will focus on best practices for instruction-tuned
+              - generic [ref=e315]:
+                - button "Jump to 4:26" [ref=e316] [cursor=pointer]: 4:26
+                - generic [ref=e317]: LLMs, which is what we recommend you use for most
+              - generic [ref=e318]:
+                - button "Jump to 4:29" [ref=e319] [cursor=pointer]: 4:29
+                - generic [ref=e320]: of your applications. Before moving on, I just want to
+              - generic [ref=e321]:
+                - button "Jump to 4:33" [ref=e322] [cursor=pointer]: 4:33
+                - generic [ref=e323]: acknowledge the team from OpenAI and DeepLearning.ai that
+              - generic [ref=e324]:
+                - button "Jump to 4:36" [ref=e325] [cursor=pointer]: 4:36
+                - generic [ref=e326]: had contributed to the materials that Isa and
+              - generic [ref=e327]:
+                - button "Jump to 4:38" [ref=e328] [cursor=pointer]: 4:38
+                - generic [ref=e329]: I will be presenting. I'm very grateful to Andrew Mayne, Joe Palermo, Boris
+              - generic [ref=e330]:
+                - button "Jump to 4:43" [ref=e331] [cursor=pointer]: 4:43
+                - generic [ref=e332]: Power, Ted Sanders, and Lillian Weng from OpenAI that
+              - generic [ref=e333]:
+                - button "Jump to 4:46" [ref=e334] [cursor=pointer]: 4:46
+                - generic [ref=e335]: were very involved with us brainstorming materials, vetting the materials
+              - generic [ref=e336]:
+                - button "Jump to 4:50" [ref=e337] [cursor=pointer]: 4:50
+                - generic [ref=e338]: to put together the curriculum for this short
+              - generic [ref=e339]:
+                - button "Jump to 4:52" [ref=e340] [cursor=pointer]: 4:52
+                - generic [ref=e341]: course, and I'm also grateful on the DeepLearning side for
+              - generic [ref=e342]:
+                - button "Jump to 4:56" [ref=e343] [cursor=pointer]: 4:56
+                - generic [ref=e344]: the work of Geoff Lodwig, Eddy Shyu and Tommy
+              - generic [ref=e345]:
+                - button "Jump to 4:59" [ref=e346] [cursor=pointer]: 4:59
+                - generic [ref=e347]: Nelson. So, when you use an instruction-tuned LLM, think of giving
+              - generic [ref=e348]:
+                - button "Jump to 5:03" [ref=e349] [cursor=pointer]: 5:03
+                - generic [ref=e350]: instructions to another person, say someone that's smart but
+              - generic [ref=e351]:
+                - button "Jump to 5:06" [ref=e352] [cursor=pointer]: 5:06
+                - generic [ref=e353]: doesn't know the specifics of your task. So, when an LLM doesn't work, sometimes
+              - generic [ref=e354]:
+                - button "Jump to 5:11" [ref=e355] [cursor=pointer]: 5:11
+                - generic [ref=e356]: it's because the instructions weren't clear enough. For example,
+              - generic [ref=e357]:
+                - button "Jump to 5:14" [ref=e358] [cursor=pointer]: 5:14
+                - generic [ref=e359]: if you were to say, please write me something about
+              - generic [ref=e360]:
+                - button "Jump to 5:18" [ref=e361] [cursor=pointer]: 5:18
+                - generic [ref=e362]: Alan Turing. Well, in addition to that, it can be helpful to be
+              - generic [ref=e363]:
+                - button "Jump to 5:22" [ref=e364] [cursor=pointer]: 5:22
+                - generic [ref=e365]: clear about whether you want the text to focus on his scientific
+              - generic [ref=e366]:
+                - button "Jump to 5:26" [ref=e367] [cursor=pointer]: 5:26
+                - generic [ref=e368]: work or his personal life or his role
+              - generic [ref=e369]:
+                - button "Jump to 5:29" [ref=e370] [cursor=pointer]: 5:29
+                - generic [ref=e371]: in history or something else. And if you
+              - generic [ref=e372]:
+                - button "Jump to 5:32" [ref=e373] [cursor=pointer]: 5:32
+                - generic [ref=e374]: specify what you want the tone of
+              - generic [ref=e375]:
+                - button "Jump to 5:34" [ref=e376] [cursor=pointer]: 5:34
+                - generic [ref=e377]: the text to be, should it take on the tone like a
+              - generic [ref=e378]:
+                - button "Jump to 5:39" [ref=e379] [cursor=pointer]: 5:39
+                - generic [ref=e380]: professional journalist would write. Or is it more of a
+              - generic [ref=e381]:
+                - button "Jump to 5:42" [ref=e382] [cursor=pointer]: 5:42
+                - generic [ref=e383]: casual note that you dash off to a friend?
+              - generic [ref=e384]:
+                - button "Jump to 5:45" [ref=e385] [cursor=pointer]: 5:45
+                - generic [ref=e386]: That helps the LLM generate what you want. And of
+              - generic [ref=e387]:
+                - button "Jump to 5:49" [ref=e388] [cursor=pointer]: 5:49
+                - generic [ref=e389]: course, if you picture yourself asking, say, a
+              - generic [ref=e390]:
+                - button "Jump to 5:52" [ref=e391] [cursor=pointer]: 5:52
+                - generic [ref=e392]: fresh college graduate to carry out this task for
+              - generic [ref=e393]:
+                - button "Jump to 5:55" [ref=e394] [cursor=pointer]: 5:55
+                - generic [ref=e395]: you, if you can even specify what snippets of text, they
+              - generic [ref=e396]:
+                - button "Jump to 5:59" [ref=e397] [cursor=pointer]: 5:59
+                - generic [ref=e398]: should read in advance to write this text about
+              - generic [ref=e399]:
+                - button "Jump to 6:02" [ref=e400] [cursor=pointer]: 6:02
+                - generic [ref=e401]: Alan Turing, then that even better sets up
+              - generic [ref=e402]:
+                - button "Jump to 6:05" [ref=e403] [cursor=pointer]: 6:05
+                - generic [ref=e404]: that fresh college grad for success to carry
+              - generic [ref=e405]:
+                - button "Jump to 6:07" [ref=e406] [cursor=pointer]: 6:07
+                - generic [ref=e407]: out this task for you. So, in the
+              - generic [ref=e408]:
+                - button "Jump to 6:10" [ref=e409] [cursor=pointer]: 6:10
+                - generic [ref=e410]: next video, you see examples of how to be clear and specific,
+              - generic [ref=e411]:
+                - button "Jump to 6:14" [ref=e412] [cursor=pointer]: 6:14
+                - generic [ref=e413]: which is an important principle of prompting LLMs. And you
+              - generic [ref=e414]:
+                - button "Jump to 6:18" [ref=e415] [cursor=pointer]: 6:18
+                - generic [ref=e416]: also learn from Isa a second principle of
+              - generic [ref=e417]:
+                - button "Jump to 6:21" [ref=e418] [cursor=pointer]: 6:21
+                - generic [ref=e419]: prompting that is giving the LLM time to
+              - generic [ref=e420]:
+                - button "Jump to 6:23" [ref=e421] [cursor=pointer]: 6:23
+                - generic [ref=e422]: think. So with that, let's go on to the next video.
+              - button "Jump to 6:27" [ref=e424] [cursor=pointer]: 6:27
+    - region "Notifications alt+T"
+  - alert [ref=e54]

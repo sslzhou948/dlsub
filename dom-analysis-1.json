@@ -1,0 +1,95 @@
+{
+  "videoInfo": {
+    "tagName": "VIDEO",
+    "id": "",
+    "className": "",
+    "src": "blob:https://learn.deeplearning.ai/5e3850d1-638e-41e3-825f-605f8ca8a2a3",
+    "textTracks": [
+      {
+        "kind": "subtitles",
+        "label": "English",
+        "language": "en-US",
+        "mode": "disabled",
+        "cues": 0
+      },
+      {
+        "kind": "subtitles",
+        "label": "Japanese",
+        "language": "ja-JP",
+        "mode": "disabled",
+        "cues": 0
+      },
+      {
+        "kind": "subtitles",
+        "label": "Korean",
+        "language": "ko-KR",
+        "mode": "disabled",
+        "cues": 0
+      }
+    ]
+  },
+  "playerHTML": "<div data-media-provider=\"\"><video aria-hidden=\"true\" preload=\"\" src=\"blob:https://learn.deeplearning.ai/5e3850d1-638e-41e3-825f-605f8ca8a2a3\" playsinline=\"\"><source src=\"https://dyckms5inbsqq.cloudfront.net/OpenAI/ChatGPT_Prompt_Engineering_for_Developer/prompt_eng_01/prompt_eng_01_master.m3u8?v=1776241534\" type=\"application/x-mpegurl\" data-vds=\"\"><track id=\"hls-subtitles-0\" src=\"https://dyckms5inbsqq.cloudfront.net/OpenAI/ChatGPT_Prompt_Engineering_for_Developer/prompt_eng_01/subtitle/en/1776241534/prompt_eng_01_en_vtt.m3u8\" label=\"English\" kind=\"subtitles\" srclang=\"en-US\"><track id=\"hls-subtitles-1\" src=\"https://dyckms5inbsqq.cloudfront.net/OpenAI/ChatGPT_Prompt_Engineering_for_Developer/prompt_eng_01/subtitle/jp/prompt_eng_01_jp_vtt.m3u8\" label=\"Japanese\" kind=\"subtitles\" srclang=\"ja-JP\"><track id=\"hls-subtitles-2\" src=\"https://dyckms5inbsqq.cloudfront.net/OpenAI/ChatGPT_Prompt_Engineering_for_Developer/prompt_eng_01/subtitle/kr/prompt_eng_01_kr_vtt.m3u8\" label=\"Korean\" kind=\"subtitles\" srclang=\"ko-KR\"></video></div><div class=\"vds-video-layout light\" data-match=\"\" data-sm=\"\" data-size=\"sm\"><div style=\"display: contents;\" data-media-announcer=\"\" role=\"status\" aria-live=\"polite\" aria-label=\"Closed-Captions On\"></div><div class=\"vds-gestures\"><div class=\"vds-gesture\" data-media-gesture=\"\" event=\"pointerup\" action=\"toggle:paused\" style=\"pointer-events: none;\"></div><div class=\"vds-gesture\" data-media-gesture=\"\" event=\"pointerup\" action=\"toggle:controls\" style=\"pointer-events: none;\"></div><div class=\"vds-gesture\" data-media-gesture=\"\" event=\"dblpointerup\" action=\"toggle:fullscreen\" style=\"pointer-events: none;\"></div><div class=\"vds-gesture\" data-media-gesture=\"\" event=\"dblpointerup\" action=\"seek:-10\" style=\"pointer-events: none;\"></div><div class=\"vds-gesture\" data-media-gesture=\"\" event=\"dblpointerup\" action=\"seek:10\" style=\"pointer-events: none;\"></div></div><div class=\"vds-buffering-indicator\"><svg width=\"96\" height=\"96\" fill=\"none\" viewBox=\"0 0 120 120\" aria-hidden=\"true\" data-part=\"root\" class=\"vds-buffering-spinner\"><circle cx=\"60\" cy=\"60\" r=\"54\" stroke=\"currentColor\" stroke-width=\"8\" data-part=\"track\" class=\"vds-buffering-track\"></circle><circle cx=\"60\" cy=\"60\" r=\"54\" stroke=\"currentColor\" pathLength=\"100\" stroke-width=\"8\" stroke-dasharray=\"100\" stroke-dashoffset=\"50\" data-part=\"track-fill\" class=\"vds-buffering-track-fill\"></circle></svg></div><div class=\"vds-captions\" aria-hidden=\"false\" style=\"pointer-events: none; --overlay-width: 747px; --overlay-height: 223px;\" data-dir=\"ltr\" translate=\"yes\" aria-live=\"off\" aria-atomic=\"true\" data-part=\"captions\"></div><div class=\"vds-controls\" role=\"group\" data-visible=\"\" style=\"pointer-events: none;\"><div class=\"vds-controls-group\" style=\"pointer-events: auto;\"><div class=\"vds-controls-spacer\"></div><div class=\"vds-controls-spacer\"></div><button class=\"vds-caption-button vds-button\" aria-label=\"Captions\" data-media-tooltip=\"caption\" tabindex=\"0\" role=\"button\" type=\"button\" aria-keyshortcuts=\"c\" da",
+  "transcriptInfo": {
+    "tagName": "SELECT",
+    "id": "",
+    "className": "select select-sm select-bordered",
+    "innerHTML": "<option value=\"en-US\">English</option><option value=\"ja-JP\">Japanese</option><option value=\"ko-KR\">Korean</option>"
+  },
+  "captionEls": [
+    {
+      "tag": "LEGEND",
+      "id": "",
+      "class": "fieldset-legend mb-0 pb-0 subtitle3 gap-0.5"
+    },
+    {
+      "tag": "H3",
+      "id": "",
+      "class": "subtitle1"
+    },
+    {
+      "tag": "H3",
+      "id": "",
+      "class": "subtitle1"
+    },
+    {
+      "tag": "H3",
+      "id": "",
+      "class": "subtitle1"
+    },
+    {
+      "tag": "H3",
+      "id": "",
+      "class": "subtitle1"
+    },
+    {
+      "tag": "TRACK",
+      "id": "hls-subtitles-0",
+      "class": ""
+    },
+    {
+      "tag": "TRACK",
+      "id": "hls-subtitles-1",
+      "class": ""
+    },
+    {
+      "tag": "TRACK",
+      "id": "hls-subtitles-2",
+      "class": ""
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "class": "vds-captions"
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "class": "vds-caption-button vds-button"
+    },
+    {
+      "tag": "H3",
+      "id": "",
+      "class": "subtitle1 px-2"
+    }
+  ]
+}
