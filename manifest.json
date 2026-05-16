@@ -16,12 +16,12 @@
     "https://learn.deeplearning.ai/*"
   ],
   "background": {
-    "service_worker": "src/background/service-worker.js"
+    "service_worker": "dist/service-worker.js"
   },
   "content_scripts": [
     {
       "matches": ["https://learn.deeplearning.ai/courses/*/lesson/*"],
-      "js": ["src/content/index.js"],
+      "js": ["dist/content.js"],
       "run_at": "document_idle"
     }
   ],

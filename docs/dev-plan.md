@@ -10,7 +10,8 @@
 
 ## 模块规范（已确认决策）
 
-- **模块格式**：全部使用 CommonJS（`'use strict'` + `module.exports` / `require()`），无 bundler，Content Script 直接加载
+- **模块格式**：源文件使用 CommonJS（`'use strict'` + `module.exports` / `require()`）；Chrome 加载的是 esbuild 打包后的 `dist/` 文件，Jest 测试直接 `require()` 源文件，无需构建
+- **构建命令**：`npm run build`（每次修改源文件后执行，然后在 Chrome 扩展页面点刷新）
 - **Chrome API Mock**：所有需要 `chrome.*` 的单元测试，统一 `require('../helpers/chrome-mock')`，不允许在各测试文件内自行重复 mock
 - **版本控制**：本地 git 管理，无远程仓库，不执行 `git push`
 
@@ -22,18 +23,20 @@
 
 **任务清单：**
 
-- [ ] 0.1 初始化 npm 项目，配置 `package.json`
-- [ ] 0.2 配置 Jest（unit test，含 jsdom 环境）
-- [ ] 0.3 配置 Playwright（e2e test）
-- [ ] 0.4 创建 `manifest.json`（MV3，最小权限）
-- [ ] 0.5 创建占位图标（16/48/128px）
-- [ ] 0.6 创建 `src/shared/constants.js`（DOM 选择器、消息类型等常量）
-- [ ] 0.7 配置 ESLint + Prettier
+- [x] 0.1 初始化 npm 项目，配置 `package.json`
+- [x] 0.2 配置 Jest（unit test，含 jsdom 环境）
+- [x] 0.3 配置 Playwright（e2e test）
+- [x] 0.4 创建 `manifest.json`（MV3，最小权限）
+- [x] 0.5 创建占位图标（16/48/128px）
+- [x] 0.6 创建 `src/shared/constants.js`（DOM 选择器、消息类型等常量）
+- [x] 0.7 配置 ESLint（`.eslintrc.js`）+ Prettier（`.prettierrc`）
 - [x] 0.8 创建 `tests/unit/helpers/chrome-mock.js`（统一 chrome API mock，供 Phase 1+ 复用）
+- [x] 0.9 配置 esbuild 构建流程（`npm run build` → `dist/content.js` + `dist/service-worker.js`）
 
 **验收标准：**
-- `npm test` 可运行（即使无测试用例也不报错）
-- 插件可在 Chrome 中以开发者模式加载，不报错
+- `npm test` 可运行（即使无测试用例也不报错）✅
+- `npm run build` 成功生成 `dist/content.js` 和 `dist/service-worker.js` ✅
+- 插件可在 Chrome 中以开发者模式加载，不报错（需先 `npm run build`）
 
 ---
 

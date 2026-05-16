@@ -9,12 +9,12 @@
 ```
 Phase:    Phase 1（下一阶段）
 子任务:   1.1 写测试 tests/unit/storage.test.js（第一个子任务）
-分支:     phase/1-storage（尚未创建，Phase 0 PR 合并后创建）
-状态:     Phase 0 完成，等待 PR 合并
-Git:      Phase 0 feat commit 已提交
+分支:     phase/0-init（当前），合并到 main 后创建 phase/1-storage
+状态:     Phase 0 全部完成，等待合并到 main
+Git:      最新 commit 含 esbuild + prettier 配置
 ```
 
-> 下次会话：Phase 0 PR 合并后，git checkout main && git pull，创建 phase/1-storage 分支，从 storage.test.js 开始 TDD。
+> 下次会话：git merge phase/0-init（或直接在 main 上），git checkout -b phase/1-storage，从 storage.test.js 开始 TDD。
 
 ---
 
