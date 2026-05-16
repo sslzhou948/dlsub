@@ -7,19 +7,23 @@
 ## ★ 上次中断点
 
 ```
-Phase:    所有已知 bug 已修复（REVIEW.md 全部 ✅），可开始 Phase 11
-子任务:   Phase 11（发布准备）— README、隐私政策、打包、Web Store
+Phase:    Phase 11 前置 bug 修复中
+子任务:   修复 REVIEW.md 中三个阻塞"直接可用"的问题，完成后再开始 Phase 11
 分支:     main
 状态:     单元测试 72/72，E2E 15/15，API 翻译管道端到端验证通过
+          但以下三个问题阻塞真实可用，需优先修复（见 REVIEW.md）：
+            1. SPA 导航盲区（最严重）：从首页点进课时，扩展不工作
+            2. CC 未开启时无提示：用户不知道要先点 CC 按钮
+            3. dist/ 未提交 + README 缺 build 步骤
 注意:     用户 API 端点经过实测：
             Base URL:  https://api.ads8260.win:8260/v1
             API Key:   sk-QKQZjPa... (用户自备，勿提交到代码)
             可用模型:  deepseek-chat（测试通过，翻译质量良好）
             不可用:    gpt-4o-mini（token 无权限）
-Git:      最新 commit: fix: 补充 CSS 注入、host_permissions 和 Base URL 文档
+Git:      最新 commit: chore: 更新 HANDOFF.md — Phase 11 就绪，API 验证通过
 ```
 
-> 下次会话：开始 Phase 11（发布准备）。
+> 下次会话：依次修复 REVIEW.md 三个阻塞问题，再开始 Phase 11。
 
 ---
 

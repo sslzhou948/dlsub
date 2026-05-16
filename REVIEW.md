@@ -90,3 +90,52 @@
     3. `src/content/index.js` 在 `_startModules()` 创建面板后立即调用 `getApiConfig`，若 `apiKey` 为空则调用 `panel.showNoKeyWarning(() => chrome.runtime.openOptionsPage())`。
   - 补充单元测试：`control-panel.test.js` 新增 4 个 `showNoKeyWarning` 场景；`content-index.test.js` 新增 2 个 API Key 未配置场景。
   - 补充 E2E 测试：新增 3 个场景（警告文字、`!` 徽标、叠加层保持空白）。
+
+---
+
+## Phase 11 前置 — 阻塞"直接可用"的问题（需优先修复）
+
+> 通过 curl 验证 API 管道、审查代码与研究报告后发现。这三个问题不影响测试，但影响真实用户场景下的功能完整性。
+
+---
+
+### 问题 A：SPA 导航盲区（严重）
+
+**现象**：用户从 `learn.deeplearning.ai` 首页或课程列表页点击进入课时，扩展完全不工作；刷新页面后恢复正常。
+
+**根因**：Chrome 的 content script 只在完整页面加载时注入（匹配 `matches` 规则）。deeplearning.ai 是 Next.js SPA，站内导航全部走 `pushState`，不触发页面重新加载，因此 content script 不会被重新注入。`_watchRoute()` 的 URL 轮询只能处理"content script 已注入后"的课时内切换，无法覆盖"从站外/首页首次进入课时"的场景。
+
+**影响路径**：
+```
+用户首次打开 → 首页/课程列表 → 点击课时（pushState）→ 扩展无响应
+用户直接输入/书签 → 课时 URL → 完整页面加载 → 扩展正常
+```
+
+**修复方案**：
+- `manifest.json`：新增 `"tabs"` permission。
+- `src/background/service-worker.js`：监听 `chrome.tabs.onUpdated`，当 URL 变为课时模式（`/courses/*/lesson/*`）时，调用 `chrome.scripting.executeScript` 主动注入 `dist/content.js`（及 CSS）。注入前检查是否已注入（避免重复），可通过注入一段探测脚本或维护已注入 tab 的 Set 来判断。
+
+---
+
+### 问题 B：CC 未开启时无提示（体验缺失）
+
+**现象**：用户进入课时后等待译文，什么也看不到，不知道原因。
+
+**根因**：deeplearning.ai 播放器默认不开启字幕（CC 按钮未激活），`.vds-captions` 节点存在但内部为空，MutationObserver 一直等待而不触发。用户必须手动点击播放器 CC 按钮开启英文字幕，扩展才能检测到字幕并翻译。当前实现对此完全无提示。
+
+**修复方案**：
+- 在 `SubtitleObserver` 或 `content/index.js` 中，检测 CC 按钮状态（`.vds-caption-button[aria-pressed="false"]` 或 `.vds-captions[aria-hidden="true"]`）。
+- 若 CC 处于关闭状态，在 `TranslationOverlay` 或控制面板中显示一次性提示：「请先点击播放器 CC 按钮开启英文字幕」。
+- 监听 CC 按钮点击事件，CC 开启后自动隐藏提示。
+
+---
+
+### 问题 C：`dist/` 未提交 + README 缺 build 步骤（分发问题）
+
+**现象**：从 GitHub clone 后直接加载扩展，Chrome 报错"找不到 dist/content.js"，扩展无法启用。
+
+**根因**：`.gitignore` 排除了 `dist/`，但 README 的安装步骤只有 `npm install`，没有 `npm run build`。本地已有 `dist/`（build 过），zip 打包时会包含，但 clone 后的用户没有。
+
+**修复方案**（二选一）：
+- **方案 1（推荐，适合非开发者用户）**：将 `dist/` 从 `.gitignore` 移除，提交构建产物。用户 clone 后可直接加载，无需安装 Node.js 环境。
+- **方案 2（适合开发者项目）**：README 安装步骤中加入 `npm run build`，并考虑在 `package.json` 的 `prepare` 钩子中自动执行 build。
