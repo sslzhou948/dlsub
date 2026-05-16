@@ -19,11 +19,42 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **每次新会话，必须按此顺序操作：**
 
-1. 阅读 `HANDOFF.md`，确认当前 Phase 和状态
-2. 找到第一个 `⏳ 未开始` 的 Phase，打开 `docs/dev-plan.md` 查看该 Phase 的任务清单
-3. 检出对应的开发分支（命名规范见下节）
-4. 严格遵循 TDD 顺序：先写测试 → 测试失败确认 → 写实现 → 测试通过 → 提交
-5. Phase 完成后更新 `HANDOFF.md` 状态，发起 PR
+1. 阅读 `HANDOFF.md` → 定位「上次中断点」字段，找到具体断在哪个 Phase / 哪个子任务
+2. 如果中断点在 Phase 中途：`git checkout phase/N-name`，继续未完成的子任务
+3. 如果中断点是 Phase 完成待 PR：发起 PR，再开下一个 Phase
+4. 如果是全新 Phase：`git checkout main && git checkout -b phase/N-name`，打开 `docs/dev-plan.md` 查看任务清单
+5. 严格遵循 TDD 顺序：先写测试 → 红灯确认 → 写实现 → 绿灯确认 → 提交
+
+---
+
+## Phase 结束协议
+
+**每完成一个 Phase，必须按此清单操作，不得跳过任何步骤：**
+
+```
+[ ] 1. npm test 全部绿灯（无跳过、无 skip）
+[ ] 2. 更新 HANDOFF.md：
+        - 将该 Phase 状态改为 ✅ 完成
+        - 将「上次中断点」更新为下一个 Phase 的第一个子任务
+        - 更新「最后更新」日期
+[ ] 3. git add + git commit（包含 HANDOFF.md）
+        commit message 格式：feat: Phase N 完成 — <模块名>（附测试）
+[ ] 4. git push -u origin phase/N-name
+[ ] 5. 发起 PR（gh pr create），PR 描述包含：
+        - 实现了什么
+        - 测试覆盖哪些场景
+        - 验收标准是否满足
+[ ] 6. 告知用户：Phase N 完成，PR 已发起，等待合并后继续 Phase N+1
+```
+
+**会话中途中断时（用户结束会话 / 上下文截断前）：**
+
+```
+[ ] 1. 更新 HANDOFF.md「上次中断点」为当前精确位置
+        格式：Phase N / 任务 N.X / 状态（如：已写测试，待写实现）
+[ ] 2. git add + git commit 当前进度（哪怕测试还是红灯）
+        commit message：wip: Phase N.X <描述>（tests failing）
+```
 
 ---
 

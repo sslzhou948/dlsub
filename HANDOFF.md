@@ -4,6 +4,20 @@
 
 ---
 
+## ★ 上次中断点
+
+```
+Phase:    Phase 0（尚未开始）
+子任务:   0.1 初始化 npm 项目（第一个子任务）
+分支:     main（phase/0-init 尚未创建）
+状态:     待开始
+Git:      无 WIP commit
+```
+
+> 下次会话：创建 phase/0-init 分支，执行 docs/dev-plan.md Phase 0 任务清单，从 0.1 开始。
+
+---
+
 ## 项目一句话描述
 
 为 deeplearning.ai 视频添加中英双语字幕翻译的 Chrome 插件（MV3，BYOK 模式，开源上架）。
