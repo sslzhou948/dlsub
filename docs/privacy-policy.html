@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — DL Subtitles</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 720px;
+      margin: 60px auto;
+      padding: 0 24px;
+      color: #222;
+      line-height: 1.7;
+    }
+    h1 { font-size: 1.8rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 12px; }
+    h2 { font-size: 1.2rem; margin-top: 36px; color: #333; }
+    p, li { font-size: 0.97rem; }
+    ul { padding-left: 1.4em; }
+    .meta { color: #888; font-size: 0.88rem; margin-bottom: 32px; }
+    a { color: #0070f3; }
+    .highlight {
+      background: #f0f8ff;
+      border-left: 4px solid #0070f3;
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin: 24px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Privacy Policy</h1>
+  <p class="meta">Last updated: May 16, 2026 &nbsp;|&nbsp; Applies to: DL Subtitles Chrome Extension</p>
+
+  <div class="highlight">
+    <strong>Summary:</strong> DL Subtitles collects <strong>zero user data</strong>.
+    Your API key is stored only on your own device and never sent to our servers
+    (because we have none).
+  </div>
+
+  <h2>1. What We Collect</h2>
+  <p>We collect <strong>nothing</strong>. DL Subtitles does not collect, transmit, store,
+  or share any personal information, usage data, or analytics of any kind.</p>
+
+  <h2>2. API Key Storage</h2>
+  <p>When you configure an API key in the extension's Options page, it is stored
+  exclusively in <code>chrome.storage.sync</code> — a local browser storage that
+  Chrome may sync across your own signed-in devices. The key is:</p>
+  <ul>
+    <li>Never sent to any server operated by this extension</li>
+    <li>Never logged or recorded</li>
+    <li>Used only to authenticate requests you initiate, sent directly from your browser
+        to the API endpoint you configured</li>
+  </ul>
+
+  <h2>3. Translation Requests</h2>
+  <p>When a subtitle cue is detected, the extension's Service Worker sends the
+  subtitle text directly to the API endpoint you configured (e.g., OpenAI, DeepSeek,
+  or your own proxy). This request:</p>
+  <ul>
+    <li>Goes directly from your browser to your chosen API provider</li>
+    <li>Does <strong>not</strong> pass through any DL Subtitles server</li>
+    <li>Is governed by the privacy policy of the API provider you choose</li>
+  </ul>
+
+  <h2>4. Permissions Justification</h2>
+  <table style="border-collapse:collapse;width:100%;font-size:0.93rem">
+    <thead>
+      <tr style="background:#f5f5f5">
+        <th style="text-align:left;padding:8px 12px;border:1px solid #ddd">Permission</th>
+        <th style="text-align:left;padding:8px 12px;border:1px solid #ddd">Why It's Needed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:8px 12px;border:1px solid #ddd"><code>storage</code></td>
+        <td style="padding:8px 12px;border:1px solid #ddd">Save your API configuration and display preferences locally</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px;border:1px solid #ddd"><code>scripting</code></td>
+        <td style="padding:8px 12px;border:1px solid #ddd">Inject the subtitle observer script into deeplearning.ai pages</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px;border:1px solid #ddd"><code>learn.deeplearning.ai/*</code></td>
+        <td style="padding:8px 12px;border:1px solid #ddd">The only site where the extension activates</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px;border:1px solid #ddd"><code>https://*/*</code></td>
+        <td style="padding:8px 12px;border:1px solid #ddd">
+          Required so the Service Worker can reach <em>any</em> API endpoint you configure
+          (BYOK — Bring Your Own Key). Without this, the extension could only call
+          a fixed, hard-coded URL.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>5. No Third-Party Sharing</h2>
+  <p>We do not sell, trade, or share any data with third parties. There is no data
+  to share.</p>
+
+  <h2>6. Children's Privacy</h2>
+  <p>This extension does not target children and does not knowingly process data
+  from anyone under 13.</p>
+
+  <h2>7. Changes to This Policy</h2>
+  <p>If this policy ever changes, the updated version will be posted at this URL
+  and the "Last updated" date above will be revised.</p>
+
+  <h2>8. Contact</h2>
+  <p>Questions? Open an issue on
+  <a href="https://github.com/zhouyang-dl/dl-subtitles/issues" target="_blank" rel="noopener">
+    GitHub
+  </a>.</p>
+
+</body>
+</html>
