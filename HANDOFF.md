@@ -1,20 +1,19 @@
 # HANDOFF — DL Subtitles 项目交接文档
 
-> 最后更新：2026-05-16 | 当前阶段：Phase 0 ✅ 完成，Phase 1 待开始
+> 最后更新：2026-05-16 | 当前阶段：Phase 1 进行中
 
 ---
 
 ## ★ 上次中断点
 
 ```
-Phase:    Phase 1（下一阶段）
-子任务:   1.1 写测试 tests/unit/storage.test.js（第一个子任务）
-分支:     phase/0-init（当前），合并到 main 后创建 phase/1-storage
-状态:     Phase 0 全部完成，等待合并到 main
-Git:      最新 commit 含 esbuild + prettier 配置
+Phase:    Phase 1 / 任务 1.1 / 状态：待开始（尚未写测试）
+分支:     phase/1-storage（已创建，基于 main）
+状态:     Phase 0 已合并到 main，phase/1-storage 已就绪，等待开始写 storage.test.js
+Git:      无 WIP commit
 ```
 
-> 下次会话：git merge phase/0-init（或直接在 main 上），git checkout -b phase/1-storage，从 storage.test.js 开始 TDD。
+> 下次会话：在 phase/1-storage 分支上，第一步写 tests/unit/storage.test.js，确认红灯后再写实现。
 
 ---
 
@@ -97,7 +96,7 @@ Content Script 匹配规则：
 | Phase | 模块 | 状态 |
 |-------|------|------|
 | 0 | 项目初始化（npm, Jest, Playwright, manifest） | ✅ 完成 |
-| 1 | `storage.js` | ⏳ 未开始 |
+| 1 | `storage.js` | 🔄 进行中 |
 | 2 | `messages.js` | ⏳ 未开始 |
 | 3 | `translation-cache.js` | ⏳ 未开始 |
 | 4 | `service-worker.js` | ⏳ 未开始 |
