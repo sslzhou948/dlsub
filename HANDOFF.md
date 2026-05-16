@@ -9,13 +9,13 @@
 ```
 Phase:    Phase 10（E2E 测试）
 子任务:   10.1 编写 tests/e2e/subtitle-display.spec.js 和 options-page.spec.js
-分支:     phase/9-options（当前），合并到 main 后创建 phase/10-e2e
-状态:     Phase 9 全部完成，等待合并到 main
+分支:     main（phase/9-options 已合并），待创建 phase/10-e2e
+状态:     Phase 0-9 全部完成；main 含 fix commit（setDisplayConfig partial merge + SW 防御）
 注意:     E2E 测试需要真实的 deeplearning.ai 账号 + API Key，且需要 Playwright 浏览器
-Git:      最新 commit：feat: Phase 9 完成 — options 页面（附测试）
+Git:      最新 commit：fix: 修复 code review 发现的两处问题
 ```
 
-> 下次会话：合并 phase/9-options，git checkout -b phase/10-e2e，编写 Playwright E2E 测试。需确认测试环境（账号、浏览器）。
+> 下次会话：git checkout main && git checkout -b phase/10-e2e，编写 Playwright E2E 测试。需确认测试环境（账号、浏览器）。
 
 ---
 
