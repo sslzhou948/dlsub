@@ -1,20 +1,20 @@
 # HANDOFF — DL Subtitles 项目交接文档
 
-> 最后更新：2026-05-16 | 当前阶段：Phase 2 ✅ 完成，Phase 3 待开始
+> 最后更新：2026-05-16 | 当前阶段：Phase 3 ✅ 完成，Phase 4 待开始
 
 ---
 
 ## ★ 上次中断点
 
 ```
-Phase:    Phase 3（下一阶段）
-子任务:   3.1 写测试 tests/unit/translation-cache.test.js（第一个子任务）
-分支:     phase/2-messages（当前），合并到 main 后创建 phase/3-translation-cache
-状态:     Phase 2 全部完成，等待合并到 main
-Git:      最新 commit：feat: Phase 2 完成 — messages.js（附测试）
+Phase:    Phase 4（下一阶段）
+子任务:   4.1 写测试 tests/unit/service-worker.test.js（第一个子任务）
+分支:     phase/3-translation-cache（当前），合并到 main 后创建 phase/4-service-worker
+状态:     Phase 3 全部完成，等待合并到 main
+Git:      最新 commit：feat: Phase 3 完成 — translation-cache.js（附测试）
 ```
 
-> 下次会话：合并 phase/2-messages，git checkout -b phase/3-translation-cache，从 translation-cache.test.js 开始 TDD。
+> 下次会话：合并 phase/3-translation-cache，git checkout -b phase/4-service-worker，从 service-worker.test.js 开始 TDD。
 
 ---
 
@@ -31,7 +31,7 @@ Git:      最新 commit：feat: Phase 2 完成 — messages.js（附测试）
 | 阶段一：用户访谈 + PRD | ✅ 完成 | PRD 已与用户确认 |
 | 阶段二：技术调研 | ✅ 完成 | Playwright 调研 deeplearning.ai DOM，报告已输出 |
 | 阶段三：开发规划 | ✅ 完成 | 架构设计 + 开发计划已确认 |
-| 阶段四：TDD 开发 | ⏳ 进行中 | Phase 0、1、2 完成，Phase 3 待开始 |
+| 阶段四：TDD 开发 | ⏳ 进行中 | Phase 0-3 完成，Phase 4 待开始 |
 
 ---
 
@@ -97,7 +97,7 @@ Content Script 匹配规则：
 | 0 | 项目初始化（npm, Jest, Playwright, manifest） | ✅ 完成 |
 | 1 | `storage.js` | ✅ 完成 |
 | 2 | `messages.js` | ✅ 完成 |
-| 3 | `translation-cache.js` | ⏳ 未开始 |
+| 3 | `translation-cache.js` | ✅ 完成 |
 | 4 | `service-worker.js` | ⏳ 未开始 |
 | 5 | `subtitle-observer.js` | ⏳ 未开始 |
 | 6 | `translation-overlay.js` | ⏳ 未开始 |
