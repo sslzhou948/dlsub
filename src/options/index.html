@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>DL Subtitles 设置</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <h1>DL Subtitles 设置</h1>
+  <form id="options-form">
+    <label>
+      API Base URL
+      <input type="url" id="baseUrl" name="baseUrl" placeholder="https://api.openai.com/v1" />
+    </label>
+    <label>
+      API Key
+      <input type="password" id="apiKey" name="apiKey" placeholder="sk-..." />
+    </label>
+    <label>
+      Model
+      <input type="text" id="model" name="model" placeholder="gpt-4o-mini" />
+    </label>
+    <button type="submit">保存</button>
+    <span id="status"></span>
+  </form>
+  <script src="../../dist/options.js"></script>
+</body>
+</html>
