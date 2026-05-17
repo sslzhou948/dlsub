@@ -72,6 +72,10 @@ class TranslationOverlay {
   }
 
   destroy() {
+    if (this._errorTimer) {
+      clearTimeout(this._errorTimer);
+      this._errorTimer = null;
+    }
     this._el.remove();
   }
 }

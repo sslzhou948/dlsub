@@ -67,6 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setStatus(statusEl, '正在测试连接...');
 
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+
     try {
       const res = await fetch(`${baseUrl}/chat/completions`, {
         method: 'POST',
@@ -79,7 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
           messages: [{ role: 'user', content: 'test' }],
           max_tokens: 1,
         }),
+        signal: controller.signal,
       });
+      clearTimeout(timer);
 
       if (res.ok) {
         setStatus(statusEl, '连接成功', 'success');
@@ -87,7 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setStatus(statusEl, `连接失败：HTTP ${res.status}`, 'error');
       }
     } catch (err) {
-      setStatus(statusEl, `连接失败：${err.message}`, 'error');
+      clearTimeout(timer);
+      const msg = err.name === 'AbortError' ? '连接超时（10s）' : err.message;
+      setStatus(statusEl, `连接失败：${msg}`, 'error');
     }
   });
 });
