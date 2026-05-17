@@ -112,3 +112,10 @@ describe('非 TRANSLATE 消息', () => {
     expect(result).not.toBe(true);
   });
 });
+
+describe('OPEN_OPTIONS 消息', () => {
+  test('收到 OPEN_OPTIONS 时调用 chrome.runtime.openOptionsPage', () => {
+    handleMessage({ type: 'OPEN_OPTIONS' }, {}, () => {});
+    expect(chrome.runtime.openOptionsPage).toHaveBeenCalledTimes(1);
+  });
+});

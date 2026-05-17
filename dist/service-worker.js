@@ -28,7 +28,8 @@
       var MSG_TYPES2 = {
         TRANSLATE: "TRANSLATE",
         TRANSLATE_RESULT: "TRANSLATE_RESULT",
-        TRANSLATE_ERROR: "TRANSLATE_ERROR"
+        TRANSLATE_ERROR: "TRANSLATE_ERROR",
+        OPEN_OPTIONS: "OPEN_OPTIONS"
       };
       var ERROR_CODES2 = {
         NO_API_KEY: "NO_API_KEY",
@@ -143,6 +144,10 @@
     return { type: MSG_TYPES.TRANSLATE_RESULT, payload: { translation, cueId } };
   }
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+    if (message.type === MSG_TYPES.OPEN_OPTIONS) {
+      chrome.runtime.openOptionsPage();
+      return false;
+    }
     if (message.type !== MSG_TYPES.TRANSLATE) return false;
     const { payload } = message;
     getApiConfig((apiConfig) => {

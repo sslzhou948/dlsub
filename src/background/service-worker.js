@@ -68,6 +68,11 @@ async function translate({ text, targetLang, cueId }, apiConfig) {
 }
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (message.type === MSG_TYPES.OPEN_OPTIONS) {
+    chrome.runtime.openOptionsPage();
+    return false;
+  }
+
   if (message.type !== MSG_TYPES.TRANSLATE) return false;
 
   const { payload } = message;

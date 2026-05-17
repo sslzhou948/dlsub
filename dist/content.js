@@ -28,7 +28,8 @@
       var MSG_TYPES = {
         TRANSLATE: "TRANSLATE",
         TRANSLATE_RESULT: "TRANSLATE_RESULT",
-        TRANSLATE_ERROR: "TRANSLATE_ERROR"
+        TRANSLATE_ERROR: "TRANSLATE_ERROR",
+        OPEN_OPTIONS: "OPEN_OPTIONS"
       };
       var ERROR_CODES = {
         NO_API_KEY: "NO_API_KEY",
@@ -209,6 +210,10 @@
           this._el.style.setProperty("--dlai-font-size", size);
         }
         destroy() {
+          if (this._errorTimer) {
+            clearTimeout(this._errorTimer);
+            this._errorTimer = null;
+          }
           this._el.remove();
         }
       };
@@ -485,7 +490,7 @@
             getApiConfig((apiConfig) => {
               if (!apiConfig.apiKey && this._panel) {
                 this._panel.showNoKeyWarning(() => {
-                  if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
+                  chrome.runtime.sendMessage({ type: "OPEN_OPTIONS" });
                 });
               }
             });

@@ -224,6 +224,30 @@ describe('SPA 路由切换', () => {
   });
 });
 
+describe('前往设置按钮', () => {
+  test('点击"前往设置"时发送 OPEN_OPTIONS 消息到 Service Worker', () => {
+    const { seedStore } = require('./helpers/chrome-mock');
+    seedStore({
+      apiConfig: { baseUrl: '', apiKey: '', model: 'gpt-4o-mini' },
+      displayConfig: { enabled: true, fontSize: 'medium', position: 'below', targetLang: 'zh-CN' },
+    });
+
+    const app = new App();
+    app.init();
+
+    const ControlPanel = require('../../src/content/control-panel');
+    const panel = ControlPanel.mock.instances[0];
+
+    // 模拟用户点击"前往设置"按钮
+    const onAction = panel.showNoKeyWarning.mock.calls[0][0];
+    onAction();
+
+    expect(chrome.runtime.sendMessage).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'OPEN_OPTIONS' }),
+    );
+  });
+});
+
 describe('翻译 API 失败处理', () => {
   test('TRANSLATE_ERROR 响应时调用 overlay.setError', () => {
     const { seedStore } = require('./helpers/chrome-mock');

@@ -50,7 +50,7 @@ class App {
       getApiConfig((apiConfig) => {
         if (!apiConfig.apiKey && this._panel) {
           this._panel.showNoKeyWarning(() => {
-            if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
+            chrome.runtime.sendMessage({ type: 'OPEN_OPTIONS' });
           });
         }
       });
