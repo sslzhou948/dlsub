@@ -39,6 +39,7 @@
       var DEBOUNCE_DELAY = 300;
       var CACHE_MAX = 500;
       var CACHE_EVICT = 100;
+      var PREFETCH_LOOKAHEAD = 3;
       var DEFAULT_API_CONFIG2 = {
         baseUrl: "",
         apiKey: "",
@@ -59,6 +60,7 @@
         DEBOUNCE_DELAY,
         CACHE_MAX,
         CACHE_EVICT,
+        PREFETCH_LOOKAHEAD,
         DEFAULT_API_CONFIG: DEFAULT_API_CONFIG2,
         DEFAULT_DISPLAY_CONFIG
       };

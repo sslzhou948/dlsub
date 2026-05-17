@@ -39,6 +39,7 @@
       var DEBOUNCE_DELAY = 300;
       var CACHE_MAX = 500;
       var CACHE_EVICT = 100;
+      var PREFETCH_LOOKAHEAD = 3;
       var DEFAULT_API_CONFIG = {
         baseUrl: "",
         apiKey: "",
@@ -59,6 +60,7 @@
         DEBOUNCE_DELAY,
         CACHE_MAX,
         CACHE_EVICT,
+        PREFETCH_LOOKAHEAD,
         DEFAULT_API_CONFIG,
         DEFAULT_DISPLAY_CONFIG
       };
@@ -415,6 +417,94 @@
     }
   });
 
+  // src/content/prefetch-queue.js
+  var require_prefetch_queue = __commonJS({
+    "src/content/prefetch-queue.js"(exports, module) {
+      "use strict";
+      var { PREFETCH_LOOKAHEAD } = require_constants();
+      var PrefetchQueue = class {
+        /**
+         * @param {object} opts
+         * @param {object} opts.cache               - TranslationCache 实例（get / set）
+         * @param {function} opts.requestTranslation - (text, cueId) => Promise<string>
+         * @param {number} [opts.lookahead]          - 向后预取条数，默认 PREFETCH_LOOKAHEAD
+         */
+        constructor({ cache, requestTranslation, lookahead }) {
+          this._cache = cache;
+          this._requestTranslation = requestTranslation;
+          this._lookahead = lookahead !== void 0 ? lookahead : PREFETCH_LOOKAHEAD;
+          this._inFlight = /* @__PURE__ */ new Set();
+        }
+        /**
+         * 触发预翻译。在当前字幕出现时调用。
+         *
+         * @param {string} currentCueId - 当前正在显示的 cue 的 id
+         * @param {HTMLVideoElement|null} videoEl - video 元素
+         */
+        trigger(currentCueId, videoEl) {
+          if (!videoEl) return;
+          const track = this._selectTrack(videoEl);
+          if (!track || !track.cues) return;
+          const cues = Array.from(track.cues);
+          const currentIdx = cues.findIndex((c) => String(c.id) === String(currentCueId));
+          if (currentIdx === -1) return;
+          const upcoming = cues.slice(currentIdx + 1, currentIdx + 1 + this._lookahead);
+          for (const cue of upcoming) {
+            this._prefetchCue(cue);
+          }
+        }
+        /**
+         * 清空 in-flight 状态（路由切换时调用）。
+         * 不清空 cache，cache 生命周期由 App 统一管理。
+         */
+        clear() {
+          this._inFlight.clear();
+        }
+        // --- 私有方法 ---
+        /**
+         * 从 video.textTracks 中选择字幕 track。
+         * 优先 mode=showing，其次 kind=subtitles/captions 且 mode≠disabled。
+         */
+        _selectTrack(videoEl) {
+          const tracks = Array.from(videoEl.textTracks);
+          const showing = tracks.find((t) => t.mode === "showing");
+          if (showing) return showing;
+          return tracks.find(
+            (t) => (t.kind === "subtitles" || t.kind === "captions") && t.mode !== "disabled"
+          ) || null;
+        }
+        /**
+         * 对单条 cue 发起预翻译（含去重、cache 检查）。
+         */
+        _prefetchCue(cue) {
+          const text = this._stripVttTags(cue.text);
+          if (!text) return;
+          const cueId = String(cue.id);
+          if (this._cache.get(cueId, text)) return;
+          const key = `${cueId}\0${text}`;
+          if (this._inFlight.has(key)) return;
+          this._inFlight.add(key);
+          this._requestTranslation(text, cueId).then(
+            (translation) => {
+              this._cache.set(cueId, text, translation);
+              this._inFlight.delete(key);
+            },
+            () => {
+              this._inFlight.delete(key);
+            }
+          );
+        }
+        /**
+         * 剥离 WebVTT 内联标签（<c>、<v>、<b> 等），返回纯文本。
+         */
+        _stripVttTags(text) {
+          return text.replace(/<[^>]*>/g, "").trim();
+        }
+      };
+      module.exports = PrefetchQueue;
+    }
+  });
+
   // src/shared/storage.js
   var require_storage = __commonJS({
     "src/shared/storage.js"(exports, module) {
@@ -450,14 +540,16 @@
       var TranslationOverlay = require_translation_overlay();
       var ControlPanel = require_control_panel();
       var TranslationCache = require_translation_cache();
+      var PrefetchQueue = require_prefetch_queue();
       var { getApiConfig, getDisplayConfig } = require_storage();
-      var { SELECTORS } = require_constants();
+      var { SELECTORS, PREFETCH_LOOKAHEAD } = require_constants();
       var App2 = class {
         constructor() {
           this._observer = null;
           this._overlay = null;
           this._panel = null;
           this._cache = new TranslationCache();
+          this._prefetch = null;
           this._lastUrl = location.href;
           this._routeCheckInterval = null;
           this._ccBtnListener = null;
@@ -495,6 +587,29 @@
               }
             });
           });
+          const requestTranslation = (text, cueId) => new Promise((resolve, reject) => {
+            getApiConfig((apiConfig) => {
+              if (!apiConfig.apiKey) {
+                reject(new Error("NO_API_KEY"));
+                return;
+              }
+              chrome.runtime.sendMessage(
+                { type: "TRANSLATE", payload: { text, targetLang: "zh-CN", cueId } },
+                (response) => {
+                  if (response && response.type === "TRANSLATE_RESULT") {
+                    resolve(response.payload.translation);
+                  } else {
+                    reject(new Error(response && response.payload && response.payload.error || "TRANSLATE_ERROR"));
+                  }
+                }
+              );
+            });
+          });
+          this._prefetch = new PrefetchQueue({
+            cache: this._cache,
+            requestTranslation,
+            lookahead: PREFETCH_LOOKAHEAD
+          });
           this._observer = new SubtitleObserver({
             onSubtitle: (text, cueId) => {
               if (!this._overlay) {
@@ -509,22 +624,24 @@
               const cached = this._cache.get(cueId, text);
               if (cached) {
                 this._overlay.setText(cached);
-                return;
-              }
-              getApiConfig((apiConfig) => {
-                if (!apiConfig.apiKey) return;
-                chrome.runtime.sendMessage(
-                  { type: "TRANSLATE", payload: { text, targetLang: "zh-CN", cueId } },
-                  (response) => {
-                    if (response && response.type === "TRANSLATE_RESULT") {
-                      this._cache.set(cueId, text, response.payload.translation);
-                      if (this._overlay) this._overlay.setText(response.payload.translation);
-                    } else if (response && response.type === "TRANSLATE_ERROR") {
-                      if (this._overlay) this._overlay.setError("\u7FFB\u8BD1\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5 API \u8BBE\u7F6E");
+              } else {
+                getApiConfig((apiConfig) => {
+                  if (!apiConfig.apiKey) return;
+                  chrome.runtime.sendMessage(
+                    { type: "TRANSLATE", payload: { text, targetLang: "zh-CN", cueId } },
+                    (response) => {
+                      if (response && response.type === "TRANSLATE_RESULT") {
+                        this._cache.set(cueId, text, response.payload.translation);
+                        if (this._overlay) this._overlay.setText(response.payload.translation);
+                      } else if (response && response.type === "TRANSLATE_ERROR") {
+                        if (this._overlay) this._overlay.setError("\u7FFB\u8BD1\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5 API \u8BBE\u7F6E");
+                      }
                     }
-                  }
-                );
-              });
+                  );
+                });
+              }
+              const video = document.querySelector("video");
+              if (video && this._prefetch) this._prefetch.trigger(cueId, video);
             },
             onSubtitleClear: () => {
               if (this._overlay) this._overlay.setText("");
@@ -568,6 +685,10 @@
             this._observer.stop();
             this._observer = null;
           }
+          if (this._prefetch) {
+            this._prefetch.clear();
+            this._prefetch = null;
+          }
           if (this._panel) {
             this._panel.destroy();
             this._panel = null;
@@ -594,6 +715,7 @@
             this._routeCheckInterval = null;
           }
           if (this._observer) this._observer.stop();
+          if (this._prefetch) this._prefetch.clear();
         }
       };
       module.exports = App2;
