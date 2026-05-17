@@ -1,0 +1,10 @@
+#!/bin/sh
+# 合并到 main 后自动重新打包
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$BRANCH" = "main" ]; then
+  echo "▶ post-merge: 检测到 main 分支，开始打包..."
+  npm run pack
+  echo "✅ post-merge: 打包完成"
+fi
