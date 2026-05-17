@@ -446,10 +446,29 @@
           const track = this._selectTrack(videoEl);
           if (!track || !track.cues) return;
           const cues = Array.from(track.cues);
-          const currentIdx = cues.findIndex((c) => String(c.id) === String(currentCueId));
+          const now = videoEl.currentTime;
+          let currentIdx = cues.findIndex((c) => now >= c.startTime && now < c.endTime);
+          if (currentIdx === -1 && currentCueId) {
+            currentIdx = cues.findIndex((c) => String(c.id) === String(currentCueId));
+          }
           if (currentIdx === -1) return;
           const upcoming = cues.slice(currentIdx + 1, currentIdx + 1 + this._lookahead);
           for (const cue of upcoming) {
+            this._prefetchCue(cue);
+          }
+        }
+        /**
+         * VTT 加载完成时调用，从第一条 cue 开始预取 lookahead 条。
+         * 解决：VTT 尚未加载完成时第一条字幕已出现，trigger() 找不到 cues 的竞态问题。
+         *
+         * @param {HTMLVideoElement} videoEl
+         */
+        triggerFromStart(videoEl) {
+          if (!videoEl) return;
+          const track = this._selectTrack(videoEl);
+          if (!track || !track.cues || track.cues.length === 0) return;
+          const cues = Array.from(track.cues);
+          for (const cue of cues.slice(0, this._lookahead)) {
             this._prefetchCue(cue);
           }
         }
@@ -553,6 +572,8 @@
           this._lastUrl = location.href;
           this._routeCheckInterval = null;
           this._ccBtnListener = null;
+          this._trackLoadObs = null;
+          this._trackAddTrackListener = null;
         }
         init() {
           this._startModules();
@@ -648,6 +669,41 @@
             }
           });
           this._observer.start();
+          this._watchTrackLoad();
+        }
+        _watchTrackLoad() {
+          const tryAttach = () => {
+            const video = document.querySelector("video");
+            if (!video) return;
+            const attachToTrack = (track) => {
+              if (track._dlaiPrefetchAttached) return;
+              track._dlaiPrefetchAttached = true;
+              const onCueChange = () => {
+                if (!track.cues || track.cues.length === 0) return;
+                track.removeEventListener("cuechange", onCueChange);
+                if (this._prefetch) this._prefetch.triggerFromStart(video);
+              };
+              track.addEventListener("cuechange", onCueChange);
+            };
+            Array.from(video.textTracks).forEach(attachToTrack);
+            const onAddTrack = (e) => attachToTrack(e.track);
+            video.textTracks.addEventListener("addtrack", onAddTrack);
+            this._trackAddTrackListener = { el: video.textTracks, fn: onAddTrack };
+          };
+          if (document.querySelector("video")) {
+            tryAttach();
+          } else {
+            const obs = new MutationObserver(() => {
+              if (!document || !document.querySelector) return;
+              if (document.querySelector("video")) {
+                obs.disconnect();
+                this._trackLoadObs = null;
+                tryAttach();
+              }
+            });
+            this._trackLoadObs = obs;
+            obs.observe(document.body, { childList: true, subtree: true });
+          }
         }
         // SPA 路由切换检测（轮询 URL 变化）
         _watchRoute() {
@@ -681,6 +737,14 @@
             this._ccBtnListener.el.removeEventListener("click", this._ccBtnListener.fn);
             this._ccBtnListener = null;
           }
+          if (this._trackLoadObs) {
+            this._trackLoadObs.disconnect();
+            this._trackLoadObs = null;
+          }
+          if (this._trackAddTrackListener) {
+            this._trackAddTrackListener.el.removeEventListener("addtrack", this._trackAddTrackListener.fn);
+            this._trackAddTrackListener = null;
+          }
           if (this._observer) {
             this._observer.stop();
             this._observer = null;
@@ -713,6 +777,14 @@
           if (this._routeCheckInterval) {
             clearInterval(this._routeCheckInterval);
             this._routeCheckInterval = null;
+          }
+          if (this._trackLoadObs) {
+            this._trackLoadObs.disconnect();
+            this._trackLoadObs = null;
+          }
+          if (this._trackAddTrackListener) {
+            this._trackAddTrackListener.el.removeEventListener("addtrack", this._trackAddTrackListener.fn);
+            this._trackAddTrackListener = null;
           }
           if (this._observer) this._observer.stop();
           if (this._prefetch) this._prefetch.clear();

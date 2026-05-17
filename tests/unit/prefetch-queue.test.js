@@ -184,11 +184,15 @@ describe('PrefetchQueue — trigger：cue 定位', () => {
     mockRequestTranslation = jest.fn().mockResolvedValue('译文');
   });
 
-  test('currentCueId 未匹配到任何 cue 时不调用 requestTranslation', async () => {
-    const videoEl = makeVideoEl([
-      { id: '1', text: 'A', startTime: 0 },
-      { id: '2', text: 'B', startTime: 2 },
-    ]);
+  test('currentTime 和 cueId 均未匹配到任何 cue 时不调用 requestTranslation', async () => {
+    // currentTime=100 不在任何 cue 范围内，cueId='999' 也不存在
+    const videoEl = makeVideoEl(
+      [
+        { id: '1', text: 'A', startTime: 0 },
+        { id: '2', text: 'B', startTime: 2 },
+      ],
+      { currentTime: 100 },
+    );
     const pq = new PrefetchQueue({ cache: mockCache, requestTranslation: mockRequestTranslation });
     pq.trigger('999', videoEl);
     await flushPromises();
@@ -221,6 +225,28 @@ describe('PrefetchQueue — trigger：cue 定位', () => {
     expect(mockRequestTranslation).toHaveBeenCalledWith('B', '2');
     expect(mockRequestTranslation).toHaveBeenCalledWith('C', '3');
     expect(mockRequestTranslation).not.toHaveBeenCalledWith('D', '4');
+  });
+
+  test('currentTime 命中 cue 时即使 cueId 不匹配也能正确预取', async () => {
+    // DOM data-id 与 VTT cue.id 不一致的真实场景：传入 cueId='dom-1'，但 track 里 id 是 '1'
+    const videoEl = makeVideoEl(
+      [
+        { id: '1', text: 'A', startTime: 0, endTime: 2 },
+        { id: '2', text: 'B', startTime: 2, endTime: 4 },
+        { id: '3', text: 'C', startTime: 4, endTime: 6 },
+      ],
+      { currentTime: 0.5 }, // 落在 cue '1' 的时间范围内
+    );
+    const pq = new PrefetchQueue({
+      cache: mockCache,
+      requestTranslation: mockRequestTranslation,
+      lookahead: 2,
+    });
+    pq.trigger('dom-1', videoEl); // cueId 故意传一个不匹配 track 的值
+    await flushPromises();
+    expect(mockRequestTranslation).toHaveBeenCalledTimes(2);
+    expect(mockRequestTranslation).toHaveBeenCalledWith('B', '2');
+    expect(mockRequestTranslation).toHaveBeenCalledWith('C', '3');
   });
 
   test('剩余 cue 不足 lookahead 条时只取实际有的', async () => {
@@ -463,6 +489,61 @@ describe('PrefetchQueue — trigger：HTML 标签剥离', () => {
     await flushPromises();
     expect(mockRequestTranslation).toHaveBeenCalledTimes(1);
     expect(mockRequestTranslation).toHaveBeenCalledWith('Real text', '3');
+  });
+});
+
+// ---
+
+describe('PrefetchQueue — triggerFromStart()', () => {
+  let mockCache;
+  let mockRequestTranslation;
+
+  beforeEach(() => {
+    mockCache = { get: jest.fn().mockReturnValue(null), set: jest.fn() };
+    mockRequestTranslation = jest.fn().mockResolvedValue('译文');
+  });
+
+  test('预取前 lookahead 条 cue', async () => {
+    const videoEl = makeVideoEl([
+      { id: '1', text: 'A', startTime: 0 },
+      { id: '2', text: 'B', startTime: 2 },
+      { id: '3', text: 'C', startTime: 4 },
+      { id: '4', text: 'D', startTime: 6 },
+    ]);
+    const pq = new PrefetchQueue({ cache: mockCache, requestTranslation: mockRequestTranslation, lookahead: 2 });
+    pq.triggerFromStart(videoEl);
+    await flushPromises();
+    expect(mockRequestTranslation).toHaveBeenCalledTimes(2);
+    expect(mockRequestTranslation).toHaveBeenCalledWith('A', '1');
+    expect(mockRequestTranslation).toHaveBeenCalledWith('B', '2');
+  });
+
+  test('videoEl 为 null 时不抛出', async () => {
+    const pq = new PrefetchQueue({ cache: mockCache, requestTranslation: mockRequestTranslation });
+    expect(() => pq.triggerFromStart(null)).not.toThrow();
+    await flushPromises();
+    expect(mockRequestTranslation).not.toHaveBeenCalled();
+  });
+
+  test('track.cues 为空时不调用 requestTranslation', async () => {
+    const videoEl = makeVideoEl([], { cues: [] });
+    videoEl.textTracks[0].cues.length = 0;
+    const pq = new PrefetchQueue({ cache: mockCache, requestTranslation: mockRequestTranslation });
+    pq.triggerFromStart(videoEl);
+    await flushPromises();
+    expect(mockRequestTranslation).not.toHaveBeenCalled();
+  });
+
+  test('与 trigger() in-flight 去重：triggerFromStart 后 trigger 不重复发请求', async () => {
+    const videoEl = makeVideoEl([
+      { id: '1', text: 'A', startTime: 0 },
+      { id: '2', text: 'B', startTime: 2 },
+    ]);
+    const pq = new PrefetchQueue({ cache: mockCache, requestTranslation: mockRequestTranslation, lookahead: 2 });
+    pq.triggerFromStart(videoEl); // 预取 cue 1, 2
+    pq.trigger('1', videoEl);    // cue 1 出现，再次尝试预取 cue 2 → 被 in-flight 拦截
+    await flushPromises();
+    expect(mockRequestTranslation).toHaveBeenCalledTimes(2); // 只有 A, B 各一次
   });
 });
 

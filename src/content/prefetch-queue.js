@@ -39,11 +39,36 @@ class PrefetchQueue {
     if (!track || !track.cues) return;
 
     const cues = Array.from(track.cues);
-    const currentIdx = cues.findIndex((c) => String(c.id) === String(currentCueId));
+
+    // 优先用 currentTime 定位当前 cue（规避 DOM data-id 与 VTT cue.id 不一致问题）
+    const now = videoEl.currentTime;
+    let currentIdx = cues.findIndex((c) => now >= c.startTime && now < c.endTime);
+
+    // 回退：按 ID 匹配（兼容 currentTime 为 0 等边界情况）
+    if (currentIdx === -1 && currentCueId) {
+      currentIdx = cues.findIndex((c) => String(c.id) === String(currentCueId));
+    }
     if (currentIdx === -1) return;
 
     const upcoming = cues.slice(currentIdx + 1, currentIdx + 1 + this._lookahead);
     for (const cue of upcoming) {
+      this._prefetchCue(cue);
+    }
+  }
+
+  /**
+   * VTT 加载完成时调用，从第一条 cue 开始预取 lookahead 条。
+   * 解决：VTT 尚未加载完成时第一条字幕已出现，trigger() 找不到 cues 的竞态问题。
+   *
+   * @param {HTMLVideoElement} videoEl
+   */
+  triggerFromStart(videoEl) {
+    if (!videoEl) return;
+    const track = this._selectTrack(videoEl);
+    if (!track || !track.cues || track.cues.length === 0) return;
+    const cues = Array.from(track.cues);
+    // 预取前 lookahead 条（从 index=0 开始，覆盖最可能马上出现的字幕）
+    for (const cue of cues.slice(0, this._lookahead)) {
       this._prefetchCue(cue);
     }
   }
