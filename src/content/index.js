@@ -4,8 +4,9 @@ const SubtitleObserver = require('./subtitle-observer');
 const TranslationOverlay = require('./translation-overlay');
 const ControlPanel = require('./control-panel');
 const TranslationCache = require('./translation-cache');
+const PrefetchQueue = require('./prefetch-queue');
 const { getApiConfig, getDisplayConfig } = require('../shared/storage');
-const { SELECTORS } = require('../shared/constants');
+const { SELECTORS, PREFETCH_LOOKAHEAD } = require('../shared/constants');
 
 class App {
   constructor() {
@@ -13,6 +14,7 @@ class App {
     this._overlay = null;
     this._panel = null;
     this._cache = new TranslationCache();
+    this._prefetch = null;
     this._lastUrl = location.href;
     this._routeCheckInterval = null;
     this._ccBtnListener = null;
@@ -56,6 +58,30 @@ class App {
       });
     });
 
+    // requestTranslation：供 PrefetchQueue 注入，返回 Promise<string>
+    const requestTranslation = (text, cueId) =>
+      new Promise((resolve, reject) => {
+        getApiConfig((apiConfig) => {
+          if (!apiConfig.apiKey) { reject(new Error('NO_API_KEY')); return; }
+          chrome.runtime.sendMessage(
+            { type: 'TRANSLATE', payload: { text, targetLang: 'zh-CN', cueId } },
+            (response) => {
+              if (response && response.type === 'TRANSLATE_RESULT') {
+                resolve(response.payload.translation);
+              } else {
+                reject(new Error((response && response.payload && response.payload.error) || 'TRANSLATE_ERROR'));
+              }
+            },
+          );
+        });
+      });
+
+    this._prefetch = new PrefetchQueue({
+      cache: this._cache,
+      requestTranslation,
+      lookahead: PREFETCH_LOOKAHEAD,
+    });
+
     this._observer = new SubtitleObserver({
       onSubtitle: (text, cueId) => {
         // Lazily create overlay: captions element may load async after _startModules runs
@@ -71,22 +97,25 @@ class App {
         const cached = this._cache.get(cueId, text);
         if (cached) {
           this._overlay.setText(cached);
-          return;
+        } else {
+          getApiConfig((apiConfig) => {
+            if (!apiConfig.apiKey) return;
+            chrome.runtime.sendMessage(
+              { type: 'TRANSLATE', payload: { text, targetLang: 'zh-CN', cueId } },
+              (response) => {
+                if (response && response.type === 'TRANSLATE_RESULT') {
+                  this._cache.set(cueId, text, response.payload.translation);
+                  if (this._overlay) this._overlay.setText(response.payload.translation);
+                } else if (response && response.type === 'TRANSLATE_ERROR') {
+                  if (this._overlay) this._overlay.setError('翻译失败，请检查 API 设置');
+                }
+              },
+            );
+          });
         }
-        getApiConfig((apiConfig) => {
-          if (!apiConfig.apiKey) return;
-          chrome.runtime.sendMessage(
-            { type: 'TRANSLATE', payload: { text, targetLang: 'zh-CN', cueId } },
-            (response) => {
-              if (response && response.type === 'TRANSLATE_RESULT') {
-                this._cache.set(cueId, text, response.payload.translation);
-                if (this._overlay) this._overlay.setText(response.payload.translation);
-              } else if (response && response.type === 'TRANSLATE_ERROR') {
-                if (this._overlay) this._overlay.setError('翻译失败，请检查 API 设置');
-              }
-            },
-          );
-        });
+        // 无论 cache hit/miss，都触发预取后续字幕
+        const video = document.querySelector('video');
+        if (video && this._prefetch) this._prefetch.trigger(cueId, video);
       },
       onSubtitleClear: () => {
         if (this._overlay) this._overlay.setText('');
@@ -133,6 +162,10 @@ class App {
     if (this._observer) {
       this._observer.stop();
       this._observer = null;
+    }
+    if (this._prefetch) {
+      this._prefetch.clear();
+      this._prefetch = null;
     }
     if (this._panel) {
       this._panel.destroy();

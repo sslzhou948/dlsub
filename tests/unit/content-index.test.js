@@ -35,6 +35,13 @@ jest.mock('../../src/content/translation-cache', () => {
   }));
 });
 
+jest.mock('../../src/content/prefetch-queue', () => {
+  return jest.fn().mockImplementation(() => ({
+    trigger: jest.fn(),
+    clear: jest.fn(),
+  }));
+});
+
 const { resetChromeMock } = require('./helpers/chrome-mock');
 
 let App;
@@ -74,6 +81,12 @@ beforeEach(() => {
     jest.fn().mockImplementation(function () {
       this.get = jest.fn().mockReturnValue(null);
       this.set = jest.fn();
+      this.clear = jest.fn();
+    }),
+  );
+  jest.mock('../../src/content/prefetch-queue', () =>
+    jest.fn().mockImplementation(function () {
+      this.trigger = jest.fn();
       this.clear = jest.fn();
     }),
   );
