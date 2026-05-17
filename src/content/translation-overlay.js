@@ -30,6 +30,10 @@ class TranslationOverlay {
     this._el.style.setProperty('--dlai-font-size', size);
   }
 
+  isConnected() {
+    return this._el.isConnected;
+  }
+
   destroy() {
     this._el.remove();
   }

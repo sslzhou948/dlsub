@@ -13,12 +13,7 @@ class ControlPanel {
   }
 
   init() {
-    const controlsEl = document.querySelector(SELECTORS.CONTROLS_GROUP);
-    if (controlsEl) {
-      this._inject(controlsEl);
-    } else {
-      this._waitForControls();
-    }
+    this._tryInject();
   }
 
   destroy() {
@@ -26,12 +21,14 @@ class ControlPanel {
       this._bodyObserver.disconnect();
       this._bodyObserver = null;
     }
-    // Remove the wrapper (which contains both the button and the panel)
+    if (this._reinjectObserver) {
+      this._reinjectObserver.disconnect();
+      this._reinjectObserver = null;
+    }
     if (this._wrapperEl) {
       this._wrapperEl.remove();
       this._wrapperEl = null;
     } else {
-      // Fallback for cases where wrapper was not created
       if (this._btnEl) this._btnEl.remove();
       if (this._panelEl) this._panelEl.remove();
     }
@@ -39,9 +36,25 @@ class ControlPanel {
     this._panelEl = null;
   }
 
+  // 找到包含 CC 按钮的 controls group（Vidstack 有多个 group，精准定位）
+  _findControlsEl() {
+    // 优先找含有 CC 按钮的那个 group（CSS :has() Chrome 105+ 支持）
+    return document.querySelector(`${SELECTORS.CONTROLS_GROUP}:has(${SELECTORS.CAPTION_BUTTON})`)
+      || document.querySelector(SELECTORS.CONTROLS_GROUP);
+  }
+
+  _tryInject() {
+    const controlsEl = this._findControlsEl();
+    if (controlsEl) {
+      this._inject(controlsEl);
+    } else {
+      this._waitForControls();
+    }
+  }
+
   _waitForControls() {
     this._bodyObserver = new MutationObserver(() => {
-      const controlsEl = document.querySelector(SELECTORS.CONTROLS_GROUP);
+      const controlsEl = this._findControlsEl();
       if (controlsEl) {
         this._bodyObserver.disconnect();
         this._bodyObserver = null;
@@ -49,6 +62,20 @@ class ControlPanel {
       }
     });
     this._bodyObserver.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // 注入后监听按钮是否被 Vidstack 重新渲染移除，若移除则重新注入
+  _watchForRemoval() {
+    if (this._reinjectObserver) this._reinjectObserver.disconnect();
+    this._reinjectObserver = new MutationObserver(() => {
+      if (this._wrapperEl && !this._wrapperEl.isConnected) {
+        this._wrapperEl = null;
+        this._btnEl = null;
+        this._panelEl = null;
+        this._tryInject();
+      }
+    });
+    this._reinjectObserver.observe(document.body, { childList: true, subtree: true });
   }
 
   _inject(controlsEl) {
@@ -59,7 +86,11 @@ class ControlPanel {
     // 图标按钮
     this._btnEl = document.createElement('button');
     this._btnEl.className = CSS_CLASSES.TOGGLE_BTN;
-    this._btnEl.textContent = 'CC';
+    this._btnEl.title = '双语字幕';
+    this._btnEl.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:3px">
+        <path d="M4 6h16v2H4zm0 5h10v2H4zm0 5h12v2H4z"/>
+      </svg>双语`;
     this._btnEl.addEventListener('click', () => this._toggle());
     this._wrapperEl.appendChild(this._btnEl);
 
@@ -96,6 +127,9 @@ class ControlPanel {
     });
     this._wrapperEl.appendChild(this._panelEl);
     controlsEl.appendChild(this._wrapperEl);
+
+    // 注入后监听被移除（Vidstack 重新渲染时会替换 DOM）
+    this._watchForRemoval();
 
     // Render any pending no-key warning that was requested before inject completed
     if (this._noKeyWarningShown) this._renderNoKeyWarning();

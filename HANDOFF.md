@@ -1,30 +1,40 @@
 # HANDOFF — DL Subtitles 项目交接文档
 
-> 最后更新：2026-05-16 | 当前阶段：Phase 11（发布准备）✅ 完成，所有 Phase 完成
+> 最后更新：2026-05-17 | 当前阶段：实机调试修复中（分支 phase/11-release）
 
 ---
 
 ## ★ 上次中断点
 
 ```
-Phase:    Phase 11（发布准备）✅ 完成
-分支:     phase/11-release → PR 待合并
-状态:     所有 Phase（0-11）完成，项目可上架 Chrome Web Store
+Phase:    实机调试（Phase 11 分支，未合并）
+分支:     phase/11-release
+状态:     插件可加载，发现并修复 3 个实机 Bug（2026-05-17）
 
-完成内容：
-  1. ✅ README.md 完善：安装步骤、API 配置、权限说明、隐私政策链接、打包命令
-  2. ✅ docs/privacy-policy.html：GitHub Pages 隐私政策页面
-  3. ✅ dl-subtitles.zip：16.6 KB 打包产物（manifest + icons + dist + options + css）
-  4. ✅ Chrome Web Store 审核自查：75/75 测试通过，无 eval，权限已说明
+已修复：
+  1. ✅ 控制面板注入到错误的 controls-group
+       原因：Vidstack 有 4 个 .vds-controls-group，querySelector 拿到第 1 个而非含 CC 按钮的那个
+       修复：改用 :has(.vds-caption-button) 精准选择；注入后监听 isConnected 自动重新注入
+  2. ✅ 面板弹出方向溢出屏幕右侧
+       修复：CSS 改为 right:0（面板向左展开）
+  3. ✅ 翻译字幕不出现
+       原因：Vidstack 全量初始化后替换 captions 元素，SubtitleObserver 仍监听旧元素；
+             overlay 也随旧元素消失
+       修复：SubtitleObserver 增加 _watchForReplacement()，captions 被替换时自动重新挂载；
+             onSubtitle 回调每次检查 overlay.isConnected()，失效则重建
 
-注意（上架前用户操作）：
-  - GitHub 仓库地址：https://github.com/zhouyang-dl/dl-subtitles（需用户确认/创建）
-  - 启用 GitHub Pages（Settings → Pages → /docs 目录），隐私政策 URL 才生效
-  - Chrome Web Store 需要截图（至少 1 张 1280×800），需用户手动截图
-  - API 端点实测：Base URL https://api.ads8260.win:8260/v1，模型 deepseek-chat（勿提交 Key）
+待确认（需用户实机测试）：
+  - [ ] 双语按钮出现在正确位置
+  - [ ] 面板弹出不再溢出
+  - [ ] CC 开启后中文译文正常出现
+
+注意：
+  - 用户 API：Base URL https://api.ads8260.win:8260/v1，模型 deepseek-chat（Key 已配置）
+  - 扩展本地路径：D:\下载\deeplearning\dl-subtitles
+  - 每次修改后：npm run pack → scp 下载 → 解压覆盖 → chrome://extensions/ 刷新
 ```
 
-> 项目开发完成，等待用户操作：合并 PR → 启用 GitHub Pages → 准备截图 → 提交 Chrome Web Store 审核。
+> 下次会话：确认实机测试通过后提交 HANDOFF，合并 PR，推进上架流程。
 
 ---
 

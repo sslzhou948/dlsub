@@ -79,7 +79,7 @@
 .dlai-ext-control-panel {
   position: absolute;
   bottom: calc(100% + 8px);
-  left: 0;
+  right: 0;
   background: rgba(18, 18, 18, 0.96);
   color: #f0f0f0;
   padding: 12px 16px;
