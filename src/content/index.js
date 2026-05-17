@@ -153,15 +153,16 @@ class App {
     if (document.querySelector('video')) {
       tryAttach();
     } else {
-      this._trackLoadObs = new MutationObserver(() => {
+      const obs = new MutationObserver(() => {
         if (!document || !document.querySelector) return;
         if (document.querySelector('video')) {
-          this._trackLoadObs.disconnect();
+          obs.disconnect();
           this._trackLoadObs = null;
           tryAttach();
         }
       });
-      this._trackLoadObs.observe(document.body, { childList: true, subtree: true });
+      this._trackLoadObs = obs;
+      obs.observe(document.body, { childList: true, subtree: true });
     }
   }
 
