@@ -58,14 +58,15 @@ class App {
 
     this._observer = new SubtitleObserver({
       onSubtitle: (text, cueId) => {
-        // Lazily create (or re-create) overlay each time subtitle fires.
-        // Handles: (a) async player load, (b) Vidstack replacing the captions element.
-        const captionsEl = document.querySelector(SELECTORS.CAPTIONS_ROOT);
-        if (!captionsEl) return;
-        if (!this._overlay || !this._overlay.isConnected()) {
-          if (this._overlay) this._overlay.destroy();
-          this._overlay = new TranslationOverlay(captionsEl);
-          this._checkCcStatus(captionsEl);
+        // Lazily create overlay: captions element may load async after _startModules runs
+        if (!this._overlay) {
+          const captionsEl = document.querySelector(SELECTORS.CAPTIONS_ROOT);
+          if (captionsEl) {
+            this._overlay = new TranslationOverlay(captionsEl);
+            this._checkCcStatus(captionsEl);
+          } else {
+            return;
+          }
         }
         const cached = this._cache.get(cueId, text);
         if (cached) {

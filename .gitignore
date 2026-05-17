@@ -3,7 +3,6 @@ coverage/
 .playwright/
 playwright-report/
 test-results/
-dist/
 *.zip
 
 .DS_Store

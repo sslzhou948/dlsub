@@ -51,8 +51,6 @@ class SubtitleObserver {
 
   // 挂载到 .vds-captions，监听内部 DOM 变化
   _attachToCaptions(captionsEl) {
-    this._currentCaptionsEl = captionsEl;
-
     this._captionsObserver = new MutationObserver(() => {
       this._scheduleCallback(captionsEl);
     });
@@ -62,26 +60,6 @@ class SubtitleObserver {
     if (captionsEl.querySelector('[data-part="cue"]')) {
       this._scheduleCallback(captionsEl);
     }
-
-    // Vidstack 完整初始化时会替换 captions 元素，监听替换事件并重新挂载
-    this._watchForReplacement();
-  }
-
-  // 若 captions 元素被从 DOM 移除，自动重新等待并挂载
-  _watchForReplacement() {
-    if (this._bodyObserver) this._bodyObserver.disconnect();
-    this._bodyObserver = new MutationObserver(() => {
-      if (this._currentCaptionsEl && !this._currentCaptionsEl.isConnected) {
-        // 旧元素已被移除，重新等待新元素
-        if (this._captionsObserver) {
-          this._captionsObserver.disconnect();
-          this._captionsObserver = null;
-        }
-        this._currentCaptionsEl = null;
-        this._waitForCaptions();
-      }
-    });
-    this._bodyObserver.observe(document.body, { childList: true, subtree: true });
   }
 
   // 防抖：300ms 内的多次变化合并为一次回调

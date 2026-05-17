@@ -21,10 +21,6 @@ class ControlPanel {
       this._bodyObserver.disconnect();
       this._bodyObserver = null;
     }
-    if (this._reinjectObserver) {
-      this._reinjectObserver.disconnect();
-      this._reinjectObserver = null;
-    }
     if (this._wrapperEl) {
       this._wrapperEl.remove();
       this._wrapperEl = null;
@@ -62,20 +58,6 @@ class ControlPanel {
       }
     });
     this._bodyObserver.observe(document.body, { childList: true, subtree: true });
-  }
-
-  // 注入后监听按钮是否被 Vidstack 重新渲染移除，若移除则重新注入
-  _watchForRemoval() {
-    if (this._reinjectObserver) this._reinjectObserver.disconnect();
-    this._reinjectObserver = new MutationObserver(() => {
-      if (this._wrapperEl && !this._wrapperEl.isConnected) {
-        this._wrapperEl = null;
-        this._btnEl = null;
-        this._panelEl = null;
-        this._tryInject();
-      }
-    });
-    this._reinjectObserver.observe(document.body, { childList: true, subtree: true });
   }
 
   _inject(controlsEl) {
@@ -127,9 +109,6 @@ class ControlPanel {
     });
     this._wrapperEl.appendChild(this._panelEl);
     controlsEl.appendChild(this._wrapperEl);
-
-    // 注入后监听被移除（Vidstack 重新渲染时会替换 DOM）
-    this._watchForRemoval();
 
     // Render any pending no-key warning that was requested before inject completed
     if (this._noKeyWarningShown) this._renderNoKeyWarning();

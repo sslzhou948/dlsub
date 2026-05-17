@@ -133,6 +133,49 @@ describe('API Key 未配置', () => {
   });
 });
 
+describe('CC 未开启提示', () => {
+  test('captions 元素 aria-hidden="true" 时，overlay.setText 显示提示文字', () => {
+    document.body.innerHTML = `
+      <div class="vds-captions" data-part="captions" aria-hidden="true"></div>
+      <div class="vds-controls-group"></div>
+      <button class="vds-caption-button"></button>
+    `;
+    const app = new App();
+    app.init();
+    const TranslationOverlay = require('../../src/content/translation-overlay');
+    const overlay = TranslationOverlay.mock.instances[0];
+    expect(overlay.setText).toHaveBeenCalledWith(expect.stringContaining('CC'));
+  });
+
+  test('captions 元素 aria-hidden="false" 时，不显示 CC 提示', () => {
+    document.body.innerHTML = `
+      <div class="vds-captions" data-part="captions" aria-hidden="false"></div>
+      <div class="vds-controls-group"></div>
+    `;
+    const app = new App();
+    app.init();
+    const TranslationOverlay = require('../../src/content/translation-overlay');
+    const overlay = TranslationOverlay.mock.instances[0];
+    expect(overlay.setText).not.toHaveBeenCalled();
+  });
+
+  test('点击 CC 按钮后，提示被清除（overlay.setText 以空字符串调用）', () => {
+    document.body.innerHTML = `
+      <div class="vds-captions" data-part="captions" aria-hidden="true"></div>
+      <div class="vds-controls-group"></div>
+      <button class="vds-caption-button"></button>
+    `;
+    const app = new App();
+    app.init();
+    const TranslationOverlay = require('../../src/content/translation-overlay');
+    const overlay = TranslationOverlay.mock.instances[0];
+
+    // 模拟用户点击 CC 按钮
+    document.querySelector('.vds-caption-button').click();
+    expect(overlay.setText).toHaveBeenLastCalledWith('');
+  });
+});
+
 describe('SPA 路由切换', () => {
   test('URL 变化时调用 reset（stop 旧 observer + 清空 cache）', () => {
     const app = new App();

@@ -4,27 +4,24 @@
 
 /* ── Translation overlay ──────────────────────────────────────────────────── */
 
-/* Appended inside .vds-captions as a sibling to [data-part="cue-display"].
- * The parent element is a transparent overlay on top of the video, so we add
- * a semi-transparent background to keep the translation readable.            */
+/* Injected inside [data-part="cue-display"], immediately after the English cue.
+ * Immersive-translation style: Chinese appears as a second subtitle line,
+ * visually distinguished by a warm yellow color.                              */
 .dlai-ext-translation {
   display: block;
-  width: 100%;
   text-align: center;
-  color: #fff;
-  background: rgba(8, 8, 8, 0.72);
-  padding: 3px 20px 5px;
-  border-radius: 4px;
-  font-size: var(--dlai-font-size, medium);
+  color: #fde68a;           /* warm yellow — distinguishable from white English */
+  font-size: var(--dlai-font-size, 1em);
   line-height: 1.5;
-  pointer-events: none; /* let clicks pass through to the video */
-  box-sizing: border-box;
+  pointer-events: none;
   margin-top: 2px;
+  padding: 0 4px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.9); /* match Vidstack subtitle shadow */
 }
 
-/* Position variants */
+/* Position variants (above = order swap inside cue-display) */
 .dlai-ext-translation--above {
-  order: -1; /* only works if parent becomes a flex column */
+  order: -1;
 }
 
 /* ── Control panel wrapper ────────────────────────────────────────────────── */

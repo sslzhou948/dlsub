@@ -9,6 +9,7 @@
     "build:sw": "esbuild src/background/service-worker.js --bundle --format=iife --outfile=dist/service-worker.js",
     "build:options": "esbuild src/options/options.js --bundle --format=iife --outfile=dist/options.js",
     "build:watch": "npm run build:content -- --watch & npm run build:sw -- --watch",
+    "pack": "npm run build && node scripts/pack.js",
     "test": "jest --passWithNoTests",
     "test:coverage": "jest --coverage",
     "lint": "eslint src tests --ext .js",

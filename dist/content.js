@@ -113,7 +113,6 @@
         }
         // 挂载到 .vds-captions，监听内部 DOM 变化
         _attachToCaptions(captionsEl) {
-          this._currentCaptionsEl = captionsEl;
           this._captionsObserver = new MutationObserver(() => {
             this._scheduleCallback(captionsEl);
           });
@@ -121,22 +120,6 @@
           if (captionsEl.querySelector('[data-part="cue"]')) {
             this._scheduleCallback(captionsEl);
           }
-          this._watchForReplacement();
-        }
-        // 若 captions 元素被从 DOM 移除，自动重新等待并挂载
-        _watchForReplacement() {
-          if (this._bodyObserver) this._bodyObserver.disconnect();
-          this._bodyObserver = new MutationObserver(() => {
-            if (this._currentCaptionsEl && !this._currentCaptionsEl.isConnected) {
-              if (this._captionsObserver) {
-                this._captionsObserver.disconnect();
-                this._captionsObserver = null;
-              }
-              this._currentCaptionsEl = null;
-              this._waitForCaptions();
-            }
-          });
-          this._bodyObserver.observe(document.body, { childList: true, subtree: true });
         }
         // 防抖：300ms 内的多次变化合并为一次回调
         _scheduleCallback(captionsEl) {
@@ -167,21 +150,35 @@
   var require_translation_overlay = __commonJS({
     "src/content/translation-overlay.js"(exports, module) {
       "use strict";
-      var { CSS_CLASSES } = require_constants();
+      var { CSS_CLASSES, SELECTORS } = require_constants();
       var TranslationOverlay = class {
         constructor(captionsEl) {
+          this._captionsEl = captionsEl;
           this._el = document.createElement("div");
           this._el.className = CSS_CLASSES.TRANSLATION;
-          captionsEl.appendChild(this._el);
+          this._visible = true;
         }
         setText(text) {
           this._el.textContent = text;
+          if (!text) {
+            this._el.remove();
+            return;
+          }
+          if (!this._visible) {
+            this._el.style.display = "none";
+          }
+          const cueDisplay = this._captionsEl.querySelector(SELECTORS.CUE_DISPLAY);
+          if (cueDisplay && !cueDisplay.contains(this._el)) {
+            cueDisplay.appendChild(this._el);
+          }
         }
         hide() {
+          this._visible = false;
           this._el.style.display = "none";
         }
         show() {
-          this._el.style.display = "";
+          this._visible = true;
+          if (this._el.textContent) this._el.style.display = "";
         }
         setPosition(position) {
           this._el.classList.remove("dlai-ext-translation--above", "dlai-ext-translation--below");
@@ -189,9 +186,6 @@
         }
         setFontSize(size) {
           this._el.style.setProperty("--dlai-font-size", size);
-        }
-        isConnected() {
-          return this._el.isConnected;
         }
         destroy() {
           this._el.remove();
@@ -222,10 +216,6 @@
           if (this._bodyObserver) {
             this._bodyObserver.disconnect();
             this._bodyObserver = null;
-          }
-          if (this._reinjectObserver) {
-            this._reinjectObserver.disconnect();
-            this._reinjectObserver = null;
           }
           if (this._wrapperEl) {
             this._wrapperEl.remove();
@@ -259,19 +249,6 @@
             }
           });
           this._bodyObserver.observe(document.body, { childList: true, subtree: true });
-        }
-        // 注入后监听按钮是否被 Vidstack 重新渲染移除，若移除则重新注入
-        _watchForRemoval() {
-          if (this._reinjectObserver) this._reinjectObserver.disconnect();
-          this._reinjectObserver = new MutationObserver(() => {
-            if (this._wrapperEl && !this._wrapperEl.isConnected) {
-              this._wrapperEl = null;
-              this._btnEl = null;
-              this._panelEl = null;
-              this._tryInject();
-            }
-          });
-          this._reinjectObserver.observe(document.body, { childList: true, subtree: true });
         }
         _inject(controlsEl) {
           this._wrapperEl = document.createElement("div");
@@ -317,7 +294,6 @@
           });
           this._wrapperEl.appendChild(this._panelEl);
           controlsEl.appendChild(this._wrapperEl);
-          this._watchForRemoval();
           if (this._noKeyWarningShown) this._renderNoKeyWarning();
         }
         _toggle() {
@@ -495,12 +471,14 @@
           });
           this._observer = new SubtitleObserver({
             onSubtitle: (text, cueId) => {
-              const captionsEl2 = document.querySelector(SELECTORS.CAPTIONS_ROOT);
-              if (!captionsEl2) return;
-              if (!this._overlay || !this._overlay.isConnected()) {
-                if (this._overlay) this._overlay.destroy();
-                this._overlay = new TranslationOverlay(captionsEl2);
-                this._checkCcStatus(captionsEl2);
+              if (!this._overlay) {
+                const captionsEl2 = document.querySelector(SELECTORS.CAPTIONS_ROOT);
+                if (captionsEl2) {
+                  this._overlay = new TranslationOverlay(captionsEl2);
+                  this._checkCcStatus(captionsEl2);
+                } else {
+                  return;
+                }
               }
               const cached = this._cache.get(cueId, text);
               if (cached) {

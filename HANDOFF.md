@@ -1,40 +1,37 @@
 # HANDOFF — DL Subtitles 项目交接文档
 
-> 最后更新：2026-05-17 | 当前阶段：实机调试修复中（分支 phase/11-release）
+> 最后更新：2026-05-17 | 当前阶段：实机调试（分支 phase/11-release），核心功能可用，待解决问题清单见下
 
 ---
 
 ## ★ 上次中断点
 
 ```
-Phase:    实机调试（Phase 11 分支，未合并）
-分支:     phase/11-release
-状态:     插件可加载，发现并修复 3 个实机 Bug（2026-05-17）
+Phase:    实机调试（phase/11-release 分支，未合并）
+状态:     翻译核心功能已验证可用（2026-05-17）
 
-已修复：
-  1. ✅ 控制面板注入到错误的 controls-group
-       原因：Vidstack 有 4 个 .vds-controls-group，querySelector 拿到第 1 个而非含 CC 按钮的那个
-       修复：改用 :has(.vds-caption-button) 精准选择；注入后监听 isConnected 自动重新注入
-  2. ✅ 面板弹出方向溢出屏幕右侧
-       修复：CSS 改为 right:0（面板向左展开）
-  3. ✅ 翻译字幕不出现
-       原因：Vidstack 全量初始化后替换 captions 元素，SubtitleObserver 仍监听旧元素；
-             overlay 也随旧元素消失
-       修复：SubtitleObserver 增加 _watchForReplacement()，captions 被替换时自动重新挂载；
-             onSubtitle 回调每次检查 overlay.isConnected()，失效则重建
+已确认可用：
+  - ✅ 翻译功能正常（API key 配置 deepseek-chat 后生效）
+  - ✅ 双语按钮出现在控制栏（使用 :has(.vds-caption-button) 精准选择 controls-group）
+  - ✅ 面板弹出方向向左展开（CSS right:0）
 
-待确认（需用户实机测试）：
-  - [ ] 双语按钮出现在正确位置
-  - [ ] 面板弹出不再溢出
-  - [ ] CC 开启后中文译文正常出现
+已修复（本次）：
+  - ✅ 中文译文位置：从 .vds-captions 顶部 → 注入到 cue-display 内，紧随英文字幕（沉浸式）
+  - ✅ 回滚：移除了基于错误诊断添加的 SubtitleObserver._watchForReplacement 和 overlay.isConnected 逻辑
+
+待解决问题清单（下次会话优先处理）：
+  1. [ ] Options 页面增加"测试连接"按钮：保存时 / 手动点击时 ping API，验证 key+model 可用
+  2. [ ] API 调用失败时在字幕区显示错误提示（如"API 错误，请检查设置"）
+  3. [ ] 官方 CC 按钮必须开启才能显示翻译（by design，依赖 VTT DOM 事件）
+       → 待讨论：是否 v1.0 接受此限制并在 UI 中明确提示，还是要独立读取 VTT
 
 注意：
-  - 用户 API：Base URL https://api.ads8260.win:8260/v1，模型 deepseek-chat（Key 已配置）
+  - 用户 API：Base URL https://api.ads8260.win:8260/v1，模型 deepseek-chat（Key 勿提交）
   - 扩展本地路径：D:\下载\deeplearning\dl-subtitles
-  - 每次修改后：npm run pack → scp 下载 → 解压覆盖 → chrome://extensions/ 刷新
+  - 开发流程：npm run pack → scp 下载 → 解压覆盖 → chrome://extensions/ 刷新
 ```
 
-> 下次会话：确认实机测试通过后提交 HANDOFF，合并 PR，推进上架流程。
+> 下次会话：处理待解决问题清单（Options 测试按钮 → API 错误提示 → CC 依赖讨论）。
 
 ---
 

@@ -111,9 +111,9 @@
 用户直接输入/书签 → 课时 URL → 完整页面加载 → 扩展正常
 ```
 
-**修复方案**：
-- `manifest.json`：新增 `"tabs"` permission。
-- `src/background/service-worker.js`：监听 `chrome.tabs.onUpdated`，当 URL 变为课时模式（`/courses/*/lesson/*`）时，调用 `chrome.scripting.executeScript` 主动注入 `dist/content.js`（及 CSS）。注入前检查是否已注入（避免重复），可通过注入一段探测脚本或维护已注入 tab 的 Set 来判断。
+**修复方案（已实施）**：
+- `manifest.json`：`content_scripts.matches` 扩展为 `https://learn.deeplearning.ai/*`，content script 在用户打开首页时即注入，`_watchRoute()` 的 URL 轮询覆盖所有 SPA 导航场景。
+- 无需新增任何权限，`tabs` 权限方案因违反 CLAUDE.md "权限仅申请 storage、scripting" 红线而放弃。
 
 ---
 
