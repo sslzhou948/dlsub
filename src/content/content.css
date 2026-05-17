@@ -4,27 +4,25 @@
 
 /* ── Translation overlay ──────────────────────────────────────────────────── */
 
-/* Appended inside .vds-captions as a sibling to [data-part="cue-display"].
- * The parent element is a transparent overlay on top of the video, so we add
- * a semi-transparent background to keep the translation readable.            */
+/* Injected inside [data-part="cue-display"], immediately after the English cue.
+ * Immersive-translation style: Chinese appears as a second subtitle line,
+ * visually distinguished by a warm yellow color.                              */
 .dlai-ext-translation {
-  display: block;
-  width: 100%;
+  display: inline-block;
   text-align: center;
-  color: #fff;
-  background: rgba(8, 8, 8, 0.72);
-  padding: 3px 20px 5px;
-  border-radius: 4px;
-  font-size: var(--dlai-font-size, medium);
+  color: #fde68a;           /* warm yellow — distinguishable from white English */
+  font-size: var(--dlai-font-size, 1em);
   line-height: 1.5;
-  pointer-events: none; /* let clicks pass through to the video */
-  box-sizing: border-box;
-  margin-top: 2px;
+  pointer-events: none;
+  margin-top: 4px;
+  padding: 2px 8px;
+  background: var(--dlai-bg, rgba(28, 28, 28, 0.75));
+  border-radius: 4px;
 }
 
-/* Position variants */
+/* Position variants (above = order swap inside cue-display) */
 .dlai-ext-translation--above {
-  order: -1; /* only works if parent becomes a flex column */
+  order: -1;
 }
 
 /* ── Control panel wrapper ────────────────────────────────────────────────── */
@@ -79,7 +77,7 @@
 .dlai-ext-control-panel {
   position: absolute;
   bottom: calc(100% + 8px);
-  left: 0;
+  right: 0;
   background: rgba(18, 18, 18, 0.96);
   color: #f0f0f0;
   padding: 12px 16px;

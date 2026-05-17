@@ -55,6 +55,7 @@ beforeEach(() => {
   jest.mock('../../src/content/translation-overlay', () =>
     jest.fn().mockImplementation(function () {
       this.setText = jest.fn();
+      this.setError = jest.fn();
       this.hide = jest.fn();
       this.show = jest.fn();
       this.setPosition = jest.fn();
@@ -133,6 +134,49 @@ describe('API Key 未配置', () => {
   });
 });
 
+describe('CC 未开启提示', () => {
+  test('captions 元素 aria-hidden="true" 时，overlay.setText 显示提示文字', () => {
+    document.body.innerHTML = `
+      <div class="vds-captions" data-part="captions" aria-hidden="true"></div>
+      <div class="vds-controls-group"></div>
+      <button class="vds-caption-button"></button>
+    `;
+    const app = new App();
+    app.init();
+    const TranslationOverlay = require('../../src/content/translation-overlay');
+    const overlay = TranslationOverlay.mock.instances[0];
+    expect(overlay.setText).toHaveBeenCalledWith(expect.stringContaining('CC'));
+  });
+
+  test('captions 元素 aria-hidden="false" 时，不显示 CC 提示', () => {
+    document.body.innerHTML = `
+      <div class="vds-captions" data-part="captions" aria-hidden="false"></div>
+      <div class="vds-controls-group"></div>
+    `;
+    const app = new App();
+    app.init();
+    const TranslationOverlay = require('../../src/content/translation-overlay');
+    const overlay = TranslationOverlay.mock.instances[0];
+    expect(overlay.setText).not.toHaveBeenCalled();
+  });
+
+  test('点击 CC 按钮后，提示被清除（overlay.setText 以空字符串调用）', () => {
+    document.body.innerHTML = `
+      <div class="vds-captions" data-part="captions" aria-hidden="true"></div>
+      <div class="vds-controls-group"></div>
+      <button class="vds-caption-button"></button>
+    `;
+    const app = new App();
+    app.init();
+    const TranslationOverlay = require('../../src/content/translation-overlay');
+    const overlay = TranslationOverlay.mock.instances[0];
+
+    // 模拟用户点击 CC 按钮
+    document.querySelector('.vds-caption-button').click();
+    expect(overlay.setText).toHaveBeenLastCalledWith('');
+  });
+});
+
 describe('SPA 路由切换', () => {
   test('URL 变化时调用 reset（stop 旧 observer + 清空 cache）', () => {
     const app = new App();
@@ -177,5 +221,31 @@ describe('SPA 路由切换', () => {
     const oldOverlay = TranslationOverlay.mock.instances[0];
     app._onRouteChange();
     expect(oldOverlay.destroy).toHaveBeenCalled();
+  });
+});
+
+describe('翻译 API 失败处理', () => {
+  test('TRANSLATE_ERROR 响应时调用 overlay.setError', () => {
+    const { seedStore } = require('./helpers/chrome-mock');
+    seedStore({
+      apiConfig: { baseUrl: 'https://api.openai.com/v1', apiKey: 'sk-test', model: 'gpt-4o-mini' },
+      displayConfig: { enabled: true, fontSize: 'medium', position: 'below', targetLang: 'zh-CN' },
+    });
+
+    chrome.runtime.sendMessage.mockImplementation((_msg, callback) => {
+      callback({ type: 'TRANSLATE_ERROR', payload: { error: 'HTTP 401', code: 'API_ERROR' } });
+    });
+
+    const app = new App();
+    app.init();
+
+    // 触发 onSubtitle 回调
+    const observerConstructorArgs = SubtitleObserver.mock.calls[0][0];
+    observerConstructorArgs.onSubtitle('Hello world', '1');
+
+    const TranslationOverlay = require('../../src/content/translation-overlay');
+    const overlay = TranslationOverlay.mock.instances[0];
+    expect(overlay.setError).toHaveBeenCalledTimes(1);
+    expect(overlay.setError).toHaveBeenCalledWith(expect.any(String));
   });
 });

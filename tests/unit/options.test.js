@@ -13,6 +13,7 @@ beforeEach(() => {
       <input type="password" id="apiKey"   name="apiKey"   />
       <input type="text"     id="model"    name="model"    />
       <button type="submit">保存</button>
+      <button type="button"  id="test-conn">测试连接</button>
       <span id="status"></span>
     </form>
   `;
@@ -65,6 +66,86 @@ describe('表单提交', () => {
       }),
       expect.any(Function),
     );
+  });
+});
+
+describe('测试连接按钮', () => {
+  afterEach(() => {
+    delete global.fetch;
+  });
+
+  test('"测试连接"按钮存在于页面', () => {
+    expect(document.getElementById('test-conn')).not.toBeNull();
+  });
+
+  test('点击后立即显示"正在测试连接"', () => {
+    global.fetch = jest.fn().mockReturnValue(new Promise(() => {})); // 永不 resolve
+    document.getElementById('baseUrl').value = 'https://api.openai.com/v1';
+    document.getElementById('apiKey').value = 'sk-test';
+    document.getElementById('model').value = 'gpt-4o-mini';
+
+    document.getElementById('test-conn').click();
+
+    expect(document.getElementById('status').textContent).toContain('正在测试');
+  });
+
+  test('fetch 成功（ok: true）时状态显示"连接成功"', async () => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: true });
+    document.getElementById('baseUrl').value = 'https://api.openai.com/v1';
+    document.getElementById('apiKey').value = 'sk-test';
+    document.getElementById('model').value = 'gpt-4o-mini';
+
+    document.getElementById('test-conn').click();
+    await Promise.resolve();
+
+    expect(document.getElementById('status').textContent).toContain('成功');
+  });
+
+  test('fetch 返回 401 时状态显示"连接失败"并含状态码', async () => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 401 });
+    document.getElementById('baseUrl').value = 'https://api.openai.com/v1';
+    document.getElementById('apiKey').value = 'sk-invalid';
+    document.getElementById('model').value = 'gpt-4o-mini';
+
+    document.getElementById('test-conn').click();
+    await Promise.resolve();
+
+    const text = document.getElementById('status').textContent;
+    expect(text).toContain('失败');
+    expect(text).toContain('401');
+  });
+
+  test('fetch 网络异常时状态显示"连接失败"', async () => {
+    global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
+    document.getElementById('baseUrl').value = 'https://api.openai.com/v1';
+    document.getElementById('apiKey').value = 'sk-test';
+    document.getElementById('model').value = 'gpt-4o-mini';
+
+    document.getElementById('test-conn').click();
+    await Promise.resolve();
+    await Promise.resolve(); // rejected promise 需要额外一次 tick
+
+    expect(document.getElementById('status').textContent).toContain('失败');
+  });
+
+  test('baseUrl 非法时不调用 fetch', () => {
+    global.fetch = jest.fn();
+    document.getElementById('baseUrl').value = 'not-a-url';
+    document.getElementById('apiKey').value = 'sk-test';
+
+    document.getElementById('test-conn').click();
+
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  test('apiKey 为空时不调用 fetch', () => {
+    global.fetch = jest.fn();
+    document.getElementById('baseUrl').value = 'https://api.openai.com/v1';
+    document.getElementById('apiKey').value = '';
+
+    document.getElementById('test-conn').click();
+
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 });
 

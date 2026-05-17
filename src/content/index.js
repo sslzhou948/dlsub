@@ -15,6 +15,7 @@ class App {
     this._cache = new TranslationCache();
     this._lastUrl = location.href;
     this._routeCheckInterval = null;
+    this._ccBtnListener = null;
   }
 
   init() {
@@ -28,6 +29,7 @@ class App {
     const captionsEl = document.querySelector(SELECTORS.CAPTIONS_ROOT);
     if (captionsEl) {
       this._overlay = new TranslationOverlay(captionsEl);
+      this._checkCcStatus(captionsEl);
     }
 
     getDisplayConfig((displayConfig) => {
@@ -56,9 +58,19 @@ class App {
 
     this._observer = new SubtitleObserver({
       onSubtitle: (text, cueId) => {
+        // Lazily create overlay: captions element may load async after _startModules runs
+        if (!this._overlay) {
+          const captionsEl = document.querySelector(SELECTORS.CAPTIONS_ROOT);
+          if (captionsEl) {
+            this._overlay = new TranslationOverlay(captionsEl);
+            this._checkCcStatus(captionsEl);
+          } else {
+            return;
+          }
+        }
         const cached = this._cache.get(cueId, text);
         if (cached) {
-          if (this._overlay) this._overlay.setText(cached);
+          this._overlay.setText(cached);
           return;
         }
         getApiConfig((apiConfig) => {
@@ -69,6 +81,8 @@ class App {
               if (response && response.type === 'TRANSLATE_RESULT') {
                 this._cache.set(cueId, text, response.payload.translation);
                 if (this._overlay) this._overlay.setText(response.payload.translation);
+              } else if (response && response.type === 'TRANSLATE_ERROR') {
+                if (this._overlay) this._overlay.setError('翻译失败，请检查 API 设置');
               }
             },
           );
@@ -93,7 +107,29 @@ class App {
     window.addEventListener('popstate', () => this._onRouteChange());
   }
 
+  // 检测 CC 是否关闭，若关闭则在 overlay 显示提示，CC 开启后自动清除
+  _checkCcStatus(captionsEl) {
+    if (captionsEl.getAttribute('aria-hidden') !== 'true') return;
+    if (this._overlay) {
+      this._overlay.setText('请先点击播放器 CC 按钮开启英文字幕');
+    }
+    const ccBtn = document.querySelector(SELECTORS.CAPTION_BUTTON);
+    if (ccBtn) {
+      const onCcClick = () => {
+        if (this._overlay) this._overlay.setText('');
+        ccBtn.removeEventListener('click', onCcClick);
+        this._ccBtnListener = null;
+      };
+      ccBtn.addEventListener('click', onCcClick);
+      this._ccBtnListener = { el: ccBtn, fn: onCcClick };
+    }
+  }
+
   _onRouteChange() {
+    if (this._ccBtnListener) {
+      this._ccBtnListener.el.removeEventListener('click', this._ccBtnListener.fn);
+      this._ccBtnListener = null;
+    }
     if (this._observer) {
       this._observer.stop();
       this._observer = null;

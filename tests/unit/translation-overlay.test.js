@@ -15,28 +15,45 @@ beforeEach(() => {
 });
 
 describe('初始化', () => {
-  test('在 .vds-captions 内创建 div.dlai-ext-translation', () => {
+  test('构造后 overlay 元素尚未注入 DOM（懒注入）', () => {
     const captionsEl = document.querySelector('.vds-captions');
     new TranslationOverlay(captionsEl);
-    const overlay = captionsEl.querySelector('.dlai-ext-translation');
-    expect(overlay).not.toBeNull();
-  });
-
-  test('译文节点初始内容为空', () => {
-    const captionsEl = document.querySelector('.vds-captions');
-    new TranslationOverlay(captionsEl);
-    const overlay = captionsEl.querySelector('.dlai-ext-translation');
-    expect(overlay.textContent).toBe('');
+    expect(document.querySelector('.dlai-ext-translation')).toBeNull();
   });
 });
 
 describe('setText', () => {
-  test('更新译文内容', () => {
+  test('设置非空文本后，overlay 注入到 cue-display 内', () => {
     const captionsEl = document.querySelector('.vds-captions');
     const overlay = new TranslationOverlay(captionsEl);
     overlay.setText('你好');
-    const el = captionsEl.querySelector('.dlai-ext-translation');
-    expect(el.textContent).toBe('你好');
+    const cueDisplay = captionsEl.querySelector('[data-part="cue-display"]');
+    expect(cueDisplay.querySelector('.dlai-ext-translation')).not.toBeNull();
+    expect(cueDisplay.querySelector('.dlai-ext-translation').textContent).toBe('你好');
+  });
+
+  test('设置空文本后，overlay 从 DOM 移除', () => {
+    const captionsEl = document.querySelector('.vds-captions');
+    const overlay = new TranslationOverlay(captionsEl);
+    overlay.setText('你好');
+    overlay.setText('');
+    expect(document.querySelector('.dlai-ext-translation')).toBeNull();
+  });
+
+  test('cue-display 替换后，下次 setText 重新注入新 cue-display', () => {
+    const captionsEl = document.querySelector('.vds-captions');
+    const overlay = new TranslationOverlay(captionsEl);
+    overlay.setText('第一句');
+
+    // 模拟 Vidstack 替换 cue-display
+    captionsEl.innerHTML = `
+      <div data-part="cue-display">
+        <div data-part="cue" data-id="2">World</div>
+      </div>
+    `;
+    overlay.setText('第二句');
+    const newCueDisplay = captionsEl.querySelector('[data-part="cue-display"]');
+    expect(newCueDisplay.querySelector('.dlai-ext-translation').textContent).toBe('第二句');
   });
 });
 
@@ -44,18 +61,18 @@ describe('hide / show', () => {
   test('hide() 后节点不可见', () => {
     const captionsEl = document.querySelector('.vds-captions');
     const overlay = new TranslationOverlay(captionsEl);
+    overlay.setText('测试');
     overlay.hide();
-    const el = captionsEl.querySelector('.dlai-ext-translation');
-    expect(el.style.display).toBe('none');
+    expect(overlay._el.style.display).toBe('none');
   });
 
   test('show() 后节点可见', () => {
     const captionsEl = document.querySelector('.vds-captions');
     const overlay = new TranslationOverlay(captionsEl);
+    overlay.setText('测试');
     overlay.hide();
     overlay.show();
-    const el = captionsEl.querySelector('.dlai-ext-translation');
-    expect(el.style.display).not.toBe('none');
+    expect(overlay._el.style.display).not.toBe('none');
   });
 });
 
@@ -64,18 +81,16 @@ describe('setPosition', () => {
     const captionsEl = document.querySelector('.vds-captions');
     const overlay = new TranslationOverlay(captionsEl);
     overlay.setPosition('above');
-    const el = captionsEl.querySelector('.dlai-ext-translation');
-    expect(el.classList.contains('dlai-ext-translation--above')).toBe(true);
-    expect(el.classList.contains('dlai-ext-translation--below')).toBe(false);
+    expect(overlay._el.classList.contains('dlai-ext-translation--above')).toBe(true);
+    expect(overlay._el.classList.contains('dlai-ext-translation--below')).toBe(false);
   });
 
   test("setPosition('below') 添加 below class", () => {
     const captionsEl = document.querySelector('.vds-captions');
     const overlay = new TranslationOverlay(captionsEl);
     overlay.setPosition('below');
-    const el = captionsEl.querySelector('.dlai-ext-translation');
-    expect(el.classList.contains('dlai-ext-translation--below')).toBe(true);
-    expect(el.classList.contains('dlai-ext-translation--above')).toBe(false);
+    expect(overlay._el.classList.contains('dlai-ext-translation--below')).toBe(true);
+    expect(overlay._el.classList.contains('dlai-ext-translation--above')).toBe(false);
   });
 });
 
@@ -84,16 +99,7 @@ describe('setFontSize', () => {
     const captionsEl = document.querySelector('.vds-captions');
     const overlay = new TranslationOverlay(captionsEl);
     overlay.setFontSize('large');
-    const el = captionsEl.querySelector('.dlai-ext-translation');
-    expect(el.style.getPropertyValue('--dlai-font-size')).toBe('large');
-  });
-
-  test("setFontSize('small') 更新 CSS 变量", () => {
-    const captionsEl = document.querySelector('.vds-captions');
-    const overlay = new TranslationOverlay(captionsEl);
-    overlay.setFontSize('small');
-    const el = captionsEl.querySelector('.dlai-ext-translation');
-    expect(el.style.getPropertyValue('--dlai-font-size')).toBe('small');
+    expect(overlay._el.style.getPropertyValue('--dlai-font-size')).toBe('large');
   });
 });
 
@@ -101,7 +107,42 @@ describe('destroy', () => {
   test('destroy() 从 DOM 中移除译文节点', () => {
     const captionsEl = document.querySelector('.vds-captions');
     const overlay = new TranslationOverlay(captionsEl);
+    overlay.setText('测试');
     overlay.destroy();
+    expect(document.querySelector('.dlai-ext-translation')).toBeNull();
+  });
+});
+
+describe('setError', () => {
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => jest.useRealTimers());
+
+  test('显示错误信息并附加 error class，注入到 captionsEl', () => {
+    const captionsEl = document.querySelector('.vds-captions');
+    const overlay = new TranslationOverlay(captionsEl);
+    overlay.setError('翻译失败，请检查 API 设置');
+    expect(captionsEl.querySelector('.dlai-ext-translation')).not.toBeNull();
+    expect(overlay._el.classList.contains('dlai-ext-translation--error')).toBe(true);
+    expect(overlay._el.textContent).toBe('翻译失败，请检查 API 设置');
+  });
+
+  test('5 秒后自动清除错误节点', () => {
+    const captionsEl = document.querySelector('.vds-captions');
+    const overlay = new TranslationOverlay(captionsEl);
+    overlay.setError('翻译失败');
+    jest.advanceTimersByTime(5000);
     expect(captionsEl.querySelector('.dlai-ext-translation')).toBeNull();
+  });
+
+  test('setText() 清除 error class 并取消自动清除定时器', () => {
+    const captionsEl = document.querySelector('.vds-captions');
+    const overlay = new TranslationOverlay(captionsEl);
+    overlay.setError('翻译失败');
+    overlay.setText('正常译文');
+    expect(overlay._el.classList.contains('dlai-ext-translation--error')).toBe(false);
+    expect(overlay._el.textContent).toBe('正常译文');
+    // 5 秒后不应被自动清除
+    jest.advanceTimersByTime(5000);
+    expect(overlay._el.textContent).toBe('正常译文');
   });
 });

@@ -12,12 +12,19 @@ function isValidUrl(str) {
   }
 }
 
+function setStatus(el, text, type) {
+  el.textContent = text;
+  el.classList.remove('status--success', 'status--error');
+  if (type) el.classList.add(`status--${type}`);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const baseUrlEl = document.getElementById('baseUrl');
   const apiKeyEl = document.getElementById('apiKey');
   const modelEl = document.getElementById('model');
   const statusEl = document.getElementById('status');
   const form = document.getElementById('options-form');
+  const testConnBtn = document.getElementById('test-conn');
 
   // 读取现有配置填充表单
   getApiConfig((config) => {
@@ -28,19 +35,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    statusEl.textContent = '';
+    setStatus(statusEl, '');
 
     const baseUrl = baseUrlEl.value.trim();
     const apiKey = apiKeyEl.value.trim();
     const model = modelEl.value.trim();
 
     if (!isValidUrl(baseUrl)) {
-      statusEl.textContent = 'Base URL 格式不正确，请输入 http/https 地址';
+      setStatus(statusEl, 'Base URL 格式不正确，请输入 http/https 地址', 'error');
       return;
     }
 
     setApiConfig({ baseUrl, apiKey, model }, () => {
-      statusEl.textContent = '已保存';
+      setStatus(statusEl, '已保存', 'success');
     });
+  });
+
+  testConnBtn.addEventListener('click', async () => {
+    const baseUrl = baseUrlEl.value.trim();
+    const apiKey = apiKeyEl.value.trim();
+    const model = modelEl.value.trim();
+
+    if (!isValidUrl(baseUrl)) {
+      setStatus(statusEl, 'Base URL 格式不正确，请输入 http/https 地址', 'error');
+      return;
+    }
+    if (!apiKey) {
+      setStatus(statusEl, '请先填写 API Key', 'error');
+      return;
+    }
+
+    setStatus(statusEl, '正在测试连接...');
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+
+    try {
+      const res = await fetch(`${baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'user', content: 'test' }],
+          max_tokens: 1,
+        }),
+        signal: controller.signal,
+      });
+      clearTimeout(timer);
+
+      if (res.ok) {
+        setStatus(statusEl, '连接成功', 'success');
+      } else {
+        setStatus(statusEl, `连接失败：HTTP ${res.status}`, 'error');
+      }
+    } catch (err) {
+      clearTimeout(timer);
+      const msg = err.name === 'AbortError' ? '连接超时（10s）' : err.message;
+      setStatus(statusEl, `连接失败：${msg}`, 'error');
+    }
   });
 });
