@@ -139,3 +139,10 @@
 **修复方案**（二选一）：
 - **方案 1（推荐，适合非开发者用户）**：将 `dist/` 从 `.gitignore` 移除，提交构建产物。用户 clone 后可直接加载，无需安装 Node.js 环境。
 - **方案 2（适合开发者项目）**：README 安装步骤中加入 `npm run build`，并考虑在 `package.json` 的 `prepare` 钩子中自动执行 build。
+
+---
+
+## 预翻译 PR — `prefetch-queue`
+
+- [x] **[已修复]** `_cleanup()` 缺少 `this._prefetch.clear()`，页面卸载时 in-flight 请求未清理
+  - 修复：`_cleanup()` 中补加 `if (this._prefetch) this._prefetch.clear()`，与 `_onRouteChange()` 对称

@@ -195,6 +195,7 @@ class App {
       this._routeCheckInterval = null;
     }
     if (this._observer) this._observer.stop();
+    if (this._prefetch) this._prefetch.clear();
   }
 }
 
