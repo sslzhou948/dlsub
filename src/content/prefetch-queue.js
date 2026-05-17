@@ -39,7 +39,15 @@ class PrefetchQueue {
     if (!track || !track.cues) return;
 
     const cues = Array.from(track.cues);
-    const currentIdx = cues.findIndex((c) => String(c.id) === String(currentCueId));
+
+    // 优先用 currentTime 定位当前 cue（规避 DOM data-id 与 VTT cue.id 不一致问题）
+    const now = videoEl.currentTime;
+    let currentIdx = cues.findIndex((c) => now >= c.startTime && now < c.endTime);
+
+    // 回退：按 ID 匹配（兼容 currentTime 为 0 等边界情况）
+    if (currentIdx === -1 && currentCueId) {
+      currentIdx = cues.findIndex((c) => String(c.id) === String(currentCueId));
+    }
     if (currentIdx === -1) return;
 
     const upcoming = cues.slice(currentIdx + 1, currentIdx + 1 + this._lookahead);

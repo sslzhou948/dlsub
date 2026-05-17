@@ -446,7 +446,11 @@
           const track = this._selectTrack(videoEl);
           if (!track || !track.cues) return;
           const cues = Array.from(track.cues);
-          const currentIdx = cues.findIndex((c) => String(c.id) === String(currentCueId));
+          const now = videoEl.currentTime;
+          let currentIdx = cues.findIndex((c) => now >= c.startTime && now < c.endTime);
+          if (currentIdx === -1 && currentCueId) {
+            currentIdx = cues.findIndex((c) => String(c.id) === String(currentCueId));
+          }
           if (currentIdx === -1) return;
           const upcoming = cues.slice(currentIdx + 1, currentIdx + 1 + this._lookahead);
           for (const cue of upcoming) {
