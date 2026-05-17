@@ -19,6 +19,7 @@ class App {
     this._routeCheckInterval = null;
     this._ccBtnListener = null;
     this._trackLoadObs = null; // MutationObserver for _watchTrackLoad
+    this._trackAddTrackListener = null; // addtrack listener for _watchTrackLoad
   }
 
   init() {
@@ -144,7 +145,9 @@ class App {
         track.addEventListener('cuechange', onCueChange);
       };
       Array.from(video.textTracks).forEach(attachToTrack);
-      video.textTracks.addEventListener('addtrack', (e) => attachToTrack(e.track));
+      const onAddTrack = (e) => attachToTrack(e.track);
+      video.textTracks.addEventListener('addtrack', onAddTrack);
+      this._trackAddTrackListener = { el: video.textTracks, fn: onAddTrack };
     };
     // video 元素可能还没出现，稍后重试
     if (document.querySelector('video')) {
@@ -201,6 +204,10 @@ class App {
       this._trackLoadObs.disconnect();
       this._trackLoadObs = null;
     }
+    if (this._trackAddTrackListener) {
+      this._trackAddTrackListener.el.removeEventListener('addtrack', this._trackAddTrackListener.fn);
+      this._trackAddTrackListener = null;
+    }
     if (this._observer) {
       this._observer.stop();
       this._observer = null;
@@ -239,6 +246,10 @@ class App {
     if (this._trackLoadObs) {
       this._trackLoadObs.disconnect();
       this._trackLoadObs = null;
+    }
+    if (this._trackAddTrackListener) {
+      this._trackAddTrackListener.el.removeEventListener('addtrack', this._trackAddTrackListener.fn);
+      this._trackAddTrackListener = null;
     }
     if (this._observer) this._observer.stop();
     if (this._prefetch) this._prefetch.clear();

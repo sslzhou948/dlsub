@@ -573,6 +573,7 @@
           this._routeCheckInterval = null;
           this._ccBtnListener = null;
           this._trackLoadObs = null;
+          this._trackAddTrackListener = null;
         }
         init() {
           this._startModules();
@@ -685,7 +686,9 @@
               track.addEventListener("cuechange", onCueChange);
             };
             Array.from(video.textTracks).forEach(attachToTrack);
-            video.textTracks.addEventListener("addtrack", (e) => attachToTrack(e.track));
+            const onAddTrack = (e) => attachToTrack(e.track);
+            video.textTracks.addEventListener("addtrack", onAddTrack);
+            this._trackAddTrackListener = { el: video.textTracks, fn: onAddTrack };
           };
           if (document.querySelector("video")) {
             tryAttach();
@@ -737,6 +740,10 @@
             this._trackLoadObs.disconnect();
             this._trackLoadObs = null;
           }
+          if (this._trackAddTrackListener) {
+            this._trackAddTrackListener.el.removeEventListener("addtrack", this._trackAddTrackListener.fn);
+            this._trackAddTrackListener = null;
+          }
           if (this._observer) {
             this._observer.stop();
             this._observer = null;
@@ -773,6 +780,10 @@
           if (this._trackLoadObs) {
             this._trackLoadObs.disconnect();
             this._trackLoadObs = null;
+          }
+          if (this._trackAddTrackListener) {
+            this._trackAddTrackListener.el.removeEventListener("addtrack", this._trackAddTrackListener.fn);
+            this._trackAddTrackListener = null;
           }
           if (this._observer) this._observer.stop();
           if (this._prefetch) this._prefetch.clear();
