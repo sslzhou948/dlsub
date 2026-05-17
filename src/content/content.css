@@ -8,13 +8,15 @@
  * Immersive-translation style: Chinese appears as a second subtitle line,
  * visually distinguished by a warm yellow color.                              */
 .dlai-ext-translation {
-  display: inline-block;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 4px auto 0;
   text-align: center;
   color: #fde68a;           /* warm yellow — distinguishable from white English */
   font-size: var(--dlai-font-size, 1em);
   line-height: 1.5;
   pointer-events: none;
-  margin-top: 4px;
   padding: 2px 8px;
   background: var(--dlai-bg, rgba(28, 28, 28, 0.75));
   border-radius: 4px;
