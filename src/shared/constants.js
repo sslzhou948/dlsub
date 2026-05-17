@@ -43,6 +43,9 @@ const DEBOUNCE_DELAY = 300;
 const CACHE_MAX = 500;
 const CACHE_EVICT = 100;
 
+// 预翻译：当前字幕出现时，向后预取的 cue 数量
+const PREFETCH_LOOKAHEAD = 3;
+
 // Storage 默认值
 const DEFAULT_API_CONFIG = {
   baseUrl: '',
@@ -66,6 +69,7 @@ module.exports = {
   DEBOUNCE_DELAY,
   CACHE_MAX,
   CACHE_EVICT,
+  PREFETCH_LOOKAHEAD,
   DEFAULT_API_CONFIG,
   DEFAULT_DISPLAY_CONFIG,
 };

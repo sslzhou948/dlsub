@@ -28,7 +28,8 @@
       var MSG_TYPES = {
         TRANSLATE: "TRANSLATE",
         TRANSLATE_RESULT: "TRANSLATE_RESULT",
-        TRANSLATE_ERROR: "TRANSLATE_ERROR"
+        TRANSLATE_ERROR: "TRANSLATE_ERROR",
+        OPEN_OPTIONS: "OPEN_OPTIONS"
       };
       var ERROR_CODES = {
         NO_API_KEY: "NO_API_KEY",
@@ -146,6 +147,8 @@
         return;
       }
       setStatus(statusEl, "\u6B63\u5728\u6D4B\u8BD5\u8FDE\u63A5...");
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 1e4);
       try {
         const res = await fetch(`${baseUrl}/chat/completions`, {
           method: "POST",
@@ -157,15 +160,19 @@
             model,
             messages: [{ role: "user", content: "test" }],
             max_tokens: 1
-          })
+          }),
+          signal: controller.signal
         });
+        clearTimeout(timer);
         if (res.ok) {
           setStatus(statusEl, "\u8FDE\u63A5\u6210\u529F", "success");
         } else {
           setStatus(statusEl, `\u8FDE\u63A5\u5931\u8D25\uFF1AHTTP ${res.status}`, "error");
         }
       } catch (err) {
-        setStatus(statusEl, `\u8FDE\u63A5\u5931\u8D25\uFF1A${err.message}`, "error");
+        clearTimeout(timer);
+        const msg = err.name === "AbortError" ? "\u8FDE\u63A5\u8D85\u65F6\uFF0810s\uFF09" : err.message;
+        setStatus(statusEl, `\u8FDE\u63A5\u5931\u8D25\uFF1A${msg}`, "error");
       }
     });
   });
