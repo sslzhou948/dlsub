@@ -494,6 +494,61 @@ describe('PrefetchQueue — trigger：HTML 标签剥离', () => {
 
 // ---
 
+describe('PrefetchQueue — triggerFromStart()', () => {
+  let mockCache;
+  let mockRequestTranslation;
+
+  beforeEach(() => {
+    mockCache = { get: jest.fn().mockReturnValue(null), set: jest.fn() };
+    mockRequestTranslation = jest.fn().mockResolvedValue('译文');
+  });
+
+  test('预取前 lookahead 条 cue', async () => {
+    const videoEl = makeVideoEl([
+      { id: '1', text: 'A', startTime: 0 },
+      { id: '2', text: 'B', startTime: 2 },
+      { id: '3', text: 'C', startTime: 4 },
+      { id: '4', text: 'D', startTime: 6 },
+    ]);
+    const pq = new PrefetchQueue({ cache: mockCache, requestTranslation: mockRequestTranslation, lookahead: 2 });
+    pq.triggerFromStart(videoEl);
+    await flushPromises();
+    expect(mockRequestTranslation).toHaveBeenCalledTimes(2);
+    expect(mockRequestTranslation).toHaveBeenCalledWith('A', '1');
+    expect(mockRequestTranslation).toHaveBeenCalledWith('B', '2');
+  });
+
+  test('videoEl 为 null 时不抛出', async () => {
+    const pq = new PrefetchQueue({ cache: mockCache, requestTranslation: mockRequestTranslation });
+    expect(() => pq.triggerFromStart(null)).not.toThrow();
+    await flushPromises();
+    expect(mockRequestTranslation).not.toHaveBeenCalled();
+  });
+
+  test('track.cues 为空时不调用 requestTranslation', async () => {
+    const videoEl = makeVideoEl([], { cues: [] });
+    videoEl.textTracks[0].cues.length = 0;
+    const pq = new PrefetchQueue({ cache: mockCache, requestTranslation: mockRequestTranslation });
+    pq.triggerFromStart(videoEl);
+    await flushPromises();
+    expect(mockRequestTranslation).not.toHaveBeenCalled();
+  });
+
+  test('与 trigger() in-flight 去重：triggerFromStart 后 trigger 不重复发请求', async () => {
+    const videoEl = makeVideoEl([
+      { id: '1', text: 'A', startTime: 0 },
+      { id: '2', text: 'B', startTime: 2 },
+    ]);
+    const pq = new PrefetchQueue({ cache: mockCache, requestTranslation: mockRequestTranslation, lookahead: 2 });
+    pq.triggerFromStart(videoEl); // 预取 cue 1, 2
+    pq.trigger('1', videoEl);    // cue 1 出现，再次尝试预取 cue 2 → 被 in-flight 拦截
+    await flushPromises();
+    expect(mockRequestTranslation).toHaveBeenCalledTimes(2); // 只有 A, B 各一次
+  });
+});
+
+// ---
+
 describe('PrefetchQueue — clear()', () => {
   test('clear() 后 _inFlight 为空', () => {
     const pq = new PrefetchQueue({

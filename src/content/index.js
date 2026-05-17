@@ -18,6 +18,7 @@ class App {
     this._lastUrl = location.href;
     this._routeCheckInterval = null;
     this._ccBtnListener = null;
+    this._trackLoadObs = null; // MutationObserver for _watchTrackLoad
   }
 
   init() {
@@ -122,6 +123,43 @@ class App {
       },
     });
     this._observer.start();
+
+    // VTT 文件加载完成后立即批量预取前 N 条字幕
+    // （防止 VTT 尚未加载完成时第一条字幕已出现，导致 trigger 找不到 cues）
+    this._watchTrackLoad();
+  }
+
+  _watchTrackLoad() {
+    const tryAttach = () => {
+      const video = document.querySelector('video');
+      if (!video) return;
+      const attachToTrack = (track) => {
+        if (track._dlaiPrefetchAttached) return;
+        track._dlaiPrefetchAttached = true;
+        const onCueChange = () => {
+          if (!track.cues || track.cues.length === 0) return;
+          track.removeEventListener('cuechange', onCueChange);
+          if (this._prefetch) this._prefetch.triggerFromStart(video);
+        };
+        track.addEventListener('cuechange', onCueChange);
+      };
+      Array.from(video.textTracks).forEach(attachToTrack);
+      video.textTracks.addEventListener('addtrack', (e) => attachToTrack(e.track));
+    };
+    // video 元素可能还没出现，稍后重试
+    if (document.querySelector('video')) {
+      tryAttach();
+    } else {
+      this._trackLoadObs = new MutationObserver(() => {
+        if (!document || !document.querySelector) return;
+        if (document.querySelector('video')) {
+          this._trackLoadObs.disconnect();
+          this._trackLoadObs = null;
+          tryAttach();
+        }
+      });
+      this._trackLoadObs.observe(document.body, { childList: true, subtree: true });
+    }
   }
 
   // SPA 路由切换检测（轮询 URL 变化）
@@ -159,6 +197,10 @@ class App {
       this._ccBtnListener.el.removeEventListener('click', this._ccBtnListener.fn);
       this._ccBtnListener = null;
     }
+    if (this._trackLoadObs) {
+      this._trackLoadObs.disconnect();
+      this._trackLoadObs = null;
+    }
     if (this._observer) {
       this._observer.stop();
       this._observer = null;
@@ -193,6 +235,10 @@ class App {
     if (this._routeCheckInterval) {
       clearInterval(this._routeCheckInterval);
       this._routeCheckInterval = null;
+    }
+    if (this._trackLoadObs) {
+      this._trackLoadObs.disconnect();
+      this._trackLoadObs = null;
     }
     if (this._observer) this._observer.stop();
     if (this._prefetch) this._prefetch.clear();

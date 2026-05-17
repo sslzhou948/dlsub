@@ -57,6 +57,23 @@ class PrefetchQueue {
   }
 
   /**
+   * VTT 加载完成时调用，从第一条 cue 开始预取 lookahead 条。
+   * 解决：VTT 尚未加载完成时第一条字幕已出现，trigger() 找不到 cues 的竞态问题。
+   *
+   * @param {HTMLVideoElement} videoEl
+   */
+  triggerFromStart(videoEl) {
+    if (!videoEl) return;
+    const track = this._selectTrack(videoEl);
+    if (!track || !track.cues || track.cues.length === 0) return;
+    const cues = Array.from(track.cues);
+    // 预取前 lookahead 条（从 index=0 开始，覆盖最可能马上出现的字幕）
+    for (const cue of cues.slice(0, this._lookahead)) {
+      this._prefetchCue(cue);
+    }
+  }
+
+  /**
    * 清空 in-flight 状态（路由切换时调用）。
    * 不清空 cache，cache 生命周期由 App 统一管理。
    */
