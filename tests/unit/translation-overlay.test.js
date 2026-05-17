@@ -112,3 +112,37 @@ describe('destroy', () => {
     expect(document.querySelector('.dlai-ext-translation')).toBeNull();
   });
 });
+
+describe('setError', () => {
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => jest.useRealTimers());
+
+  test('显示错误信息并附加 error class，注入到 captionsEl', () => {
+    const captionsEl = document.querySelector('.vds-captions');
+    const overlay = new TranslationOverlay(captionsEl);
+    overlay.setError('翻译失败，请检查 API 设置');
+    expect(captionsEl.querySelector('.dlai-ext-translation')).not.toBeNull();
+    expect(overlay._el.classList.contains('dlai-ext-translation--error')).toBe(true);
+    expect(overlay._el.textContent).toBe('翻译失败，请检查 API 设置');
+  });
+
+  test('5 秒后自动清除错误节点', () => {
+    const captionsEl = document.querySelector('.vds-captions');
+    const overlay = new TranslationOverlay(captionsEl);
+    overlay.setError('翻译失败');
+    jest.advanceTimersByTime(5000);
+    expect(captionsEl.querySelector('.dlai-ext-translation')).toBeNull();
+  });
+
+  test('setText() 清除 error class 并取消自动清除定时器', () => {
+    const captionsEl = document.querySelector('.vds-captions');
+    const overlay = new TranslationOverlay(captionsEl);
+    overlay.setError('翻译失败');
+    overlay.setText('正常译文');
+    expect(overlay._el.classList.contains('dlai-ext-translation--error')).toBe(false);
+    expect(overlay._el.textContent).toBe('正常译文');
+    // 5 秒后不应被自动清除
+    jest.advanceTimersByTime(5000);
+    expect(overlay._el.textContent).toBe('正常译文');
+  });
+});

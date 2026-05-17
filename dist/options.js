@@ -102,12 +102,18 @@
       return false;
     }
   }
+  function setStatus(el, text, type) {
+    el.textContent = text;
+    el.classList.remove("status--success", "status--error");
+    if (type) el.classList.add(`status--${type}`);
+  }
   document.addEventListener("DOMContentLoaded", () => {
     const baseUrlEl = document.getElementById("baseUrl");
     const apiKeyEl = document.getElementById("apiKey");
     const modelEl = document.getElementById("model");
     const statusEl = document.getElementById("status");
     const form = document.getElementById("options-form");
+    const testConnBtn = document.getElementById("test-conn");
     getApiConfig((config) => {
       baseUrlEl.value = config.baseUrl || DEFAULT_API_CONFIG.baseUrl;
       apiKeyEl.value = config.apiKey || DEFAULT_API_CONFIG.apiKey;
@@ -115,17 +121,52 @@
     });
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      statusEl.textContent = "";
+      setStatus(statusEl, "");
       const baseUrl = baseUrlEl.value.trim();
       const apiKey = apiKeyEl.value.trim();
       const model = modelEl.value.trim();
       if (!isValidUrl(baseUrl)) {
-        statusEl.textContent = "Base URL \u683C\u5F0F\u4E0D\u6B63\u786E\uFF0C\u8BF7\u8F93\u5165 http/https \u5730\u5740";
+        setStatus(statusEl, "Base URL \u683C\u5F0F\u4E0D\u6B63\u786E\uFF0C\u8BF7\u8F93\u5165 http/https \u5730\u5740", "error");
         return;
       }
       setApiConfig({ baseUrl, apiKey, model }, () => {
-        statusEl.textContent = "\u5DF2\u4FDD\u5B58";
+        setStatus(statusEl, "\u5DF2\u4FDD\u5B58", "success");
       });
+    });
+    testConnBtn.addEventListener("click", async () => {
+      const baseUrl = baseUrlEl.value.trim();
+      const apiKey = apiKeyEl.value.trim();
+      const model = modelEl.value.trim();
+      if (!isValidUrl(baseUrl)) {
+        setStatus(statusEl, "Base URL \u683C\u5F0F\u4E0D\u6B63\u786E\uFF0C\u8BF7\u8F93\u5165 http/https \u5730\u5740", "error");
+        return;
+      }
+      if (!apiKey) {
+        setStatus(statusEl, "\u8BF7\u5148\u586B\u5199 API Key", "error");
+        return;
+      }
+      setStatus(statusEl, "\u6B63\u5728\u6D4B\u8BD5\u8FDE\u63A5...");
+      try {
+        const res = await fetch(`${baseUrl}/chat/completions`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model,
+            messages: [{ role: "user", content: "test" }],
+            max_tokens: 1
+          })
+        });
+        if (res.ok) {
+          setStatus(statusEl, "\u8FDE\u63A5\u6210\u529F", "success");
+        } else {
+          setStatus(statusEl, `\u8FDE\u63A5\u5931\u8D25\uFF1AHTTP ${res.status}`, "error");
+        }
+      } catch (err) {
+        setStatus(statusEl, `\u8FDE\u63A5\u5931\u8D25\uFF1A${err.message}`, "error");
+      }
     });
   });
 })();

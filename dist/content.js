@@ -157,8 +157,14 @@
           this._el = document.createElement("div");
           this._el.className = CSS_CLASSES.TRANSLATION;
           this._visible = true;
+          this._errorTimer = null;
         }
         setText(text) {
+          if (this._errorTimer) {
+            clearTimeout(this._errorTimer);
+            this._errorTimer = null;
+          }
+          this._el.classList.remove("dlai-ext-translation--error");
           this._el.textContent = text;
           if (!text) {
             this._el.remove();
@@ -171,6 +177,21 @@
           if (cueDisplay && !cueDisplay.contains(this._el)) {
             cueDisplay.appendChild(this._el);
           }
+        }
+        setError(msg) {
+          if (this._errorTimer) {
+            clearTimeout(this._errorTimer);
+          }
+          this._el.textContent = msg;
+          this._el.classList.add("dlai-ext-translation--error");
+          if (!this._captionsEl.contains(this._el)) {
+            this._captionsEl.appendChild(this._el);
+          }
+          this._errorTimer = setTimeout(() => {
+            this._el.classList.remove("dlai-ext-translation--error");
+            this._el.remove();
+            this._errorTimer = null;
+          }, 5e3);
         }
         hide() {
           this._visible = false;
@@ -493,6 +514,8 @@
                     if (response && response.type === "TRANSLATE_RESULT") {
                       this._cache.set(cueId, text, response.payload.translation);
                       if (this._overlay) this._overlay.setText(response.payload.translation);
+                    } else if (response && response.type === "TRANSLATE_ERROR") {
+                      if (this._overlay) this._overlay.setError("\u7FFB\u8BD1\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5 API \u8BBE\u7F6E");
                     }
                   }
                 );

@@ -19,11 +19,50 @@ Phase:    实机调试（phase/11-release 分支，未合并）
   - ✅ 中文译文位置：从 .vds-captions 顶部 → 注入到 cue-display 内，紧随英文字幕（沉浸式）
   - ✅ 回滚：移除了基于错误诊断添加的 SubtitleObserver._watchForReplacement 和 overlay.isConnected 逻辑
 
-待解决问题清单（下次会话优先处理）：
-  1. [ ] Options 页面增加"测试连接"按钮：保存时 / 手动点击时 ping API，验证 key+model 可用
-  2. [ ] API 调用失败时在字幕区显示错误提示（如"API 错误，请检查设置"）
-  3. [ ] 官方 CC 按钮必须开启才能显示翻译（by design，依赖 VTT DOM 事件）
-       → 待讨论：是否 v1.0 接受此限制并在 UI 中明确提示，还是要独立读取 VTT
+待解决问题清单：
+  1. [x] Options 页面增加"测试连接"按钮 ← 已完成（2026-05-17）
+  2. [x] API 调用失败时在字幕区显示错误提示 ← 已完成（2026-05-17）
+  3. [ ] 与原生 CC 解耦（规划中，见下方调研结论，暂不实现）
+
+## 原生 CC 解耦调研结论（2026-05-17，待实现）
+
+### 背景
+当前翻译依赖 MutationObserver 监听 .vds-captions DOM，用户必须开启官方 CC 按钮才能触发翻译。
+目标：完全独立于 CC 按钮，支持"仅译文/双语/仅原文"模式切换 + 字幕样式自定义。
+
+### DOM 调研结论
+```
+video.textTracks[0]: kind=subtitles, language=en-Us, label=English
+track.src: .../eng/....m3u8  ← HLS 格式（非单文件 VTT），由 hls.js@^1.5.0 从 CDN 加载
+```
+
+### 核心问题
+Vidstack 持续将 track.mode 重置为 disabled（CC 关闭时），直接监听 cuechange 无效。
+- Vidstack (#C in f58de92f chunk) → mode = disabled（4次，CC关闭时）
+- hls.js (toggleTrackModes) → mode = showing（CC开启时）
+
+### 解决方案：defineProperty 拦截
+```javascript
+const nativeDesc = Object.getOwnPropertyDescriptor(TextTrack.prototype, 'mode');
+Object.defineProperty(track, 'mode', {
+  get: () => nativeDesc.get.call(track),
+  set: (v) => nativeDesc.set.call(track, v === 'disabled' ? 'hidden' : v),
+  configurable: true
+});
+track.mode = 'hidden';
+// 效果：Vidstack 设 disabled → 偷改为 hidden，cuechange 正常触发
+// hls.js 设 showing → 放行（可选择隐藏原生渲染）
+```
+
+### 预翻译优化
+hls.js 加载分段后 track.cues 包含后续所有 cue 对象，可扫描预翻译，实现 0 延迟显示。
+
+### 改造范围（待实现）
+- 新增 vtt-loader.js：defineProperty 拦截 + cuechange + 预翻译队列
+- 改 subtitle-observer.js：由 vtt-loader 驱动替代 MutationObserver
+- 改 translation-overlay.js：三模式（原文/双语/译文）+ CSS 变量（字号/颜色/透明度）
+- 改 control-panel.js：模式切换按钮
+- 改 options/ + storage.js：字幕样式配置项
 
 注意：
   - 用户 API：Base URL https://api.ads8260.win:8260/v1，模型 deepseek-chat（Key 勿提交）
@@ -31,7 +70,7 @@ Phase:    实机调试（phase/11-release 分支，未合并）
   - 开发流程：npm run pack → scp 下载 → 解压覆盖 → chrome://extensions/ 刷新
 ```
 
-> 下次会话：处理待解决问题清单（Options 测试按钮 → API 错误提示 → CC 依赖讨论）。
+> 当前状态：问题 1、2 已修复，86/86 测试绿灯。下次会话：打包验证实机效果，或推进 CC 解耦（见下方调研记录）。
 
 ---
 

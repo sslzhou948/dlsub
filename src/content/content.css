@@ -8,15 +8,16 @@
  * Immersive-translation style: Chinese appears as a second subtitle line,
  * visually distinguished by a warm yellow color.                              */
 .dlai-ext-translation {
-  display: block;
+  display: inline-block;
   text-align: center;
   color: #fde68a;           /* warm yellow — distinguishable from white English */
   font-size: var(--dlai-font-size, 1em);
   line-height: 1.5;
   pointer-events: none;
-  margin-top: 2px;
-  padding: 0 4px;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.9); /* match Vidstack subtitle shadow */
+  margin-top: 4px;
+  padding: 2px 8px;
+  background: var(--dlai-bg, rgba(28, 28, 28, 0.75));
+  border-radius: 4px;
 }
 
 /* Position variants (above = order swap inside cue-display) */

@@ -48,6 +48,13 @@ button:hover {
 
 #status {
   font-size: 0.9rem;
-  color: #d93025;
   margin-top: 4px;
+}
+
+#status.status--success {
+  color: #188038;
+}
+
+#status.status--error {
+  color: #d93025;
 }

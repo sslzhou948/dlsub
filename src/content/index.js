@@ -81,6 +81,8 @@ class App {
               if (response && response.type === 'TRANSLATE_RESULT') {
                 this._cache.set(cueId, text, response.payload.translation);
                 if (this._overlay) this._overlay.setText(response.payload.translation);
+              } else if (response && response.type === 'TRANSLATE_ERROR') {
+                if (this._overlay) this._overlay.setError('翻译失败，请检查 API 设置');
               }
             },
           );
